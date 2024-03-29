@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\API\RegisterController;
-use App\Http\Controllers\View\RegisterViewController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Route;
+
+// Auth Routes
+require __DIR__.'/auth.php';
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/register', [RegisterViewController::class, 'showRegistrationForm'])->name('view.register');
-Route::post('/api/register', [RegisterController::class, 'register']);
+Route::get('/register', [RegisterController::class, 'index']);
+Route::post('/api/register', [RegisterController::class, 'register'])->name('api.register');
