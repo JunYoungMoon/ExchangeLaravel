@@ -21,8 +21,8 @@ class ArticlesController extends Controller
 
         Article::create([
             'body' => $input['body'],
-            'user_id' => Auth::id()
-//            'user_id' => 1
+//            'user_id' => Auth::id()
+            'user_id' => 1
         ]);
 
         return 'hello';
