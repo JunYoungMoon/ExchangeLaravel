@@ -8,11 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticlesController extends Controller
 {
-    public function index()
-    {
-        return view('articles.create');
-    }
-
     public function create(Request $request)
     {
         $input = $request->validate([
