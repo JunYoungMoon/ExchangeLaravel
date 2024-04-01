@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 
 // Auth Routes
@@ -12,14 +11,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/articles', function (){
-    $articles = Article::all();
-    return view('articles.index', ['articles' => $articles]);
-});
-Route::get('/articles/create', function (){
-    return view('articles.create');
-});
+Route::get('/articles', function (){ return view('articles.index'); });
+Route::post('/api/articles/list', [ArticlesController::class, 'list'])->name('api.articles.list');
 
+Route::get('/articles/create', function (){ return view('articles.create'); });
 Route::post('/api/articles/create', [ArticlesController::class, 'create'])->name('api.articles.create');
 
 Route::get('/register', [RegisterController::class, 'index']);
