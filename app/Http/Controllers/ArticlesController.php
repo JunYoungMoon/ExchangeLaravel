@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Auth;
 
 class ArticlesController extends Controller
 {
-    public function list(Request $request){
-        $page = $request->input('page',1);
+    public function list(Request $request)
+    {
+        $page = $request->input('page', 1);
         $perPage = $request->input('perPage', 2);
         $offset = ($page - 1) * $perPage;
 
@@ -29,9 +30,10 @@ class ArticlesController extends Controller
 //            ->take($perPage)
 //            ->get();
 
-        // belongsTo를 했어도 유저와 관계 설정이 안됨
-        $articles = Article::with('user')
-            ->select('body', 'user_id', 'created_at')
+        $articles = Article::with(['user' => function ($query) {
+            $query->select('id', 'name');
+        }])
+            ->select('id', 'body', 'user_id', 'created_at')
             ->latest()
             ->skip($offset)
             ->take($perPage)
@@ -60,6 +62,24 @@ class ArticlesController extends Controller
             'user_id' => 1
         ]);
 
-        return 'hello';
+        return redirect()->route('articles.index');
+    }
+
+    public function update(Request $request, Article $article)
+    {
+        $input = $request->validate([
+            'body' => 'required|string|max:255',
+        ]);
+
+        Article::where('id', $article->id)->update($input);
+
+        return redirect()->route('articles.index');
+    }
+
+    public function delete(Article $article)
+    {
+        $article->delete(); // 해당 레코드 삭제
+
+        return 'delete';
     }
 }
