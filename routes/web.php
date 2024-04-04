@@ -5,9 +5,6 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 
-// Auth Routes
-require __DIR__ . '/auth.php';
-
 // 화면부분
 Route::get('/', function () {
     return view('welcome');
@@ -40,3 +37,6 @@ Route::controller(ArticlesController::class)->group(function (){
 
 Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/api/register', [RegisterController::class, 'register'])->name('api.register');
+
+// Auth Routes
+require __DIR__ . '/auth.php';

@@ -2,5 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('login', [AuthenticatedSessionController::class, 'index']);
-Route::post('login', [AuthenticatedSessionController::class, 'store']);
+Route::get('/login', function () {
+    return view('auth.login');
+})->name('login');
