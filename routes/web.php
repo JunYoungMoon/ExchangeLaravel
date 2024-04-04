@@ -4,6 +4,10 @@ use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Models\Article;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+
+// Auth Routes
+require __DIR__ . '/auth.php';
 
 // 화면부분
 Route::get('/', function () {
@@ -38,5 +42,14 @@ Route::controller(ArticlesController::class)->group(function (){
 Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/api/register', [RegisterController::class, 'register'])->name('api.register');
 
-// Auth Routes
-require __DIR__ . '/auth.php';
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
