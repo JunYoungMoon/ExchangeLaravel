@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -22,7 +23,14 @@ Route::get('/articles/detail/{article}' /*{article}은 Article 모델 바인딩*
 })->name('articles.detail');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/articles/edit/{article}', function (Article $article) {
+    Route::get('/articles/edit/{article}', function (Request $request, Article $article) {
+//        Gate::authorize('update', $article);
+//        Auth::user(); 혹은 Request::user()
+
+        if (Auth::user()->cannot('update', $article)) {
+            abort(403);
+        }
+
         return view('articles.edit', ['article' => $article]);
     })->name('articles.edit');
 

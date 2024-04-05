@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateArticleRequest;
+use App\Http\Requests\DeleteArticleRequest;
+use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class ArticlesController extends Controller
 {
@@ -39,6 +43,10 @@ class ArticlesController extends Controller
             ->take($perPage)
             ->get();
 
+        foreach ($articles as $article) {
+            $article->can_update = Gate::allows('update', $article);
+        }
+
         $totalCount = Article::count();
 
         return [
@@ -49,34 +57,30 @@ class ArticlesController extends Controller
         ];
     }
 
-    public function create(Request $request)
+    public function create(CreateArticleRequest $request)
     {
-        $input = $request->validate([
-            'body' => 'required|string|max:255',
-        ]);
+        $input = $request->validated();
 
         Article::create([
             'body' => $input['body'],
 //            로그인 기능을 만들때까지 하드코딩
-//            'user_id' => Auth::id()
-            'user_id' => 1
+            'user_id' => Auth::id()
         ]);
 
         return redirect()->route('articles.index');
     }
 
-    public function update(Request $request, Article $article)
+    public function update(UpdateArticleRequest $request, Article $article)
     {
-        $input = $request->validate([
-            'body' => 'required|string|max:255',
-        ]);
+        //검증이 된 결과 가져오기
+        $input = $request->validated();
 
         Article::where('id', $article->id)->update($input);
 
         return redirect()->route('articles.index');
     }
 
-    public function delete(Article $article)
+    public function delete(DeleteArticleRequest $request, Article $article)
     {
         $article->delete(); // 해당 레코드 삭제
 

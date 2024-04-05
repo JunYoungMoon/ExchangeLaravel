@@ -3,7 +3,7 @@
 @section('content')
     <div>
         <h1>로그인</h1>
-        <form id="loginForm" method="POST" action="{{ route('login') }}">
+        <form {{--id="loginForm"--}} method="POST" action="{{ route('login') }}">
             @csrf
             <div>
                 <label for="email">이메일</label>
@@ -28,34 +28,34 @@
 
 @push('scripts')
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
+        {{--document.getElementById('loginForm').addEventListener('submit', async function(event) {--}}
+        {{--    event.preventDefault();--}}
 
-            try {
-                const formData = new FormData(this);
-                const response = await axios.post('{{ route('api.login') }}', formData);
+        {{--    try {--}}
+        {{--        const formData = new FormData(this);--}}
+        {{--        const response = await axios.post('{{ route('api.login') }}', formData);--}}
 
-                console.log(response);
+        {{--        console.log(response);--}}
 
-                const token = response.data.token; // 토큰 추출
-                saveTokenToCookie(token); // 토큰을 쿠키에 저장하는 함수 호출
-                // 로그인 성공 후 리다이렉트 또는 다른 작업 수행
-            } catch (error) {
-                // 오류 처리
-                console.error('로그인 오류:', error);
-            }
-        });
+        {{--        const token = response.data.token; // 토큰 추출--}}
+        {{--        saveTokenToCookie(token); // 토큰을 쿠키에 저장하는 함수 호출--}}
+        {{--        // 로그인 성공 후 리다이렉트 또는 다른 작업 수행--}}
+        {{--    } catch (error) {--}}
+        {{--        // 오류 처리--}}
+        {{--        console.error('로그인 오류:', error);--}}
+        {{--    }--}}
+        {{--});--}}
 
-        function saveTokenToCookie(token) {
-            // 쿠키에 토큰 저장
-            document.cookie = `laravel_session=${token}; path=/; expires=${getCookieExpirationDate()};`;
-        }
+        {{--function saveTokenToCookie(token) {--}}
+        {{--    // 쿠키에 토큰 저장--}}
+        {{--    document.cookie = `laravel_session=${token}; path=/; expires=${getCookieExpirationDate()};`;--}}
+        {{--}--}}
 
-        function getCookieExpirationDate() {
-            // 쿠키 만료일 설정
-            const expires = new Date();
-            expires.setDate(expires.getDate() + 1); // 하루 뒤 만료
-            return expires.toUTCString();
-        }
+        {{--function getCookieExpirationDate() {--}}
+        {{--    // 쿠키 만료일 설정--}}
+        {{--    const expires = new Date();--}}
+        {{--    expires.setDate(expires.getDate() + 1); // 하루 뒤 만료--}}
+        {{--    return expires.toUTCString();--}}
+        {{--}--}}
     </script>
 @endpush
