@@ -27,15 +27,11 @@
 
     <main>
         @yield('content')
-
-        <!-- Livewire 컴포넌트 포함 -->
-{{--        @livewire('example-component')--}}
     </main>
 
     @include('includes.footer')
 
     <!-- Scripts -->
-{{--    @livewireScripts--}}
     @stack('scripts')
 
 {{-- 컴포넌트로 써도 되고 content blade에 section 추가해도 되고--}}

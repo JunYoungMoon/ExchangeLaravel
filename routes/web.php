@@ -52,7 +52,6 @@ Route::controller(ArticlesController::class)->group(function (){
 Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/api/register', [RegisterController::class, 'register'])->name('api.register');
 
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
