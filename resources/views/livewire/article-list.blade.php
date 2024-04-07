@@ -1,3 +1,5 @@
+<!-- article-list.blade.php -->
+
 <div>
     <h1>글목록</h1>
     <div>
@@ -14,17 +16,5 @@
         </ul>
     </div>
 
-    <div>
-        @if ($pagination['previous'])
-            <button wire:click="previousPage">Previous</button>
-        @endif
-
-        @foreach ($pagination['pages'] as $pageNumber)
-            <button wire:click="gotoPage({{ $pageNumber }})">{{ $pageNumber }}</button>
-        @endforeach
-
-        @if ($pagination['next'])
-            <button wire:click="nextPage">Next</button>
-        @endif
-    </div>
+    <livewire:pagination :page="$page" :perPage="$perPage" :total="$pagination['totalCount']"/>
 </div>

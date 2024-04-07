@@ -12,12 +12,6 @@ class ArticleList extends Component
     public $articles;
     protected $articlesService;
 
-    public function __construct()
-    {
-        // ArticlesService를 생성자에서 주입
-        $this->articlesService = app(ArticlesService::class);
-    }
-
     public function mount()
     {
         $this->fetchArticles();
@@ -25,26 +19,8 @@ class ArticleList extends Component
 
     public function fetchArticles()
     {
+        $this->articlesService = app(ArticlesService::class);
         $this->articles = $this->articlesService->getArticles($this->page, $this->perPage);
-    }
-
-    public function previousPage()
-    {
-        if ($this->page > 1) {
-            $this->page--;
-            $this->fetchArticles();
-        }
-    }
-
-    public function nextPage()
-    {
-        $totalCount = $this->articlesService->getArticlesTotalCount();
-        $totalPage = ceil($totalCount / $this->perPage);
-
-        if ($this->page < $totalPage) {
-            $this->page++;
-            $this->fetchArticles();
-        }
     }
 
     public function gotoPage($page)
@@ -55,20 +31,10 @@ class ArticleList extends Component
 
     public function render()
     {
-        return view('livewire.article-list', [
-            'pagination' => $this->generatePagination(),
-        ]);
-    }
-
-    public function generatePagination()
-    {
         $totalCount = $this->articlesService->getArticlesTotalCount();
-        $totalPage = ceil($totalCount / $this->perPage);
 
-        return [
-            'previous' => $this->page > 1,
-            'next' => $this->page < $totalPage,
-            'pages' => range(1, $totalPage),
-        ];
+        return view('livewire.article-list', [
+            'pagination' => compact('totalCount')
+        ]);
     }
 }
