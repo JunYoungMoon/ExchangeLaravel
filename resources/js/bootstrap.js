@@ -33,7 +33,6 @@ window.axios.interceptors.response.use(
     }
 );
 
-
 function showLoading() {
     console.log("showLoading");
     $('#loading').show();
@@ -43,4 +42,14 @@ function hideLoading() {
     $('#loading').hide();
 }
 
+document.addEventListener('livewire:init', () => {
+    Livewire.on('showLoading', function () {
+        console.log('showLoading');
+        $('#loading').show();
+    });
 
+    Livewire.on('hideLoading', function () {
+        console.log('hideLoading');
+        $('#loading').hide();
+    });
+});

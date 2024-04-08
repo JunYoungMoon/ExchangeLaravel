@@ -17,6 +17,21 @@
 @endsection
 
 @push('scripts')
+    <script>
+        //뒤로가기, 앞으로가기
+        window.onpopstate = function () {
+            Livewire.dispatch('serverUrlChanged',{ page: _cmn.url.getParam('page') });
+        };
+
+        //최초
+        document.addEventListener('livewire:init', () => {
+            Livewire.on('clientUrlChanged', (page) => {
+                let url = _cmn.url.setParams({'page': page[0]});
+                history.pushState({url: url.toString()}, '', url.toString());
+            });
+        });
+    </script>
+
     {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>--}}
 
 {{--    <script type="module">--}}

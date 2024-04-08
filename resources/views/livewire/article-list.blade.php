@@ -1,4 +1,4 @@
-<!-- article-list.blade.php -->
+{{-- article-list.blade.php --}}
 
 <div>
     <h1>글목록</h1>
@@ -16,5 +16,5 @@
         </ul>
     </div>
 
-    <livewire:pagination :page="$page" :perPage="$perPage" :total="$total"/>
+    <livewire:pagination :page="$page" :perPage="$perPage" :total="$total" :key="$page"/>
 </div>

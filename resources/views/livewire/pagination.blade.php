@@ -1,4 +1,4 @@
-<!-- pagination.blade.php -->
+{{-- pagination.blade.php --}}
 
 <div>
     @if ($page > 1)
