@@ -18,13 +18,28 @@
 
 @push('scripts')
     <script>
-        //뒤로가기, 앞으로가기
+        //다른 페이지에서 뒤로가기로 왔을때
+        window.onpageshow = function (event) {
+            if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+                debugger;
+                Livewire.dispatch('serverUrlChanged',{ page: _cmn.url.getParam('page') });
+            } else {
+                debugger;
+                Livewire.on('clientUrlChanged', (page) => {
+                    let url = _cmn.url.setParams({'page': page[0]});
+                    history.pushState({url: url.toString()}, '', url.toString());
+                });
+            }
+        };
+
+        //페이지내에서 뒤로가기 앞으로가기
         window.onpopstate = function () {
             Livewire.dispatch('serverUrlChanged',{ page: _cmn.url.getParam('page') });
         };
 
         //최초
         document.addEventListener('livewire:init', () => {
+            debugger;
             Livewire.on('clientUrlChanged', (page) => {
                 let url = _cmn.url.setParams({'page': page[0]});
                 history.pushState({url: url.toString()}, '', url.toString());

@@ -9,7 +9,7 @@ use Livewire\Component;
 class ArticleList extends Component
 {
     public $page = 1;
-    public $perPage = 2;
+    public $perPage = 4;
     public $articles;
     public $total;
     protected $articlesService;

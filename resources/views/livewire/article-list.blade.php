@@ -9,8 +9,12 @@
                     <a href="/articles/detail/{{ $article['id'] }}">
                         {{ $article['body'] }} {{ $article['created_at'] }} {{ $article['user']['name'] }}
                     </a>
+                    @can('update',$article)
                     <a href="/articles/edit/{{ $article['id'] }}">글수정</a>
+                    @endcan
+                    @can('delete',$article)
                     <a href="#" wire:click="deleteArticle({{ $article['id'] }})">글삭제</a>
+                    @endcan
                 </li>
             @endforeach
         </ul>
