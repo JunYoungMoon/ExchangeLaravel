@@ -9,10 +9,9 @@ class Pagination extends Component
 {
     #[Reactive]
     public $page;
-    #[Reactive]
     public $perPage;
-    #[Reactive]
     public $total;
+    public $totalPage;
 
     public function mount($page, $perPage, $total)
     {
@@ -23,10 +22,8 @@ class Pagination extends Component
 
     public function render()
     {
-        $totalPage = ceil($this->total / $this->perPage);
+        $this->totalPage = ceil($this->total / $this->perPage);
 
-        return view('livewire.pagination', [
-            'totalPage' => $totalPage
-        ]);
+        return view('livewire.pagination');
     }
 }

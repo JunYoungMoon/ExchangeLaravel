@@ -10,7 +10,12 @@ class ArticleList extends Component
     public $page = 1;
     public $perPage = 2;
     public $articles;
+    public $total;
     protected $articlesService;
+
+    public function boot(ArticlesService $articlesService){
+        $this->articlesService = $articlesService;
+    }
 
     public function mount()
     {
@@ -19,8 +24,9 @@ class ArticleList extends Component
 
     public function fetchArticles()
     {
-        $this->articlesService = app(ArticlesService::class);
+//        $this->articlesService = app(ArticlesService::class);
         $this->articles = $this->articlesService->getArticles($this->page, $this->perPage);
+        $this->total = $this->articlesService->getArticlesTotalCount();
     }
 
     public function gotoPage($page)
@@ -31,10 +37,6 @@ class ArticleList extends Component
 
     public function render()
     {
-        $totalCount = $this->articlesService->getArticlesTotalCount();
-
-        return view('livewire.article-list', [
-            'pagination' => compact('totalCount')
-        ]);
+        return view('livewire.article-list');
     }
 }

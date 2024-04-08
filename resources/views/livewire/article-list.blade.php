@@ -16,5 +16,5 @@
         </ul>
     </div>
 
-    <livewire:pagination :page="$page" :perPage="$perPage" :total="$pagination['totalCount']"/>
+    <livewire:pagination :page="$page" :perPage="$perPage" :total="$total"/>
 </div>
