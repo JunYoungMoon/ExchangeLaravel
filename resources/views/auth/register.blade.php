@@ -3,7 +3,7 @@
 @section('content')
 <!-- Validation Errors -->
 <x-auth-validation-errors class="mb-4" :errors="$errors" />
-<form method="POST" action="{{ route('register') }}">
+<form method="POST" action="{{ route('api.register') }}">
     @csrf
     <div>
         <label for="name">이름</label>

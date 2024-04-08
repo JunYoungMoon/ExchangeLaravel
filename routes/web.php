@@ -49,7 +49,7 @@ Route::controller(ArticlesController::class)->group(function (){
     Route::delete('/api/articles/{article}', 'delete')->name('api.articles.delete')->middleware('auth');
 });
 
-Route::get('/register', [RegisterController::class, 'index']);
+Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/api/register', [RegisterController::class, 'register'])->name('api.register');
 
 Route::get('/dashboard', function () {
