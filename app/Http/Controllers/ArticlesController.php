@@ -6,17 +6,24 @@ use App\Http\Requests\CreateArticleRequest;
 use App\Http\Requests\DeleteArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
+use App\Services\ArticlesService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
 class ArticlesController extends Controller
 {
+    public ArticlesService $articlesService;
+
+    public function __construct(ArticlesService $articlesService)
+    {
+        $this->articlesService = $articlesService;
+    }
+
     public function list(Request $request)
     {
         $page = $request->input('page', 1);
         $perPage = $request->input('perPage', 2);
-        $offset = ($page - 1) * $perPage;
 
         //order_by 방식
 //    $articles = Article::select('body', 'created_at')->orderBy('created_at', 'desc')->orderby('body','asc')->get();
@@ -34,20 +41,9 @@ class ArticlesController extends Controller
 //            ->take($perPage)
 //            ->get();
 
-        $articles = Article::with(['user' => function ($query) {
-            $query->select('id', 'name');
-        }])
-            ->select('id', 'body', 'user_id', 'created_at')
-            ->latest()
-            ->skip($offset)
-            ->take($perPage)
-            ->get();
 
-        foreach ($articles as $article) {
-            $article->can_update = Gate::allows('update', $article);
-        }
-
-        $totalCount = Article::count();
+        $articles = $this->articlesService->getArticles($page, $perPage);
+        $totalCount = $this->articlesService->getArticlesTotalCount();
 
         return [
             'articles' => $articles,
