@@ -3,8 +3,6 @@
 namespace App\Livewire;
 
 use App\Models\Article;
-use App\Services\ArticlesService;
-use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -86,6 +84,9 @@ class ArticleList extends Component
 
     public function render()
     {
+        // 데이터를 불러오기 전에 로딩 표시를 보여준다.
+        $this->dispatch('showLoading');
+
         $articles = Article::with(['user' => function ($query) {
             $query->select('id', 'name');
         }])
@@ -95,6 +96,9 @@ class ArticleList extends Component
             ->select('id', 'body', 'user_id', 'created_at')
             ->orderBy($this->sortBy, $this->sortAsc ? 'ASC' : 'DESC')
             ->paginate(2);
+
+        // 데이터 불러오기가 완료되면 로딩 표시를 숨긴다.
+        $this->dispatch('hideLoading');
 
         return view('livewire.article-list', ['articles' => $articles]);
     }

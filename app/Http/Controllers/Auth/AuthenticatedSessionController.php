@@ -26,9 +26,17 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
+        // 로그인 유지 시간 가져오기
+        $loginExpiry = (int)$request->input('login_expiry');
+
+        // 로그인 유지 시간을 세션에 설정
+        if ($loginExpiry) {
+            $request->session()->put('login_expiry', now()->addMinutes($loginExpiry)->timestamp);
+        }
+
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('articles.index', absolute: false));
     }
 
     /**

@@ -20,6 +20,15 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
             <div>
+                <label for="login_expiry">로그인 유지 시간</label>
+                <select id="login_expiry" name="login_expiry">
+                    <option value="30">30분</option>
+                    <option value="60">1시간</option>
+                    <option value="180">3시간</option>
+                    <option value="360">6시간</option>
+                </select>
+            </div>
+            <div>
                 <button type="submit">로그인</button>
             </div>
         </form>

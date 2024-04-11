@@ -32,21 +32,21 @@ Route::middleware('auth')->group(function () {
         }
 
         return view('articles.edit', ['article' => $article]);
-    })->name('articles.edit');
+    })->name('articles.edit')->middleware('loginExpiry');
 
     Route::get('/articles/create', function () {
         return view('articles.create');
-    })->name('articles.create');
+    })->name('articles.create')->middleware('loginExpiry');
 });
 
 // 기능부분
 // 그룹화 [ArticlesController::class] 생략 가능
 Route::controller(ArticlesController::class)->group(function (){
     Route::post('/api/articles/list', 'list')->name('api.articles.list');
-    Route::post('/api/articles/create', 'create')->name('api.articles.create')->middleware('auth');
+    Route::post('/api/articles/create', 'create')->name('api.articles.create')->middleware(['auth','loginExpiry']);
     //put 전체수정, patch 일부수정
-    Route::patch('/api/articles/{article}', 'update')->name('api.articles.update')->middleware('auth');
-    Route::delete('/api/articles/{article}', 'delete')->name('api.articles.delete')->middleware('auth');
+    Route::patch('/api/articles/{article}', 'update')->name('api.articles.update')->middleware(['auth','loginExpiry']);
+    Route::delete('/api/articles/{article}', 'delete')->name('api.articles.delete')->middleware(['auth','loginExpiry']);
 });
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
