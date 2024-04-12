@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\articles;
 
 use App\Models\Article;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class ArticleList extends Component
+class Index extends Component
 {
     use WithPagination;
 
@@ -82,6 +83,7 @@ class ArticleList extends Component
 //        $this->dispatch('clientUrlChanged', $this->page);
 //    }
 
+    #[Layout('layouts.app2')]
     public function render()
     {
         // 데이터를 불러오기 전에 로딩 표시를 보여준다.

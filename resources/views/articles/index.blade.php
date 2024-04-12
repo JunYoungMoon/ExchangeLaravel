@@ -1,6 +1,6 @@
-@extends('layouts.app')
+{{--@extends('layouts.app')--}}
 
-@section('content')
+{{--@section('content')--}}
 {{--    <h1>글목록</h1>--}}
 {{--    <div>--}}
 {{--        <ul class="list">--}}
@@ -10,27 +10,24 @@
 {{--    <div class="paging">--}}
 {{--        하단 버튼 태그가 들어갈 위치--}}
 {{--    </div>--}}
+{{--    @livewire('article-list')--}}
+{{--@endsection--}}
 
-    @livewire('article-list')
+{{--@push('scripts')--}}
+{{--    <script>--}}
+{{--        //페이지내에서 뒤로가기 앞으로가기--}}
+{{--        window.onpopstate = function () {--}}
+{{--            Livewire.dispatch('serverUrlChanged',{ page: _cmn.url.getParam('page') });--}}
+{{--        };--}}
 
-    <a href="{{ route('articles.create') }}">글작성</a>
-@endsection
-
-@push('scripts')
-    <script>
-        //페이지내에서 뒤로가기 앞으로가기
-        window.onpopstate = function () {
-            Livewire.dispatch('serverUrlChanged',{ page: _cmn.url.getParam('page') });
-        };
-
-        //최초
-        document.addEventListener('livewire:init', () => {
-            Livewire.on('clientUrlChanged', (page) => {
-                let url = _cmn.url.setParams({'page': page[0]});
-                history.pushState({url: url.toString()}, '', url.toString());
-            });
-        });
-    </script>
+{{--        //최초--}}
+{{--        document.addEventListener('livewire:init', () => {--}}
+{{--            Livewire.on('clientUrlChanged', (page) => {--}}
+{{--                let url = _cmn.url.setParams({'page': page[0]});--}}
+{{--                history.pushState({url: url.toString()}, '', url.toString());--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
 
     {{--    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>--}}
 
@@ -119,4 +116,4 @@
 {{--            }--}}
 {{--        }--}}
 {{--    </script>--}}
-@endpush
+{{--@endpush--}}

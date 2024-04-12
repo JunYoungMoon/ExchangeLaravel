@@ -6,6 +6,7 @@ use App\Http\Requests\UpdateArticleRequest;
 use App\Models\Article;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Storage;
 
 // Auth Routes
 require __DIR__ . '/auth.php';
@@ -14,9 +15,9 @@ require __DIR__ . '/auth.php';
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/articles', function () {
-    return view('articles.index');
-})->name('articles.index');
+
+Route::get('/exchange',\App\Livewire\exchange\Index::class);
+Route::get('/articles', \App\Livewire\articles\Index::class);
 
 Route::get('/articles/detail/{article}' /*{article}은 Article 모델 바인딩*/, function (Article $article) {
     return view('articles.detail', ['article' => $article]);
@@ -61,4 +62,25 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+//Route::get('/charting_library/{filename}', function ($filename) {
+//    $path = Storage::disk('public')->path('charting_library/' . $filename);
+//
+//    if (!Storage::disk('public')->exists('charting_library/' . $filename)) {
+//        abort(404);
+//    }
+//
+//    return response()->file($path);
+//});
+//
+//Route::get('/datafeeds/udf/dist/{filename}', function ($filename) {
+//    $path = Storage::disk('public')->path('datafeeds/udf/dist/' . $filename);
+//
+//    if (!Storage::disk('public')->exists('datafeeds/udf/dist/' . $filename)) {
+//        abort(404);
+//    }
+//
+//    return response()->file($path);
+//});
 
