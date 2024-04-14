@@ -8,8 +8,19 @@
 
 <script>
     document.addEventListener('livewire:init', () => {
+        let tvWidget = null; // TradingView 차트 위젯 변수 선언
+
         Livewire.on('initializeChart', (symbol) => {
-            initializeChart(symbol[0]);
+            // 새로운 symbol이 주어질 때마다 차트를 업데이트
+
+            if (tvWidget !== null) {
+                tvWidget.chart().setSymbol(symbol[0], '1D', () => {
+                    console.log('Chart updated with symbol:', symbol[0]);
+                });
+            } else {
+                // 처음으로 차트를 생성할 때
+                initializeChart(symbol[0]);
+            }
         });
 
         function initializeChart(symbol) {
@@ -20,20 +31,10 @@
                 datafeed: new Datafeeds.UDFCompatibleDatafeed("https://demo-feed-data.tradingview.com"),
                 symbol: symbol,
                 interval: '1D',
-                fullscreen: true,
-                debug: true
+                fullscreen: true
             };
 
-            window.tvWidget = new TradingView.widget(widgetOptions);
-
-            if (window.tvWidget !== undefined) {
-                window.tvWidget.onChartReady(() => {
-                    window.tvWidget.chart().setSymbol(symbol, () => {});
-                });
-            } else {
-                window.tvWidget = new TradingView.widget(widgetOptions);
-            }
+            tvWidget = new TradingView.widget(widgetOptions);
         }
-
     });
 </script>
