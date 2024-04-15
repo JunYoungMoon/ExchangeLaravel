@@ -18,7 +18,7 @@ class Left extends Component
     }
 
     #[On('emitCoinInfo')]
-    public function emitCoinInfo($market, $code)
+    public function emitCoinInfo($code)
     {
         $this->code = $code;
 
