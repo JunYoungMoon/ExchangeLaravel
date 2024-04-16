@@ -6,33 +6,33 @@
 <script src="{{ asset('/charting_library/charting_library.standalone.js') }}"></script>
 <script src="{{ asset('/datafeeds/udf/dist/bundle.js') }}"></script>
 
+@script
 <script>
-    document.addEventListener('livewire:init', () => {
-        let widget = null; // TradingView 차트 위젯 변수 선언
+    let widget = null;
 
-        Livewire.on('initializeChart', (symbol) => {
-            if (widget !== null) {
-                widget.chart().setSymbol(symbol[0], '1D', () => {
-                    console.log('Chart updated with symbol:', symbol[0]);
-                });
-            } else {
-                // 처음으로 차트를 생성할 때
-                initializeChart(symbol[0]);
-            }
-        });
-
-        function initializeChart(symbol) {
-            let widgetOptions = {
-                container: 'chartContainer',
-                locale: 'en',
-                library_path: 'charting_library/',
-                datafeed: new Datafeeds.UDFCompatibleDatafeed("https://demo-feed-data.tradingview.com"),
-                symbol: symbol,
-                interval: '1D',
-                fullscreen: true
-            };
-
-            widget = new TradingView.widget(widgetOptions);
+    $wire.on('initializeChart', (symbol) => {
+        if (widget !== null) {
+            widget.chart().setSymbol(symbol[0], '1D', () => {
+                console.log('Chart updated with symbol:', symbol[0]);
+            });
+        } else {
+            // 처음으로 차트를 생성할 때
+            initializeChart(symbol[0]);
         }
     });
+
+    function initializeChart(symbol) {
+        let widgetOptions = {
+            container: 'chartContainer',
+            locale: 'en',
+            library_path: 'charting_library/',
+            datafeed: new Datafeeds.UDFCompatibleDatafeed("https://demo-feed-data.tradingview.com"),
+            symbol: symbol,
+            interval: '1D',
+            fullscreen: true
+        };
+
+        widget = new TradingView.widget(widgetOptions);
+    }
 </script>
+@endscript
