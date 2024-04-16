@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class Left extends Component
 {
-    public $code = 'AAPL';
+    public $code = 'KRW-EGX';
 
     protected $queryString = ['code' => ['keep' => true]];
 
@@ -18,18 +18,19 @@ class Left extends Component
     }
 
     #[On('emitCoinInfo')]
-    public function emitCoinInfo($code)
+    public function emitCoinInfo($market, $coin)
     {
-        $this->code = $code;
+        $this->code = $market . '-'. $coin;
 
         $this->initializeTradingViewChart();
     }
 
     protected function initializeTradingViewChart()
     {
-        $symbol = $this->code;
+        $symbol = explode('-', $this->code);
+
         // JavaScript로 symbol을 전달하여 트레이딩뷰 차트 초기화
-        $this->dispatch('initializeChart', $symbol);
+        $this->dispatch('initializeChart', ['market' => $symbol[0], 'coin' => $symbol[1]]);
     }
 
     public function render()

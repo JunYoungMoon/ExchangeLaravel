@@ -1,5 +1,6 @@
 import axios from 'axios';
 import $ from "jquery";
+
 window.axios = axios;
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -37,6 +38,7 @@ function showLoading() {
     console.log("showLoading");
     $('#loading').show();
 }
+
 function hideLoading() {
     console.log("hideLoading");
     $('#loading').hide();
@@ -52,4 +54,19 @@ document.addEventListener('livewire:init', () => {
         console.log('hideLoading');
         $('#loading').hide();
     });
+
+    // window.onpopstate = function (event) {
+    //
+    //     let pathName = window.location.pathname;
+    //
+    //     if (pathName === '/exchange') {
+    //         let queryString = window.location.search;
+    //         let searchParams = new URLSearchParams(queryString);
+    //         let codeArray = searchParams.get('code').split('-');
+    //
+    //         debugger;
+    //         Livewire.dispatch('test', {market: codeArray[0], coin: codeArray[1]});
+    //         Livewire.dispatch('emitCoinInfo', {market: codeArray[0], coin: codeArray[1]});
+    //     }
+    // };
 });
