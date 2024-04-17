@@ -6,40 +6,33 @@
 <script src="{{ asset('/charting_library/charting_library.standalone.js') }}"></script>
 <script src="{{ asset('/datafeeds/udf/dist/bundle.js') }}"></script>
 
+@script
 <script>
     console.log('1');
 
-    document.addEventListener('livewire:navigated', (event) => {
+    //다른페이지에서 뒤로가기, 앞으로가기 왔을떄
+    document.addEventListener('livewire:navigated', () => {
         console.log('2');
-        widget = null;
 
         let pathName = window.location.pathname;
 
         if (pathName === '/exchange') {
+            widget = null;
+
             console.log('5');
             let queryString = window.location.search;
             let searchParams = new URLSearchParams(queryString);
-            let codeArray = searchParams.get('code').split('-');
+            let symbol = searchParams.get('code').split('-');
 
-            // Livewire.dispatch('emitCoinInfo', {market: codeArray[0], coin: codeArray[1]});
-
-            initializeChart2([{market: codeArray[0], coin: codeArray[1]}]);
-
-            Livewire.on('initializeChart', (symbol) => {
-                initializeChart2(symbol);
-            });
+            setChart(symbol[0], symbol[1]);
         }
     });
 
-    function initializeChart2(symbol) {
-        console.log('4');
-        let market = symbol[0]['market'];
-        let coin = symbol[0]['coin'];
-
+    function setChart(market, coin) {
         if (widget !== null) {
             console.log('6');
-            widget.chart().setSymbol(symbol[0]['coin'] + '_' + symbol[0]['market'], '1D', () => {
-                console.log('Chart updated with symbol:', symbol[0]);
+            widget.chart().setSymbol(coin + '_' + market, '1D', () => {
+                console.log('Chart updated with symbol:', coin + '_' + market);
             });
         } else {
             console.log('7');
@@ -48,9 +41,13 @@
         }
     }
 
-    let widget = null;
-    let chart_realtime_callback = null;
-    let global_resolution;
+    document.addEventListener('livewire:navigated', () => {
+        Livewire.on('initializeChart', (symbol) => {
+            console.log('4');
+
+            setChart(symbol[0]['market'], symbol[0]['coin']);
+        });
+    }, { once: true });
 
     function initializeChart(market, coin) {
         let initialState = {
@@ -110,7 +107,7 @@
                         to: periodParams.to
                     };
 
-                    $.get('http://localhost:8191/history', arg, function (r) {
+                    $.get('http://192.168.100.193:8191/history', arg, function (r) {
                         let bars = [];
                         for (let i = 0; i < r.t.length; ++i) {
                             let bar = {
@@ -164,3 +161,4 @@
         });
     }
 </script>
+@endscript

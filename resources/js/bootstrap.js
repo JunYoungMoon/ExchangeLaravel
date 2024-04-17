@@ -34,16 +34,6 @@ window.axios.interceptors.response.use(
     }
 );
 
-function showLoading() {
-    console.log("showLoading");
-    $('#loading').show();
-}
-
-function hideLoading() {
-    console.log("hideLoading");
-    $('#loading').hide();
-}
-
 document.addEventListener('livewire:init', () => {
     Livewire.on('showLoading', function () {
         console.log('showLoading');
@@ -54,17 +44,4 @@ document.addEventListener('livewire:init', () => {
         console.log('hideLoading');
         $('#loading').hide();
     });
-
-    // window.onpopstate = function (event) {
-    //
-    //     let pathName = window.location.pathname;
-    //
-    //     if (pathName === '/exchange') {
-    //         let queryString = window.location.search;
-    //         let searchParams = new URLSearchParams(queryString);
-    //         let codeArray = searchParams.get('code').split('-');
-    //
-    //         Livewire.dispatch('emitCoinInfo', {market: codeArray[0], coin: codeArray[1]});
-    //     }
-    // };
 });
