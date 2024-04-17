@@ -6,25 +6,47 @@
 <script src="{{ asset('/charting_library/charting_library.standalone.js') }}"></script>
 <script src="{{ asset('/datafeeds/udf/dist/bundle.js') }}"></script>
 
-@script
 <script>
-    //외,내부일때 뒤로가기시 widget을 날려야한다.
+    console.log('1');
 
-    //페이지 이동을 안하고 화면을 갱신할때 render를 탄다 뒤로가면 있던 객체가 사라짐
+    document.addEventListener('livewire:navigated', (event) => {
+        console.log('2');
+        widget = null;
 
-    Livewire.on('initializeChart', (symbol) => {
+        let pathName = window.location.pathname;
+
+        if (pathName === '/exchange') {
+            console.log('5');
+            let queryString = window.location.search;
+            let searchParams = new URLSearchParams(queryString);
+            let codeArray = searchParams.get('code').split('-');
+
+            // Livewire.dispatch('emitCoinInfo', {market: codeArray[0], coin: codeArray[1]});
+
+            initializeChart2([{market: codeArray[0], coin: codeArray[1]}]);
+
+            Livewire.on('initializeChart', (symbol) => {
+                initializeChart2(symbol);
+            });
+        }
+    });
+
+    function initializeChart2(symbol) {
+        console.log('4');
         let market = symbol[0]['market'];
         let coin = symbol[0]['coin'];
 
         if (widget !== null) {
+            console.log('6');
             widget.chart().setSymbol(symbol[0]['coin'] + '_' + symbol[0]['market'], '1D', () => {
                 console.log('Chart updated with symbol:', symbol[0]);
             });
         } else {
+            console.log('7');
             // 처음으로 차트를 생성할 때
             initializeChart(market, coin);
         }
-    });
+    }
 
     let widget = null;
     let chart_realtime_callback = null;
@@ -142,4 +164,3 @@
         });
     }
 </script>
-@endscript

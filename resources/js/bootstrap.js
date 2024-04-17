@@ -64,8 +64,6 @@ document.addEventListener('livewire:init', () => {
     //         let searchParams = new URLSearchParams(queryString);
     //         let codeArray = searchParams.get('code').split('-');
     //
-    //         debugger;
-    //         Livewire.dispatch('test', {market: codeArray[0], coin: codeArray[1]});
     //         Livewire.dispatch('emitCoinInfo', {market: codeArray[0], coin: codeArray[1]});
     //     }
     // };
