@@ -8,26 +8,11 @@
 
 @script
 <script>
-    document.addEventListener('livewire:navigated', () => {
-        window.onpopstate = function (event) {
-            let pathName = window.location.pathname;
+    //외,내부일때 뒤로가기시 widget을 날려야한다.
 
-            if (pathName === '/exchange') {
-                let queryString = window.location.search;
-                let searchParams = new URLSearchParams(queryString);
-                let codeArray = searchParams.get('code').split('-')
+    //페이지 이동을 안하고 화면을 갱신할때 render를 탄다 뒤로가면 있던 객체가 사라짐
 
-                $wire.dispatchSelf('emitCoinInfo', {market: codeArray[0], coin: codeArray[1]});
-            }
-        };
-    })
-
-    let widget = null;
-    let chart_realtime_callback = null;
-    let global_resolution;
-
-    $wire.on('initializeChart', (symbol) => {
-        debugger;
+    Livewire.on('initializeChart', (symbol) => {
         let market = symbol[0]['market'];
         let coin = symbol[0]['coin'];
 
@@ -40,6 +25,10 @@
             initializeChart(market, coin);
         }
     });
+
+    let widget = null;
+    let chart_realtime_callback = null;
+    let global_resolution;
 
     function initializeChart(market, coin) {
         let initialState = {
@@ -82,7 +71,7 @@
                                 volume_precision: 2,
                                 data_status: "streaming",
                                 supports_search: false, // Disable symbol search
-                                disabled_features: ["use_localstorage_for_settings","header_symbol_search "],
+                                disabled_features: ["use_localstorage_for_settings", "header_symbol_search "],
                             });
                         }, 0);
                     } catch (err) {
@@ -130,10 +119,10 @@
         widget = new TradingView.widget(initialState);
 
         widget.onChartReady(() => {
-            widget.headerReady().then(function() {
+            widget.headerReady().then(function () {
                 let button = widget.createButton();
                 button.setAttribute('title', '초기화');
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     // Initial widget setup
                     initializeWidget();
                 });
@@ -145,7 +134,7 @@
     function initializeWidget() {
         widget = new TradingView.widget(initialState);
 
-        widget.headerReady().then(function() {
+        widget.headerReady().then(function () {
             let button = widget.createButton();
             button.setAttribute('title', '초기화');
             button.addEventListener('click', initializeWidget);
