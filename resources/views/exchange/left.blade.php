@@ -8,46 +8,51 @@
 
 @script
 <script>
-    console.log('1');
+    init();
 
-    //다른페이지에서 뒤로가기, 앞으로가기 왔을떄
-    document.addEventListener('livewire:navigated', () => {
-        console.log('2');
-
-        let pathName = window.location.pathname;
-
-        if (pathName === '/exchange') {
-            widget = null;
-
-            console.log('5');
-            let queryString = window.location.search;
-            let searchParams = new URLSearchParams(queryString);
-            let symbol = searchParams.get('code').split('-');
-
-            setChart(symbol[0], symbol[1]);
+    function init(){
+        //filter를 통해서 최초 한번만 이벤트를 등록할수 있도록 처리
+        if (typeof livewireNavigatedFilter =='undefined' || !livewireNavigatedFilter) {
+            setEvent();
+            livewireNavigatedFilter = true;
         }
-    });
+    }
+
+    function setEvent(){
+        //navigate클릭, 뒤로가기, 앞으로가기시 동작하는데 컴포넌트가 다 그려진상태
+        document.addEventListener('livewire:navigated', () => {
+            let pathName = window.location.pathname;
+
+            if (pathName === '/exchange') {
+                let queryString = window.location.search;
+                let searchParams = new URLSearchParams(queryString);
+                let symbol = searchParams.get('code').split('-');
+
+                //navigated시 Chart iframe DOM이 유지되지 않아 새로 그리는 방식 밖에 없음
+                initializeChart(symbol[0], symbol[1]);
+            }
+        });
+
+        document.addEventListener('livewire:navigated', () => {
+            Livewire.on('initializeChart', (symbol) => {
+                setChart(symbol[0]['market'], symbol[0]['coin']);
+            });
+        }, {once: true}); // 이벤트 리스너가 실행된 후 제거하는 방법
+    }
 
     function setChart(market, coin) {
-        if (widget !== null) {
-            console.log('6');
+        let checkChart = $('#chartContainer iframe').length;
+
+        if (checkChart && widget !== null) {
+            // 차트가 있으면 내용 교체
             widget.chart().setSymbol(coin + '_' + market, '1D', () => {
                 console.log('Chart updated with symbol:', coin + '_' + market);
             });
         } else {
-            console.log('7');
-            // 처음으로 차트를 생성할 때
+            // 차트가 없으면 차트 생성
             initializeChart(market, coin);
         }
     }
-
-    document.addEventListener('livewire:navigated', () => {
-        Livewire.on('initializeChart', (symbol) => {
-            console.log('4');
-
-            setChart(symbol[0]['market'], symbol[0]['coin']);
-        });
-    }, { once: true });
 
     function initializeChart(market, coin) {
         let initialState = {
