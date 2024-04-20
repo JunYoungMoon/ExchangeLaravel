@@ -1,3 +1,9 @@
+@import "common.css";
+@import "exchange.css";
+@import "font.css";
+@import "default.css";
+@import "slick.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

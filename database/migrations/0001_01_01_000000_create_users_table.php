@@ -18,6 +18,10 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->decimal('krw_using', 32, 8)->default(0.00000000)->nullable();
+            $table->decimal('krw_available', 32, 8)->default(0.00000000)->nullable();
+            $table->string('krw_wallet')->nullable();
+            $table->tinyInteger('krw_favor')->default(0)->nullable();
             $table->timestamps();
         });
 
