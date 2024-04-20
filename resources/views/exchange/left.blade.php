@@ -299,7 +299,7 @@
                                 <div class="">
                                     <div class="inp_num">
                                         <input type="number" class="inp_txt w100p buy_price"
-                                               onchange="set_fee();maxvalue();" id="buy_price">
+                                               onchange="set_fee();maxvalue();" x-ref="buy_price" id="buy_price">
                                         <button type="button" class="btn_top"
                                                 onclick="priceupdown('buy','down');"><span
                                                 class="ico">수량 더하기</span></button>
@@ -318,7 +318,7 @@
                                         <div class="b">
                                             <input type="text" class="inp_txt buy_qtt"
                                                    placeholder="최소 = 0.0001{{$coin}}(500{{$market}}이상) "
-                                                   onchange="set_fee();" id="buy_qtt">
+                                                   onchange="set_fee();"  x-ref="buy_qtt" id="buy_qtt">
                                             <span>{{$coin}}</span>
                                         </div>
                                     </div>
@@ -354,7 +354,7 @@
                         @auth
                         <ul>
                             <li><a href="#" class="btn-pk b w100p red"
-                                   wire:click="buy(buy_price, buy_qtt)"><span>{{$coin}} 매수</span></a>
+                                   wire:click="buy($refs.buy_price.value, $refs.buy_qtt.value)"><span>{{$coin}} 매수</span></a>
                             </li>
                             <li><a href="" class="btn-pk b2 gray3"><img src="/img/comm/icon_f5.svg"></a>
                             </li>

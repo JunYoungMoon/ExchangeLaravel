@@ -12,6 +12,9 @@ class Left extends Component
     public $coin = 'EGX';
     public $market = 'KRW';
 
+    public $buy_price;
+    public $buy_qtt;
+
     protected $queryString = ['code' => ['keep' => true]];
 
     #[On('emitCoinInfo')]
