@@ -1,5 +1,5 @@
-
 <div class="lghWarp">
+    {{dd($settings)}}}
     <div class="lft">
         <!-- 고가/저가 -->
         <div class="box_dashboard ty1 market_header">
