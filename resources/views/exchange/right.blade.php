@@ -58,3 +58,54 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+
+@script
+<script>
+    let coin_list;
+    let view_coin_list;
+
+    io.connect('http://localhost:8192').emit('get_coin_price_info', function (data) {
+        coin_list = data;
+
+        //코인 리스트 돌면서 해당 코인이 전에 비해 올랐는지 내렸는지 설정
+        coin_list.forEach(function (_data) {
+            let percent_price = _data.last_price - _data.yesterday_price;
+            let percent = ((_data.last_price - _data.yesterday_price) / _data.yesterday_price) * 100;
+            let percent_color_code = percent_price < 0 ? 'blue' : 'red';
+            let percent_string = percent_price < 0 ? '' : '+';
+
+            if (!isFinite(percent) || percent_price === 0) {
+                percent = "0.00";
+                percent_color_code = 'red';
+            } else {
+                percent = percent.toFixed(2);
+            }
+
+            _data.percent_string = percent_string;
+            _data.percent = percent;
+            _data.percent_color_code = percent_color_code;
+        });
+
+        let t_data = [];
+
+        coin_list.forEach(function (_data) {
+            if (_data.ccs_view_main == 1) {
+                t_data.push(_data);
+            }
+        });
+
+        view_coin_list = t_data;
+
+        //우측 코인 리스트 탭화면
+        // if (sort_check2) {
+        //     coin_sort(sort_check2, false);
+        // } else if (search_check) {
+        //     coin_search2();
+        // } else {
+        //     updata_view(view_coin_list);
+        // }
+    });
+</script>
+@endscript
