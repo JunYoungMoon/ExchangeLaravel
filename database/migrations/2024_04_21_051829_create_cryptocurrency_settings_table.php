@@ -58,6 +58,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mg_cryptocurrency_setting');
+        Schema::dropIfExists('cryptocurrency_setting');
     }
 };
