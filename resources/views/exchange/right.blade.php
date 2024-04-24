@@ -9,14 +9,15 @@
         </div>
         <div class="tit inp">
             <input type="search" id="search_input" class="inp_txt" placeholder="토큰명/심볼검색"
-                   onchange="coin_search(this)">
+                   wire:model.live.debounce.800ms="search">
+
             <button type="button" class="btn_sch"><span class="ico_sch">검색</span></button>
         </div>
         <div id="tit_tab3" class="tit tab ty5">
-            <ul>
-                <li><a class="nav-link active" href="#t_market" id="krw_tab"><span>원화</span></a></li>
-                <li><a class="nav-link" href="#t_hold" id="hold_tab"><span>보유</span></a></li>
-                <li><a class="nav-link" href="#t_bookmark" id="favor_tab"><span>관심</span></a></li>
+            <ul x-data>
+                <li><a class="nav-link active" x-on:click="$dispatch('changeTab', { tab : 'KRW'})"><span>원화</span></a></li>
+                <li><a class="nav-link" x-on:click="$dispatch('changeTab', { tab : 'HOLD'})"><span>보유</span></a></li>
+                <li><a class="nav-link" x-on:click="$dispatch('changeTab', { tab : 'FAVOR'})"><span>관심</span></a></li>
             </ul>
         </div>
         <div class="cont">
@@ -52,12 +53,12 @@
                         <col>
                     </colgroup>
                     <tbody class="coin_list">
-                    @foreach ($coins as $_data)
+                    @foreach ($copiedCoins as $_data)
                         <tr>
                             <td class="tx_left">
                                 <button wire:click="favAdd('{{ strtolower($_data['type2']) }}', '{{ strtolower($_data['type']) }}')" type="button" class="ico_star {{ $_data['is_favor'] }}"><span>관심</span></button>
                                 <p class="coin_name" x-data>
-                                    <a href="#" x-on:click="$dispatch('emitCoinInfo', { market : '{{ strtolower($_data['type2']) }}', coin : '{{ strtolower($_data['type']) }}'});">
+                                    <a x-on:click="$dispatch('emitCoinInfo', { market : '{{ strtoupper($_data['type2']) }}', coin : '{{ strtoupper($_data['type']) }}'});">
                                         <span class="name">{{ $_data['ccs_coin_name'] }}</span>
                                         <span class="stext">{{ strtoupper($_data['type']) }}/{{ strtoupper($_data['type2']) }}</span>
                                     </a>

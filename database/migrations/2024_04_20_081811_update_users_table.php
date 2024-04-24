@@ -19,6 +19,10 @@ return new class extends Migration
             $table->decimal('tzrop_available', 32, 8)->default(0.00000000)->nullable();
             $table->string('tzrop_wallet')->nullable();
             $table->tinyInteger('tzrop_favor')->default(0)->nullable();
+            $table->decimal('egx_using', 32, 8)->default(0.00000000)->nullable();
+            $table->decimal('egx_available', 32, 8)->default(0.00000000)->nullable();
+            $table->string('egx_wallet')->nullable();
+            $table->tinyInteger('egx_favor')->default(0)->nullable();
             $table->decimal('krw_using', 32, 8)->default(0.00000000)->nullable();
             $table->decimal('krw_available', 32, 8)->default(0.00000000)->nullable();
             $table->string('krw_wallet')->nullable();
@@ -39,6 +43,10 @@ return new class extends Migration
             $table->dropColumn('tzrop_available');
             $table->dropColumn('tzrop_wallet');
             $table->dropColumn('tzrop_favor');
+            $table->dropColumn('egx_using');
+            $table->dropColumn('egx_available');
+            $table->dropColumn('egx_wallet');
+            $table->dropColumn('egx_favor');
             $table->dropColumn('krw_using');
             $table->dropColumn('krw_available');
             $table->dropColumn('krw_wallet');
