@@ -21,11 +21,37 @@ class Right extends Component
     {
         $this->getCoinList();
         $this->addCoinProperty();
-
         $this->copiedCoins = $this->originalCoins;
 
+        if (Auth::check()) {
+            $this->loadUserPreferences();
+        } else {
+            $this->setDefaultFavors();
+        }
+    }
+
+    public function loadUserPreferences()
+    {
         $this->getHold();
         $this->getFavor();
+
+        if ($this->favors) {
+            $this->markFavoredCoins();
+        }
+    }
+
+    public function markFavoredCoins()
+    {
+        foreach ($this->copiedCoins as &$coin) {
+            $coin['is_favor'] = $this->favors->contains(strtolower($coin['type2'] . '_' . $coin['type'])) ? 'on' : 'off';
+        }
+    }
+
+    public function setDefaultFavors()
+    {
+        foreach ($this->copiedCoins as &$coin) {
+            $coin['is_favor'] = 'off';
+        }
     }
 
     public function getCoinList()
@@ -44,46 +70,6 @@ class Right extends Component
         }
 
         $this->originalCoins = $filteredCoins;
-    }
-
-    public function getHold()
-    {
-        //보유 코인 가져오기
-        if (Auth::check()) {
-            $userId = Auth::id();
-
-            $user = User::find($userId);
-
-            $uniqueCoins = [];
-
-            foreach ($this->copiedCoins as $coin) {
-                $coinName = strtolower($coin['coin_name']);
-
-                // 해당 컬럼이 존재하고, 보유한게 있는지 체크한다.
-                if (isset($user->{$coinName . '_available'}) && isset($user->{$coinName . '_using'}) &&
-                    ($user->{$coinName . '_available'} > 0 || $user->{$coinName . '_using'} > 0)) {
-                    // 중복이 없는 코인 이름을 배열에 추가한다. (EGX, BOSS, ...)
-                    if (!in_array($coinName, $uniqueCoins)) {
-                        $uniqueCoins[] = $coinName;
-                    }
-                }
-            }
-
-            // 중복이 없는 코인 이름이 저장된 배열을 $this->hold_list에 할당한다.
-            $this->holds = collect($uniqueCoins);
-        }
-    }
-
-    public function getFavor(){
-        //관심 코인 가져오기
-        if (Auth::check()) {
-            $userId = Auth::id();
-
-            // 로그인한 사용자의 id로 관심 코인정보를 가져온다. (KRW_EGX, KRW_BOSS, ...)
-            $this->favors = MemberCoinFavor::where('user_id', $userId)->pluck('coin')->map(function ($favor) {
-                return strtolower($favor);
-            });
-        }
     }
 
     /**
@@ -142,6 +128,43 @@ class Right extends Component
         $this->originalCoins = $temp_coin;
     }
 
+    public function getHold()
+    {
+        //보유 코인 가져오기
+        $userId = Auth::id();
+
+        $user = User::find($userId);
+
+        $uniqueCoins = [];
+
+        foreach ($this->copiedCoins as $coin) {
+            $coinName = strtolower($coin['coin_name']);
+
+            // 해당 컬럼이 존재하고, 보유한게 있는지 체크한다.
+            if (isset($user->{$coinName . '_available'}) && isset($user->{$coinName . '_using'}) &&
+                ($user->{$coinName . '_available'} > 0 || $user->{$coinName . '_using'} > 0)) {
+                // 중복이 없는 코인 이름을 배열에 추가한다. (EGX, BOSS, ...)
+                if (!in_array($coinName, $uniqueCoins)) {
+                    $uniqueCoins[] = $coinName;
+                }
+            }
+        }
+
+        // 중복이 없는 코인 이름이 저장된 배열을 $this->hold_list에 할당한다.
+        $this->holds = collect($uniqueCoins);
+    }
+
+    public function getFavor()
+    {
+        //관심 코인 가져오기
+        $userId = Auth::id();
+
+        // 로그인한 사용자의 id로 관심 코인정보를 가져온다. (KRW_EGX, KRW_BOSS, ...)
+        $this->favors = MemberCoinFavor::where('user_id', $userId)->pluck('coin')->map(function ($favor) {
+            return strtolower($favor);
+        });
+    }
+
     #[On('changeTab')]
     public function changeTab($tab)
     {
@@ -181,7 +204,8 @@ class Right extends Component
         }
     }
 
-    public function updatedSearch(){
+    public function updatedSearch()
+    {
         $this->copiedCoins = collect($this->originalCoins)->filter(function ($coin) {
             // 검색어를 소문자로 변환하여 일치 여부를 검사
             $search = strtolower($this->search);
@@ -194,11 +218,6 @@ class Right extends Component
 
     public function render()
     {
-        foreach ($this->copiedCoins as &$coin) {
-            // 현재 코인이 사용자의 관심 코인 목록에 있는지 확인
-            $coin['is_favor'] = $this->favors->contains(strtolower($coin['type2'] . '_' . $coin['type'])) ? 'on' : 'off';
-        }
-
         return view('exchange.right');
     }
 }
