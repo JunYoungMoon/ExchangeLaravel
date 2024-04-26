@@ -1,0 +1,17 @@
+<svg id="token_no_image" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26">
+  <rect id="사각형_49" data-name="사각형 49" width="26" height="26" rx="13" fill="#e5e5e5"/>
+  <g id="그룹_94" data-name="그룹 94" transform="translate(-1128.141 -928.83)">
+    <path id="패스_104" data-name="패스 104" d="M1152.5,950.2v-7.926l-6.864-3.963-6.864,3.963V950.2l6.864,3.963Z" transform="translate(-4.449 -4.07)" fill="#e5e5e5" stroke="#777" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    <path id="패스_105" data-name="패스 105" d="M1176.581,935.373a1.792,1.792,0,1,1-1.792-1.792A1.791,1.791,0,0,1,1176.581,935.373Z" transform="translate(-33.599 -1.28)" fill="#999"/>
+    <circle id="타원_11" data-name="타원 11" cx="1.792" cy="1.792" r="1.792" transform="translate(1132.438 945.298)" fill="#999"/>
+    <path id="패스_106" data-name="패스 106" d="M1212.85,1004.4a1.791,1.791,0,1,1,2.447-.656A1.791,1.791,0,0,1,1212.85,1004.4Z" transform="translate(-65.536 -55.758)" fill="#999"/>
+    <path id="패스_107" data-name="패스 107" d="M1138.773,960.8l6.864,3.93,6.864-3.93" transform="translate(-4.449 -22.599)" fill="none" stroke="#777" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    <circle id="타원_12" data-name="타원 12" cx="1.792" cy="1.792" r="1.792" transform="translate(1132.438 936.191)" fill="#515456"/>
+    <path id="패스_108" data-name="패스 108" d="M1214.641,959.415a1.791,1.791,0,1,1,.656-2.447A1.791,1.791,0,0,1,1214.641,959.415Z" transform="translate(-65.537 -19.881)" fill="#515456"/>
+    <line id="선_17" data-name="선 17" y2="7.959" transform="translate(1141.188 942.136)" fill="#fff" stroke="#777" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
+    <circle id="타원_13" data-name="타원 13" cx="1.792" cy="1.792" r="1.792" transform="translate(1139.399 948.23)" fill="#515456"/>
+  </g>
+  <circle id="타원_14" data-name="타원 14" cx="5" cy="5" r="5" transform="translate(8 8)" fill="#e5e5e5"/>
+  <text id="no_image" data-name="no
+image" transform="translate(13 13)" fill="#777" font-size="3.5" font-family="Poppins-Bold, Poppins" font-weight="700"><tspan x="-2.294" y="0">no</tspan><tspan x="-5.824" y="3">image</tspan></text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="164.499" height="31" viewBox="0 0 164.499 31">
+    <defs>
+        <clipPath id="npd1g6cyba">
+            <path data-name="사각형 3" transform="translate(1.34 -1.666)" style="stroke:#707070;fill:#fff" d="M0 0h126v18H0z"/>
+        </clipPath>
+    </defs>
+    <path data-name="합치기 1" d="m2.486 23.272 4.152-1.923 14.246-6.6v4.43l-10.859 5.069a10.5 10.5 0 0 0 15.226-11.52L29.4 10.8A15 15 0 0 1 2.486 23.272zM0 15a15 15 0 0 1 27.712-7.965l-4.124 1.927-.007-.01-14.259 6.609V11.13l11.047-5.153A10.5 10.5 0 0 0 4.848 17.686L.722 19.607A14.985 14.985 0 0 1 0 15z" style="stroke:transparent;stroke-miterlimit:10;fill:#fff" transform="translate(.5 .5)"/>
+    <g data-name="마스크 그룹 1" transform="translate(37.16 8.167)" style="clip-path:url(#npd1g6cyba)">
+        <text data-name="SIGMA STO" transform="translate(.16 15.917)" style="font-size:24px;font-family:Poppins-SemiBold,Poppins;font-weight:600;letter-spacing:-.02em;fill:#fff"><tspan x="0" y="0">SIGMA STO</tspan></text>
+    </g>
+</svg>

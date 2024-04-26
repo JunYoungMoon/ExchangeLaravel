@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+  <g id="icon_sto" transform="translate(-697 -353)">
+    <rect id="사각형_66" data-name="사각형 66" width="50" height="50" rx="25" transform="translate(697 353)" fill="#282e64"/>
+    <g id="구성_요소_1_7" data-name="구성 요소 1 – 7" transform="translate(706 362)">
+      <path id="합치기_1" data-name="합치기 1" d="M2.652,24.823l4.429-2.051,0,0,15.2-7.043v4.726L10.694,25.865a11.2,11.2,0,0,0,16.24-12.289l4.43-2.052a16,16,0,0,1-28.712,13.3ZM0,16A16,16,0,0,1,29.559,7.5h0l0,0-4.4,2.05-.007-.011L9.944,16.6V11.872l11.783-5.5A11.2,11.2,0,0,0,5.171,18.865L.77,20.914A15.984,15.984,0,0,1,0,16Z" fill="#fff" stroke="rgba(0,0,0,0)" stroke-miterlimit="10" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

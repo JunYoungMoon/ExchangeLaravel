@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="372" height="210" viewBox="0 0 372 210">
+  <g id="token_no_image02" transform="translate(-506 -548)">
+    <rect id="사각형_83" data-name="사각형 83" width="372" height="210" transform="translate(506 548)" fill="#fff" opacity="0"/>
+    <g id="그룹_97" data-name="그룹 97" transform="translate(-53 -50)">
+      <circle id="타원_16" data-name="타원 16" cx="80" cy="80" r="80" transform="translate(665 623)" fill="#fff"/>
+      <g id="그룹_96" data-name="그룹 96" transform="translate(5 13.654)">
+        <g id="그룹_95" data-name="그룹 95" transform="translate(107.14 52.734)">
+          <rect id="사각형_84" data-name="사각형 84" width="39.655" height="39.654" rx="3.453" transform="translate(612.86 602.611)" fill="none" stroke="#ccc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <path id="패스_109" data-name="패스 109" d="M646.219,634.558l-6.053-10.484a.763.763,0,0,0-1.442,0l-3.3,5.712-4.414-7.643a.888.888,0,0,0-1.679,0l-7.048,12.208c-.462.8-.083,1.454.84,1.454H645.5C646.291,635.806,646.614,635.244,646.219,634.558Z" transform="translate(-1.55 -3.179)" fill="none" stroke="#ccc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+          <circle id="타원_15" data-name="타원 15" cx="2.857" cy="2.857" r="2.857" transform="translate(638.792 611.01)" fill="none" stroke="#ccc" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        </g>
+        <text id="No_Image" data-name="No Image" transform="translate(740 718)" fill="#999" font-size="14" font-family="Poppins-Regular, Poppins"><tspan x="-34.006" y="0">No Image</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
