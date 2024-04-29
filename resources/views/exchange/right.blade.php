@@ -1,6 +1,6 @@
 <div class="rgh">
     <!-- 5.코인 리스트 -->
-    <div class="box_dashboard ty5" x-data="{tab : $wire.entangle('tab')}">
+    <div class="box_dashboard ty5" x-data="{ tab : $wire.entangle('tab')}">
         <div class="tit inp">
             <input type="search" id="search_input" class="inp_txt" placeholder="토큰명/심볼검색"
                    wire:model.live.debounce.800ms="search">
@@ -12,9 +12,9 @@
         </div>
         <div id="tit_tab3" class="tit tab ty5">
             <ul>
-                <li><a :class="tab === 'KRW' ? 'active' : ''" class="nav-link" x-on:click="$dispatch('changeTab', { tab : 'KRW'})"><span>원화</span></a></li>
-                <li><a :class="tab === 'HOLD' ? 'active' : ''" class="nav-link" x-on:click="$dispatch('changeTab', { tab : 'HOLD'})"><span>보유</span></a></li>
-                <li><a :class="tab === 'FAVOR' ? 'active' : ''" class="nav-link" x-on:click="$dispatch('changeTab', { tab : 'FAVOR'})"><span>관심</span></a></li>
+                <li><a :class="tab === 'KRW' ? 'active' : ''" class="nav-link" wire:click="changeTab('KRW')"><span>원화</span></a></li>
+                <li><a :class="tab === 'HOLD' ? 'active' : ''" class="nav-link" wire:click="changeTab('HOLD')"><span>보유</span></a></li>
+                <li><a :class="tab === 'FAVOR' ? 'active' : ''" class="nav-link" wire:click="changeTab('FAVOR')"><span>관심</span></a></li>
             </ul>
         </div>
         <div class="cont">
@@ -61,15 +61,15 @@
                             <col>
                             <col>
                         </colgroup>
-                        <div wire:loading>Data Loading....</div>
-                        <tbody class="coin_list" wire:loading.remove x-data="{ copiedCoins: $wire.entangle('copiedCoins')}">
+                        <div wire:loading wire:target.except="addFavor">Data Loading....</div>
+                        <tbody class="coin_list" x-data="{ copiedCoins: $wire.entangle('copiedCoins')}">
                         @auth
                             <template x-for="coin in copiedCoins">
                                 <tr>
                                     <td class="tx_left">
-                                        <button x-on:click="$wire.favAdd(coin.type2, coin.type)" :class="'ico_star ' + coin.is_favor" type="button"><span>관심</span></button>
+                                        <button wire:click="addFavor(coin.type2 + '_' +coin.type)" :class="'ico_star ' + coin.is_favor" type="button"><span>관심</span></button>
                                         <p class="coin_name">
-                                            <a x-on:click="$dispatch('emitCoinInfo', { market : coin.type2.toUpperCase(), coin : coin.type.toUpperCase()});">
+                                            <a wire:click="$dispatch('emitCoinInfo', { market : coin.type2.toUpperCase(), coin : coin.type.toUpperCase()});">
                                                 <span class="name" x-text="coin.ccs_coin_name"></span>
                                                 <span class="stext" x-text="coin.type.toUpperCase() + '/' + coin.type2.toUpperCase()"></span>
                                             </a>
@@ -88,9 +88,9 @@
                                 <template x-for="coin in copiedCoins">
                                     <tr>
                                         <td class="tx_left">
-                                            <button x-on:click="$wire.favAdd(coin.type2, coin.type)" :class="'ico_star ' + (coin.is_favor ? 'on' : 'off')" type="button"><span>관심</span></button>
+                                            <button wire:click="addFavor(coin.type2 + '_' +coin.type)" :class="'ico_star ' + (coin.is_favor ? 'on' : 'off')" type="button"><span>관심</span></button>
                                             <p class="coin_name">
-                                                <a x-on:click="$dispatch('emitCoinInfo', { market : coin.type2.toUpperCase(), coin : coin.type.toUpperCase()});">
+                                                <a wire:click="$dispatch('emitCoinInfo', { market : coin.type2.toUpperCase(), coin : coin.type.toUpperCase()});">
                                                     <span class="name" x-text="coin.ccs_coin_name"></span>
                                                     <span class="stext" x-text="coin.type.toUpperCase() + '/' + coin.type2.toUpperCase()"></span>
                                                 </a>
@@ -103,7 +103,7 @@
                                     </tr>
                                 </template>
                             @else
-                                <div><a href="{{route('login')}}">로그인하세요</a></div>
+                                <div><a href="{{route('login')}}">로그인이 필요합니다.</a></div>
                             @endif
                         @endguest
                         </tbody>
@@ -121,6 +121,10 @@
 
 @script
 <script>
+    Livewire.on('modal', function (data) {
+        alert(data[0].msg);
+    });
+
     let connect = io.connect('http://localhost:8195');
 
     $('#test').on('click',function () {

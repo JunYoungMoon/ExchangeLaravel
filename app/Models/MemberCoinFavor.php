@@ -13,7 +13,7 @@ class MemberCoinFavor extends Model
 
     protected $fillable = [
         'user_id',
-        'coin'
+        'symbol'
     ];
 
     public function user()

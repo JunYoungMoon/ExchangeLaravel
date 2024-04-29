@@ -6,7 +6,6 @@ use App\Models\MemberCoinFavor;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
-use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Right extends Component
@@ -159,7 +158,7 @@ class Right extends Component
         $userId = Auth::id();
 
         // 로그인한 사용자의 id로 관심 코인정보를 가져온다.
-        $this->favors = MemberCoinFavor::where('user_id', $userId)->pluck('coin')->map(function ($favor) {
+        $this->favors = MemberCoinFavor::where('user_id', $userId)->pluck('symbol')->map(function ($favor) {
             return strtolower($favor);
         });
     }
@@ -175,19 +174,8 @@ class Right extends Component
     }
 
     /**
-     * 비회원은 관심 코인 정보를 모두 없음으로 마킹한다.
+     * 탭이 변경될때 동작
      */
-//    public function setDefaultFavors()
-//    {
-//        foreach ($this->originalCoins as &$coin) {
-//            $coin['is_favor'] = 'off';
-//        }
-//    }
-
-    /**
-     * 탭이 변경될때 동작하는 이벤트
-     */
-    #[On('changeTab')]
     public function changeTab($tab)
     {
         $this->tab = $tab;
@@ -271,6 +259,37 @@ class Right extends Component
         $this->copiedCoins = collect($this->copiedCoins)->sortBy([
             [$field, $this->sortDirection]
         ])->values()->all();
+    }
+
+    /**
+     * 좋아요 추가
+     */
+    public function addFavor($symbol)
+    {
+        if (Auth::check()) {
+            $userId = Auth::id();
+
+            $results = MemberCoinFavor::where('user_id', $userId)
+                ->where('symbol', $symbol)
+                ->get();
+
+            if ($results->isNotEmpty()) {
+                $results->each(function ($result) {
+                    $result->delete();
+                });
+            } else {
+                MemberCoinFavor::create([
+                    'user_id' => $userId,
+                    'symbol' => $symbol,
+                ]);
+            }
+
+            $this->getFavor();
+            $this->markFavoredCoins();
+            $this->applyFilters();
+        } else {
+            $this->dispatch('modal',['msg'=>'로그인을 해주세요.']);
+        }
     }
 
     public function render()

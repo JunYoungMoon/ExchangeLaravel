@@ -14,8 +14,12 @@ return new class extends Migration
         Schema::create('member_coin_favors', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->string('coin',50)->nullable();
+            $table->string('symbol',50)->nullable();
             $table->timestamps();
+        });
+
+        Schema::table('member_coin_favors', function (Blueprint $table) {
+            $table->index(['id', 'symbol']);
         });
     }
 
