@@ -828,7 +828,7 @@
                         to: periodParams.to
                     };
 
-                    $.get('http://192.168.100.193:8191/history', arg, function (r) {
+                    $.get('{{$datafeedAddress}}' + '/history', arg, function (r) {
                         let bars = [];
                         for (let i = 0; i < r.t.length; ++i) {
                             let bar = {

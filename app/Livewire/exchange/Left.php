@@ -15,11 +15,14 @@ class Left extends Component
     public $coin = '';
     public $market = '';
     public $settings;
+    public $datafeedAddress;
 
     protected $queryString = ['code' => ['keep' => true]];
 
     public function mount()
     {
+        $this->datafeedAddress = env('NODEJS_DATAFEED_ADDRESS');
+
         [$this->market, $this->coin] = explode('-', $this->code);
 
         $this->settingCoin();

@@ -18,9 +18,14 @@ class Right extends Component
     public $tab = 'KRW';
     public $sortField;
     public $sortDirection = 'asc';
+    public $exchangeAddress;
+    public $testAddress;
 
     public function mount()
     {
+        $this->exchangeAddress = env('NODEJS_EXCHANGE_ADDRESS');
+        $this->testAddress = env('NODEJS_TEST_ADDRESS');
+
         $this->getCoinList();
         $this->addCoinProperty();
 
@@ -37,7 +42,7 @@ class Right extends Component
     public function getCoinList()
     {
         //redis 코인정보 가져오기
-        $response = Http::get('http://localhost:8193/coinList');
+        $response = Http::get($this->exchangeAddress . '/coinList');
         $this->originalCoins = collect($response->json());
 
         $filteredCoins = [];

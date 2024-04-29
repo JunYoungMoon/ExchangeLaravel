@@ -125,7 +125,7 @@
         alert(data[0].msg);
     });
 
-    let connect = io.connect('http://localhost:8195');
+    let connect = io.connect('{{$testAddress}}');
 
     $('#test').on('click',function () {
         connect.emit('test');
