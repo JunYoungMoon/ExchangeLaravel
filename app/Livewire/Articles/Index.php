@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\articles;
+namespace App\Livewire\Articles;
 
 use App\Models\Article;
 use Livewire\Attributes\Layout;

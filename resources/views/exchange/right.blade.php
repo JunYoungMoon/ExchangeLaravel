@@ -65,7 +65,7 @@
                         <tbody class="coin_list" x-data="{ copiedCoins: $wire.entangle('copiedCoins')}">
                         @auth
                             <template x-for="coin in copiedCoins">
-                                <tr>
+                                <tr :class="(coin.type2 + '_' +coin.type).toUpperCase()">
                                     <td class="tx_left">
                                         <button wire:click="addFavor(coin.type2 + '_' +coin.type)" :class="'ico_star ' + coin.is_favor" type="button"><span>관심</span></button>
                                         <p class="coin_name">
@@ -86,14 +86,14 @@
                         @guest
                             @if($tab === 'KRW')
                                 <template x-for="coin in copiedCoins">
-                                    <tr>
+                                    <tr :class="(coin.type2 + '_' +coin.type).toUpperCase()">
                                         <td class="tx_left">
                                             <button wire:click="addFavor(coin.type2 + '_' +coin.type)" :class="'ico_star ' + (coin.is_favor ? 'on' : 'off')" type="button"><span>관심</span></button>
                                             <p class="coin_name">
-                                                <a wire:click="$dispatch('emitCoinInfo', { market : coin.type2.toUpperCase(), coin : coin.type.toUpperCase()});">
+                                                <button wire:click="$dispatch('emitCoinInfo', { market : coin.type2.toUpperCase(), coin : coin.type.toUpperCase()});">
                                                     <span class="name" x-text="coin.ccs_coin_name"></span>
                                                     <span class="stext" x-text="coin.type.toUpperCase() + '/' + coin.type2.toUpperCase()"></span>
-                                                </a>
+                                                </button>
                                             </p>
                                         </td>
                                         <td :class="'c-' + coin.percent_color_code" x-text="parseInt(coin.last_price).toLocaleString()"></td>
@@ -125,17 +125,17 @@
         alert(data[0].msg);
     });
 
-    let connect = io.connect('{{$testAddress}}');
+    {{--let connect = io.connect('{{$testAddress}}');--}}
 
-    $('#test').on('click',function () {
-        connect.emit('test');
-    });
+    {{--$('#test').on('click',function () {--}}
+    {{--    connect.emit('test');--}}
+    {{--});--}}
 
-    connect.on('test2', function (data) {
-        $wire.copiedCoins['KRW_EGX'].ccs_coin_name = data;
-        $wire.copiedCoins['KRW_EGX'].ccs_coin_name = data;
+    {{--connect.on('test2', function (data) {--}}
+    {{--    $wire.copiedCoins['KRW_EGX'].ccs_coin_name = data;--}}
+    {{--    $wire.copiedCoins['KRW_EGX'].ccs_coin_name = data;--}}
 
-        console.log($wire.copiedCoins['KRW_EGX'].ccs_coin_name);
-    });
+    {{--    console.log($wire.copiedCoins['KRW_EGX'].ccs_coin_name);--}}
+    {{--});--}}
 </script>
 @endscript

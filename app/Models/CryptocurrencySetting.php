@@ -9,7 +9,7 @@ class CryptocurrencySetting extends Model
 {
     use HasFactory;
 
-    protected $table = 'cryptocurrency_setting';
+    protected $table = 'mg_cryptocurrency_setting';
 
     protected $primaryKey = 'ccs_id';
 

@@ -1,9 +1,8 @@
 <div class="lghWarp">
-{{--    {{dd($settings)}}--}}
-    <div class="lft">
+    <div class="lft" x-data="{ coin : $wire.entangle('coin'), market : $wire.entangle('market')}">
         <!-- 고가/저가 -->
         <div class="box_dashboard ty1 market_header">
-            <div id="tit_tab11">
+            <div id="tit_tab11" x-data="{ tab1 : 'price' }">
                 <div class="market_header_topar">
                     <div class="new_ex_top">
                         <div class="new_ex_top_left">
@@ -14,19 +13,19 @@
                                 </em>
                                 [대체]코인이름
                                 <?php /*= $coinInfo->ccs_coin_name*/ ?>
-                                <span>{{$coin}} / {{$market}}</span>
+                                <span x-text="coin + ' / ' + market"></span>
                             </div>
                         </div>
                         <div class="tab_top_ar">
                             <ul>
-                                <li class="on"><a href="#token_price" class="nav-link active">시세</a></li>
-                                <li><a href="#token_info" class="nav-link active">정보</a></li>
+                                <li :class="(tab1 === 'price') ? 'on' : ''"><a x-on:click="tab1 = 'price'" class="nav-link active">시세</a></li>
+                                <li :class="(tab1 === 'info') ? 'on' : ''"><a x-on:click="tab1 = 'info'" class="nav-link active">정보</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 <!-- 1-1. 토큰 시세 영역-->
-                <div id="token_price" class="mkheader_token">
+                <div x-show="tab1 === 'price'" id="token_price" class="mkheader_token">
                     <div class="token_price_box">
                         <div class="token_price_box_left">
                             <div class="nex_price_ar">
@@ -41,7 +40,7 @@
                             <div class="nex_price_more">
                                 <p>고가<span class="max t3"></span></p>
                                 <p>저가<span class="min t4"></span></p>
-                                <p>거래량(24h) <span class="fz1"></span> {{$coin}} </p>
+                                <p>거래량(24h) <span class="fz1"></span>  <span x-text="coin"></span> </p>
                                 <p>거래대금(24h) <span class="value"></span> {{$market}} </p>
                             </div>
                         </div>
@@ -55,7 +54,7 @@
                     </div>
                 </div>
                 <!-- 1-2. 토큰 정보 영역-->
-                <div id="token_info" class="mkheader_token_info">
+                <div x-show="tab1 === 'info'" id="token_info" class="mkheader_token_info">
                     <div class="tokenInfo01">
                         <div class="tokeninfo_tit">[대체]코인이름<?php /*$coinInfo->ccs_coin_name*/ ?></div>
                         <div class="tokeninfo_top ">
@@ -250,10 +249,8 @@
                     </div>
                 </div>
                 <!-- //호가창/최근 체결가 -->
-
             </div>
         </div>
-
 
         <div class="exCenter">
             <!-- 4.매수/매도 -->
@@ -716,12 +713,19 @@
     </div>
 </div>
 
-
-<script src="{{ asset('/charting_library/charting_library.standalone.js') }}"></script>
-<script src="{{ asset('/datafeeds/udf/dist/bundle.js') }}"></script>
-<script src="https://code.highcharts.com/highcharts.js"></script>
+{{--<script src="https://code.highcharts.com/highcharts.js"></script>--}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script src="{{ asset('/vendor/trading-view/charting_library/charting_library.standalone.js') }}"></script>
+<script src="{{ asset('/vendor/trading-view/datafeeds/udf/dist/bundle.js') }}"></script>
 
+{{--<script>--}}
+{{--    window.addEventListener("popstate", function (event) {--}}
+{{--        let pathName = window.location.pathname;--}}
+{{--        if (pathName === '/exchange') {--}}
+{{--            window.location.reload();--}}
+{{--        }--}}
+{{--    });--}}
+{{--</script>--}}
 @script
 <script>
     init();
@@ -735,9 +739,11 @@
     }
 
     function setEvent(){
-        //navigate클릭, 뒤로가기, 앞으로가기시 동작하는데 컴포넌트가 다 그려진상태
+        //첫페이지 로드, navigate클릭, 다른페이지에서 뒤로가기, 앞으로가기시 동작하는데 컴포넌트가 다 그려진상태
         document.addEventListener('livewire:navigated', () => {
             let pathName = window.location.pathname;
+
+            console.log('test');
 
             if (pathName === '/exchange') {
                 let queryString = window.location.search;
@@ -750,27 +756,32 @@
         });
 
         document.addEventListener('livewire:navigated', () => {
-            Livewire.on('initializeChart', (symbol) => {
-                setChart(symbol[0]['market'], symbol[0]['coin']);
+            console.log('test2');
+
+            //right에서 심볼을 클릭할때 발생하는 이벤트
+            Livewire.on('initializeLeft', (symbol) => {
+                setTradingViewChart(symbol[0]['market'], symbol[0]['coin']);
             });
         }, {once: true}); // 이벤트 리스너가 실행된 후 제거하는 방법
     }
 
-    function setChart(market, coin) {
+    function setTradingViewChart(market, coin) {
+        console.log('test3');
         let checkChart = $('#chartContainer iframe').length;
 
         if (checkChart && widget !== null) {
-            // 차트가 있으면 내용 교체
+            // 차트가 있으면 내용만 교체
             widget.chart().setSymbol(coin + '_' + market, '1D', () => {
                 console.log('Chart updated with symbol:', coin + '_' + market);
             });
         } else {
-            // 차트가 없으면 차트 생성
+            // 차트가 없으면 차트를 새로 생성
             initializeChart(market, coin);
         }
     }
 
     function initializeChart(market, coin) {
+        console.log('test4');
         let initialState = {
             width: '100%',
             height: '445',
@@ -779,7 +790,7 @@
             timezone: "Asia/Seoul",
             debug: false,
             container: "chartContainer",
-            library_path: "charting_library/",
+            library_path: "/vendor/trading-view/charting_library/",
             locale: "ko",
             enabled_features: ["keep_left_toolbar_visible_on_small_screens"],
             disabled_features: [
@@ -845,7 +856,6 @@
                         onHistoryCallback(bars, {
                             noData: bars.length <= 0
                         });
-
                     }, "json");
                 },
                 subscribeBars: function (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) {
@@ -860,74 +870,34 @@
 
         widget.onChartReady(() => {
             widget.headerReady().then(function () {
+                // 새로운 버튼을 생성
                 let button = widget.createButton();
                 button.setAttribute('title', '초기화');
-                button.addEventListener('click', function () {
-                    // Initial widget setup
-                    initializeWidget();
-                });
                 button.textContent = '초기화';
+
+                // 버튼에 클릭 이벤트를 추가
+                button.addEventListener('click', function () {
+                    initializeChart(market, coin)
+                });
             });
         });
     }
 
-    function initializeWidget() {
-        widget = new TradingView.widget(initialState);
+    {{--let exchangeConnect = io.connect('{{$exchangeAddress}}');--}}
+    {{--let datafeedConnect = io.connect('{{$datafeedAddress}}');--}}
+    {{--let hogaConnect = io.connect('{{$hogaAddress}}');--}}
 
-        widget.headerReady().then(function () {
-            let button = widget.createButton();
-            button.setAttribute('title', '초기화');
-            button.addEventListener('click', initializeWidget);
-            button.textContent = '초기화';
-        });
-    }
+    {{--/*룸 접속*/--}}
+    {{--hogaConnect.emit('joinRoom', '{{$coin}}', '{{$market}}');--}}
 
-    function tab(o, s) {
-        $obj = $(o);
+    {{--/*호가창*/--}}
+    {{--hogaConnect.on('hoga', function (data) {--}}
 
-        $obj.each(function () {
-            var $this = $(this);
-            var $total = $this.find("li").length;
-            var $first = s - 1;
-            var $prev = $first;
-            var tab_id = [];
-            var $btn = $this.find("li");
-            var $start = $btn.eq($first);
+    {{--});--}}
 
-            for (var i = 0; i < $total; i++) {
-                tab_id[i] = $btn.eq(i).find("a").attr("href");
-                $(tab_id[i]).css("display", "none");
-                $(tab_id[$first]).css("display", "block");
-            }
+    {{--/*호가창 안에 작은 체결창*/--}}
+    {{--hogaConnect.on('his', function (data) {--}}
 
-            $start.addClass("on");
-
-            $btn.bind("click", function () {
-                var $this = $(this);
-                var $index = $(this).index();
-
-                if (!$this.hasClass("link")) {
-                    if (!$this.hasClass("on")) {
-                        $btn.each(function () {
-                            $(this).removeClass("on");
-                        });
-                        $this.addClass("on");
-                        $(tab_id[$prev]).css("display", "none");
-                        $(tab_id[$index]).css("display", "block");
-                        $prev = $index;
-                    }
-                    $this.trigger("resize");
-
-                    return false;
-
-                }
-            });
-
-        });
-    }
-
-    tab("#tit_tab1", 1);
-    tab("#tit_tab2", 1);
-    tab("#tit_tab11", 1);
+    {{--});--}}
 </script>
 @endscript

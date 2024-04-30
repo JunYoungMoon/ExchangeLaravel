@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\exchange;
+namespace App\Livewire\Exchange;
 
 use App\Models\CryptocurrencySetting;
 use Livewire\Attributes\On;
@@ -15,13 +15,17 @@ class Left extends Component
     public $coin = '';
     public $market = '';
     public $settings;
+    public $exchangeAddress;
     public $datafeedAddress;
+    public $hogaAddress;
 
     protected $queryString = ['code' => ['keep' => true]];
 
     public function mount()
     {
+        $this->exchangeAddress = env('NODEJS_EXCHANGE_ADDRESS');
         $this->datafeedAddress = env('NODEJS_DATAFEED_ADDRESS');
+        $this->hogaAddress = env('NODEJS_HOGA_ADDRESS');
 
         [$this->market, $this->coin] = explode('-', $this->code);
 
@@ -35,11 +39,11 @@ class Left extends Component
             ->where('ccs_coin_name2', $this->coin)
             ->first();
 
-        $this->settings = $settings->toArray();
+//        $this->settings = $settings->toArray();
     }
 
     #[On('emitCoinInfo')]
-    #[Renderless] //이벤트를 렌더링이 필요없다.
+    #[Renderless] //이벤트 렌더링이 필요없다.
     public function emitCoinInfo($market, $coin)
     {
         $this->code = $market . '-' . $coin;
@@ -48,16 +52,11 @@ class Left extends Component
 
         $this->settingCoin();
 
-        $this->dispatch('initializeChart', ['market' => $market, 'coin' => $coin]);
+        $this->dispatch('initializeLeft', ['market' => $market, 'coin' => $coin]);
     }
 
     public function render()
     {
         return view('exchange.left');
-    }
-
-    public function buy($buy_price, $buy_qtt)
-    {
-        $test = 'a';
     }
 }

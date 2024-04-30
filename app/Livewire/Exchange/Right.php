@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\exchange;
+namespace App\Livewire\Exchange;
 
 use App\Models\MemberCoinFavor;
 use App\Models\User;

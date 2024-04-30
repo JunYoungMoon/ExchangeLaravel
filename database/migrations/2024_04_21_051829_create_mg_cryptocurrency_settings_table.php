@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cryptocurrency_setting', function (Blueprint $table) {
+        Schema::create('mg_cryptocurrency_setting', function (Blueprint $table) {
             $table->increments('ccs_id')->comment('마켓 ID');
             $table->string('ccs_market_name', 50)->comment('마켓명');
             $table->string('ccs_market_name2', 10)->comment('마켓 unit 명');
@@ -58,6 +58,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cryptocurrency_setting');
+        Schema::dropIfExists('mg_cryptocurrency_setting');
     }
 };
