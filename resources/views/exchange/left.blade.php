@@ -1,6 +1,6 @@
 <div class="lghWarp">
     <div class="lft" x-data="{ coin : $wire.entangle('coin'), market : $wire.entangle('market')}">
-        <!-- 고가/저가 -->
+        {{--고가/저가--}}
         <div class="box_dashboard ty1 market_header">
             <div id="tit_tab11" x-data="{ tab1 : 'price' }">
                 <div class="market_header_topar">
@@ -12,7 +12,6 @@
                                     {{--                                <img alt="<?php $coinInfo->ccs_coin_name ?>" src="<?php $protocol ?><?php $_SERVER['HTTP_HOST'] ?>/uploads/<?php strtoupper($code); ?>.png">--}}
                                 </em>
                                 [대체]코인이름
-                                <?php /*= $coinInfo->ccs_coin_name*/ ?>
                                 <span x-text="coin + ' / ' + market"></span>
                             </div>
                         </div>
@@ -24,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- 1-1. 토큰 시세 영역-->
+                {{--1-1. 토큰 시세 영역--}}
                 <div x-show="tab1 === 'price'" id="token_price" class="mkheader_token">
                     <div class="token_price_box">
                         <div class="token_price_box_left">
@@ -33,7 +32,7 @@
                                     <strong class="price"></strong> {{$market}}
                                 </p>
                                 <p class="t2">
-                                    <!--<span class="c-black">전일대비</span>-->
+                                    {{--<span class="c-black">전일대비</span>--}}
                                     <strong class="percent"></strong>&percnt; <span>&sol;</span><strong class="cpd updown"></strong>
                                 </p>
                             </div>
@@ -44,16 +43,16 @@
                                 <p>거래대금(24h) <span class="value"></span> {{$market}} </p>
                             </div>
                         </div>
-                        <!-- 미니차트 영역 -->
+                        {{--미니차트 영역--}}
                         <div id="minichart"></div>
                     </div>
-                    <!-- 2. 차트부분 -->
+                    {{--2.차트부분--}}
                     <div class="box_dashboard ty2">
                         <div class="container center graph" id="chartContainer">
                         </div>
                     </div>
                 </div>
-                <!-- 1-2. 토큰 정보 영역-->
+                {{--1-2.토큰 정보 영역--}}
                 <div x-show="tab1 === 'info'" id="token_info" class="mkheader_token_info">
                     <div class="tokenInfo01">
                         <div class="tokeninfo_tit">[대체]코인이름<?php /*$coinInfo->ccs_coin_name*/ ?></div>
@@ -145,11 +144,11 @@
             </div>
         </div>
 
-        <!-- 상세 영역-->
+        {{--상세 영역--}}
         <div class="exLeft">
             <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12">
 
-                <!-- 호가창/최근 체결가 오더북 -->
+                {{--호가창/최근 체결가 오더북--}}
                 <div class="container bns_list">
 
                     <div id="tit_tab5" class="extab_tit99">
@@ -160,18 +159,21 @@
 
                     <div class="tab-content exHoga_ht">
                         <div id="tabTable1_1" class="tabTable1_1_n">
-                            <!-- 매도 테이블 -->
+                            {{--매도 테이블--}}
                             <div class="hoga_sell">
-                                <!--우측 코인정보-->
+                                {{--우측 코인정보--}}
                                 <div class="hoga_sell_box">
                                     <div>
                                         <dl class="hoga_dl_tit">
-                                            <dt><em><a href="#" onclick="openLayerPopup('popInfo01');"><img
-{{--                                                            alt="<?= $coinInfo->ccs_coin_name ?>"--}}
-                                                            alt="코인명"
-                                                            src=""></a></em>코인명
-{{--                                                            src="<?= $protocol ?><?= $_SERVER['HTTP_HOST'] ?>/uploads/<?= strtoupper($code); ?>.png"></a></em><?= $coinInfo->ccs_coin_name ?>--}}
-                                                <span>{{$coin}} / {{$market}}</span></dt>
+                                            <dt>
+                                                <em>
+                                                    <a href="#" onclick="openLayerPopup('popInfo01');">
+{{--                                                        <img alt="<?= $coinInfo->ccs_coin_name ?>"--}}
+{{--                                                             src="<?= $protocol ?><?= $_SERVER['HTTP_HOST'] ?>/uploads/<?= strtoupper($code); ?>.png">--}}
+                                                    </a>
+                                                </em>코인명
+                                                <span x-text="coin + ' / ' + market"></span>
+                                            </dt>
                                             <dd></dd>
                                         </dl>
                                         <dl class="hoga_dl_price">
@@ -203,7 +205,7 @@
                                         </dl>
                                     </div>
                                 </div>
-                                <!--매도 물량-->
+                                {{--매도 물량--}}
                                 <table class="hogalist sell_tbb">
                                     <colgroup>
                                         <col style="width:10%;">
@@ -216,9 +218,9 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <!-- 매수 테이블 -->
+                            {{--매수 테이블--}}
                             <div class="hoga_buy">
-                                <!--체결가 체결량-->
+                                {{--체결가 체결량--}}
                                 <div class="hoga_buy_box">
                                     <table>
                                         <thead>
@@ -232,7 +234,7 @@
                                         </tbody>
                                     </table>
                                 </div>
-                                <!--매수 물량-->
+                                {{--매수 물량--}}
                                 <table class="hogalist buy_tbb">
                                     <colgroup>
                                         <col style="width:10%;">
@@ -248,12 +250,12 @@
                         </div>
                     </div>
                 </div>
-                <!-- //호가창/최근 체결가 -->
+                {{--호가창/최근 체결가--}}
             </div>
         </div>
 
         <div class="exCenter">
-            <!-- 4.매수/매도 -->
+            {{--4.매수/매도--}}
             <div class="box_dashboard ty4">
                 <div id="tit_tab2" class="extab_tit">
                     <ul>
@@ -288,7 +290,7 @@
                                 <p class="h">주문가능</p>
                                 <div class="">
                                     <p><span class="available_buy_price spstst">0</span> {{$market}}</p>
-                                    <!-- <button type="button" class="btn-pk red2 s bdrs fl-r"><span class="ico_i">상승장 렌딩</span></button> -->
+                                    {{--<button type="button" class="btn-pk red2 s bdrs fl-r"><span class="ico_i">상승장 렌딩</span></button>--}}
                                 </div>
                             </li>
                             <li>
@@ -380,7 +382,7 @@
                                                 <span>시장가</span>
                                             </a>
                                         </li>
-                                        <!-- <li onclick="submitmode=3;"><a href="#" onclick="submitmode=3;"><span>자동</span></a> <button type="button"><span class="ico_q">도움말</span></button></li> -->
+                                        {{--<li onclick="submitmode=3;"><a href="#" onclick="submitmode=3;"><span>자동</span></a> <button type="button"><span class="ico_q">도움말</span></button></li> --}}
                                     </ul>
                                 </div>
                             </li>
@@ -388,7 +390,7 @@
                                 <p class="h">주문가능</p>
                                 <div class="">
                                     <p><span class="available_sell_price spstst">0</span>{{$coin}}</p>
-                                    <!-- <button type="button" class="btn-pk red2 s bdrs fl-r"><span class="ico_i">상승장 렌딩</span></button> -->
+                                    {{--<button type="button" class="btn-pk red2 s bdrs fl-r"><span class="ico_i">상승장 렌딩</span></button>--}}
                                 </div>
                             </li>
                             <li>
@@ -492,7 +494,7 @@
                             </div>
                             <div class="rgh">
                                 <button onclick="getSelectedCancel()">선택 취소</button>
-                                <!--<a href="#" class="a_link c-black">전체보기</a>-->
+                                {{--<a href="#" class="a_link c-black">전체보기</a>--}}
                                 <select class="select1"
                                         onchange="select_order_type = this.value; order_out_updata2(order_list);">
                                     <option value="전체">전체</option>
@@ -563,7 +565,7 @@
                                 </div>
                             </div>
                             <div class="rgh">
-                                <!--<a href="#" class="a_link c-black">전체보기</a>-->
+                                {{--<a href="#" class="a_link c-black">전체보기</a>--}}
                                 <select class="select1"
                                         onchange="select_order_type2 = this.value; order_updata2(order_list2);">
                                     <option value="전체">전체</option>
@@ -621,7 +623,7 @@
             </div>
         </div>
 
-        <!-- 3.체결/일별 -->
+        {{--3.체결/일별--}}
         <div class="box_dashboard ty3">
             <div id="tit_tab1" class="extab_tit00">
                 <ul>
@@ -682,27 +684,27 @@
                                 </colgroup>
                                 <tbody>
                                 <?php
-/*                                $tmpprice = 0;
+/*                                /*$tmpprice = 0;
                                 foreach ($dayorderlist as $row) {
                                     $updown = "c-up";
                                     if ($tmpprice > $row['price']) {
                                         $updown = "c-down";
                                     } */?>
                                 <tr>
-                                    <td><?php /*= $row['order_date']*/ ?></td>
-                                    <td><strong class="<?php /*= $updown */?>"><?php /*= $row['price']*/ ?></strong></td>
+                                    <td><?php /*$row['order_date']*/ ?></td>
+                                    <td><strong class="<?php /*$updown */?>"><?php /*$row['price']*/ ?></strong></td>
                                     <td><span class="<?php /*$updown*/ ?>"><?php /*$row['avg']*/ ?>%</span></td>
                                     <td class="ta-r"><?php /*$row['amount']*/ ?></td>
                                 </tr>
                                     <?php
                                   /*  $tmpprice = $row['price'];
                                 } */?>
-                                    <!--<tr>
+                                    {{--<tr>
                                 <td>05.08</td>
                                 <td><strong class="c-down">25,322,000</strong></td>
                                 <td><span class="c-down">-5.5%</span></td>
                                 <td class="ta-r">1,376,546</td>
-                            </tr>-->
+                            </tr>--}}
                                 </tbody>
                             </table>
                         </div>
@@ -715,8 +717,8 @@
 
 {{--<script src="https://code.highcharts.com/highcharts.js"></script>--}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-<script src="{{ asset('/vendor/trading-view/charting_library/charting_library.standalone.js') }}"></script>
-<script src="{{ asset('/vendor/trading-view/datafeeds/udf/dist/bundle.js') }}"></script>
+<script src="{{ asset('/vendor/trading-view/charting_library/charting_library.standalone.js') }}" defer></script>
+<script src="{{ asset('/vendor/trading-view/datafeeds/udf/dist/bundle.js') }}" defer></script>
 
 {{--<script>--}}
 {{--    window.addEventListener("popstate", function (event) {--}}
@@ -731,7 +733,7 @@
     init();
 
     function init(){
-        //filter를 통해서 최초 한번만 이벤트를 등록할수 있도록 처리
+        // filter를 통해서 최초 한번만 이벤트를 등록할수 있도록 처리
         if (typeof livewireNavigatedFilter =='undefined' || !livewireNavigatedFilter) {
             setEvent();
             livewireNavigatedFilter = true;
@@ -739,30 +741,42 @@
     }
 
     function setEvent(){
-        //첫페이지 로드, navigate클릭, 다른페이지에서 뒤로가기, 앞으로가기시 동작하는데 컴포넌트가 다 그려진상태
+        // 첫페이지 로드, navigate클릭, "다른페이지"에서 뒤로가기, 앞으로가기시 동작하는데 컴포넌트가 다 그려진상태
         document.addEventListener('livewire:navigated', () => {
             let pathName = window.location.pathname;
-
-            console.log('test');
 
             if (pathName === '/exchange') {
                 let queryString = window.location.search;
                 let searchParams = new URLSearchParams(queryString);
                 let symbol = searchParams.get('code').split('-');
 
-                //navigated시 Chart iframe DOM이 유지되지 않아 새로 그리는 방식 밖에 없음
-                initializeChart(symbol[0], symbol[1]);
+                setTradingViewChart(symbol[0], symbol[1]);
             }
         });
 
         document.addEventListener('livewire:navigated', () => {
-            console.log('test2');
+            let pathName = window.location.pathname;
 
-            //right에서 심볼을 클릭할때 발생하는 이벤트
+            if (pathName === '/exchange') {
+                window.addEventListener("popstate", function (event) {
+                    let pathName = window.location.pathname;
+                    if (pathName === '/exchange') {
+                        let queryString = window.location.search;
+                        let searchParams = new URLSearchParams(queryString);
+                        let symbol = searchParams.get('code').split('-');
+
+                        Livewire.dispatch('emitCoinInfo', {
+                            market: symbol[0].toUpperCase(),
+                            coin: symbol[1].toUpperCase()
+                        });
+                    }
+                });
+            }
+            // right에서 심볼을 클릭할때 발생하는 이벤트
             Livewire.on('initializeLeft', (symbol) => {
                 setTradingViewChart(symbol[0]['market'], symbol[0]['coin']);
             });
-        }, {once: true}); // 이벤트 리스너가 실행된 후 제거하는 방법
+        }, {once: true}); //이벤트 리스너가 실행된 후 제거하는 방법
     }
 
     function setTradingViewChart(market, coin) {
@@ -795,7 +809,7 @@
             enabled_features: ["keep_left_toolbar_visible_on_small_screens"],
             disabled_features: [
                 "use_localstorage_for_settings",
-                "header_compare"/*+버튼*/,
+                "header_compare"{{--+버튼--}},
             ],
             datafeed: {
                 onReady: function (cb) {
@@ -821,7 +835,7 @@
                                 has_weekly_and_monthly: false,
                                 volume_precision: 2,
                                 data_status: "streaming",
-                                supports_search: false, // Disable symbol search
+                                supports_search: false, {{--Disable symbol search--}}
                                 disabled_features: ["use_localstorage_for_settings", "header_symbol_search "],
                             });
                         }, 0);
@@ -859,7 +873,7 @@
                     }, "json");
                 },
                 subscribeBars: function (symbolInfo, resolution, onRealtimeCallback, subscribeUID, onResetCacheNeededCallback) {
-                    chart_realtime_callback = onRealtimeCallback; //여기에 차트 콜백함수 부여
+                    chart_realtime_callback = onRealtimeCallback; {{--여기에 차트 콜백함수 부여--}}
                 },
                 unsubscribeBars: function (subscriberUID) {
                 },

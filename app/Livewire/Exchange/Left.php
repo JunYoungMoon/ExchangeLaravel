@@ -12,14 +12,16 @@ class Left extends Component
 {
     #[Url]
     public $code = 'KRW-EGX';
-    public $coin = '';
-    public $market = '';
+    public $coin = 'EGX';
+    public $market = 'KRW';
     public $settings;
     public $exchangeAddress;
     public $datafeedAddress;
     public $hogaAddress;
 
-    protected $queryString = ['code' => ['keep' => true]];
+    protected $queryString = [
+        'code' => ['keep' => true]
+    ];
 
     public function mount()
     {

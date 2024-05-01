@@ -1,5 +1,5 @@
 <div class="rgh">
-    <!-- 5.코인 리스트 -->
+    {{--5.코인 리스트--}}
     <div class="box_dashboard ty5" x-data="{ tab : $wire.entangle('tab')}">
         <div class="tit inp">
             <input type="search" id="search_input" class="inp_txt" placeholder="토큰명/심볼검색"
@@ -90,10 +90,10 @@
                                         <td class="tx_left">
                                             <button wire:click="addFavor(coin.type2 + '_' +coin.type)" :class="'ico_star ' + (coin.is_favor ? 'on' : 'off')" type="button"><span>관심</span></button>
                                             <p class="coin_name">
-                                                <button wire:click="$dispatch('emitCoinInfo', { market : coin.type2.toUpperCase(), coin : coin.type.toUpperCase()});">
+                                                <a wire:click="$dispatch('emitCoinInfo', { market : coin.type2.toUpperCase(), coin : coin.type.toUpperCase()});">
                                                     <span class="name" x-text="coin.ccs_coin_name"></span>
                                                     <span class="stext" x-text="coin.type.toUpperCase() + '/' + coin.type2.toUpperCase()"></span>
-                                                </button>
+                                                </a>
                                             </p>
                                         </td>
                                         <td :class="'c-' + coin.percent_color_code" x-text="parseInt(coin.last_price).toLocaleString()"></td>
