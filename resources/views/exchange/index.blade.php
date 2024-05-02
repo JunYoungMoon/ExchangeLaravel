@@ -1,5 +1,3 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-
 <div class="boxcontainer">
     <div id="container" class="container exchange">
         <div class="area">

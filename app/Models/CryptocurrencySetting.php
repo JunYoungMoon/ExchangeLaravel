@@ -58,4 +58,9 @@ class CryptocurrencySetting extends Model
         'ccs_view_wallet' => 'boolean',
         'iserc20' => 'boolean',
     ];
+
+    public function detail()
+    {
+        return $this->hasOne(CryptocurrencySettingDetail::class, 'ccs_id', 'ccs_id');
+    }
 }

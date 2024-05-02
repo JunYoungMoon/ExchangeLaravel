@@ -1,17 +1,15 @@
 <div class="lghWarp">
-    <div class="lft" x-data="{ coin : $wire.entangle('coin'), market : $wire.entangle('market')}">
+    <div class="lft" x-data="{ coin : $wire.entangle('coin'), market : $wire.entangle('market'), coinInfo : $wire.entangle('coinInfo')}">
         {{--고가/저가--}}
-        <div class="box_dashboard ty1 market_header">
-            <div id="tit_tab11" x-data="{ tab1 : 'price' }">
+        <div class="box_dashboard ty1 market_header" x-data="{ tab1 : 'price' }">
+            <div id="tit_tab11">
                 <div class="market_header_topar">
                     <div class="new_ex_top">
                         <div class="new_ex_top_left">
                             <div class="h1">
                                 <em>
-                                    [대체]코인이미지
-                                    {{--                                <img alt="<?php $coinInfo->ccs_coin_name ?>" src="<?php $protocol ?><?php $_SERVER['HTTP_HOST'] ?>/uploads/<?php strtoupper($code); ?>.png">--}}
+                                    <img :alt="coinInfo.ccs_coin_name" :src="'/uploads/' + coinInfo.code + '.png'">
                                 </em>
-                                [대체]코인이름
                                 <span x-text="coin + ' / ' + market"></span>
                             </div>
                         </div>
@@ -55,18 +53,14 @@
                 {{--1-2.토큰 정보 영역--}}
                 <div x-show="tab1 === 'info'" id="token_info" class="mkheader_token_info">
                     <div class="tokenInfo01">
-                        <div class="tokeninfo_tit">[대체]코인이름<?php /*$coinInfo->ccs_coin_name*/ ?></div>
+                        <div class="tokeninfo_tit" x-text="coinInfo.ccs_coin_name"></div>
                         <div class="tokeninfo_top ">
                             <p>
-                                [대체]코인이미지
-                                {{--                            <img src="<?php ($coinDetailInfo->ccsd_image ? '/uploads/'. $coinDetailInfo->ccsd_image : '/img/token_no_image.svg' ) ?>" onclick="window.open(this.src)">--}}
+                                <img :src="'/uploads/' + ((coinInfo.detail?.ccsd_image) ? coinInfo.detail?.ccsd_image : '/img/token_no_image.svg')" x-on:click="window.open(this.src)">
                             </p>
                             <div class="tokeninfo_cont_ar">
                                 <h4 class="tokeninfo_h4">상세설명</h4>
-                                <div class="tokeninfo_cont">
-                                    [대체]코인상세설명
-                                    <?php /*$coinDetailInfo->ccsd_explan ?? '-'*/ ?>
-                                </div>
+                                <div class="tokeninfo_cont" x-text="coinInfo.detail?.ccsd_explan"></div>
                             </div>
                         </div>
                         <div class="tokeninfo_ar">
@@ -81,27 +75,27 @@
                                     </colgroup>
                                     <tr>
                                         <th>총 레이즈</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_total_raise ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_total_raise) ?? '-'"></td>
                                         <th>소프트캡</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_soft_cap ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_soft_cap) ?? '-'"></td>
                                     </tr>
                                     <tr>
                                         <th>레이즈상태</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_total_raise ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_total_raise) ?? '-'"></td>
                                         <th>최소 투자</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_mini_invest ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_mini_invest) ?? '-'"></td>
                                     </tr>
                                     <tr>
                                         <th>승인된 투자자</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_approve_invest ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_approve_invest) ?? '-'"></td>
                                         <th>보안 유형</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_sec_type ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_sec_type) ?? '-'"></td>
                                     </tr>
                                     <tr>
                                         <th>면제</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_exemption ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_exemption) ?? '-'"></td>
                                         <th>기구</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_organization ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_organization) ?? '-'"></td>
                                     </tr>
                                 </table>
                             </div>
@@ -118,23 +112,23 @@
                                     </colgroup>
                                     <tr>
                                         <th>가격({{$coin}}</th>
-                                        <td colspan="3"><?php /*$coinDetailInfo->ccsd_token_price ?? '-'*/ ?> (<span class="t1 cpd">▼ 178,000</span>)</td>
+                                        <td colspan="3" x-html="coinInfo.detail?.ccsd_token_price + '(<span class=\'t1 cpd\'>▼ 178,000</span>)'"></td>
                                     </tr>
                                     <tr>
                                         <th>토큰 발행처</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_token_issuer ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_token_issuer) ?? '-'"></td>
                                         <th>토큰 프로토콜</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_token_protocol ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_token_protocol) ?? '-'"></td>
                                     </tr>
                                     <tr>
                                         <th>토큰 발행 정보</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_token_issuer_info ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_token_issuer_info) ?? '-'"></td>
                                         <th>결제 옵션</th>
-                                        <td><?php /*$coinDetailInfo->ccsd_payment_option ?? '-'*/ ?></td>
+                                        <td x-text="(coinInfo.detail?.ccsd_payment_option) ?? '-'"></td>
                                     </tr>
                                     <tr>
                                         <th>토큰 권리</th>
-                                        <td colspan="3"><?php /*$coinDetailInfo->ccsd_token_rights ?? '-'*/ ?></td>
+                                        <td colspan="3" x-text="(coinInfo.detail?.ccsd_token_rights) ?? '-'"></td>
                                     </tr>
                                 </table>
                             </div>
@@ -254,17 +248,16 @@
             </div>
         </div>
 
-        <div class="exCenter">
+        <div class="exCenter" x-data="{ tab2 : 'buy' }">
             {{--4.매수/매도--}}
             <div class="box_dashboard ty4">
                 <div id="tit_tab2" class="extab_tit">
                     <ul>
-                        <li class="on"><a class="nav-link active"
-                                          href="#ttab2_1"><span>{{$coin}} 매수</span></a></li>
-                        <li><a class="nav-link" href="#ttab2_2"><span>{{$coin}} 매도</span></a></li>
+                        <li :class="(tab2 === 'buy') ? 'on' : ''"><a class="nav-link" x-on:click="tab2 = 'buy'"><span>{{$coin}} 매수</span></a></li>
+                        <li :class="(tab2 === 'sell') ? 'on' : ''"><a class="nav-link" x-on:click="tab2 = 'sell'"><span>{{$coin}} 매도</span></a></li>
                     </ul>
                 </div>
-                <div id="ttab2_1" class="extab_cont">
+                <div id="ttab2_1" class="extab_cont" x-show="tab2 === 'buy'">
                     <div class="cont">
                         <ul>
                             <li>
@@ -363,7 +356,7 @@
                         @endauth
                     </div>
                 </div>
-                <div id="ttab2_2" class="extab_cont">
+                <div id="ttab2_2" class="extab_cont" x-show="tab2 === 'sell'">
                     <div class="cont">
                         <ul>
                             <li>
@@ -716,71 +709,43 @@
 </div>
 
 {{--<script src="https://code.highcharts.com/highcharts.js"></script>--}}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
-<script src="{{ asset('/vendor/trading-view/charting_library/charting_library.standalone.js') }}" defer></script>
-<script src="{{ asset('/vendor/trading-view/datafeeds/udf/dist/bundle.js') }}" defer></script>
 
-{{--<script>--}}
-{{--    window.addEventListener("popstate", function (event) {--}}
-{{--        let pathName = window.location.pathname;--}}
-{{--        if (pathName === '/exchange') {--}}
-{{--            window.location.reload();--}}
-{{--        }--}}
-{{--    });--}}
-{{--</script>--}}
+@assets
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+<script src="{{ asset('/vendor/trading-view/charting_library/charting_library.standalone.js') }}"></script>
+<script src="{{ asset('/vendor/trading-view/datafeeds/udf/dist/bundle.js') }}"></script>
+@endassets
+
+<script>
+    //spa라서 페이지내에서 뒤로가기, 앞으로가기를 모두 제어하기 어렵기 때문에 그냥 페이지 자체를 reload를 한다.
+    //또한 크롬 브라우저 이슈로 어쩔땐 render를 타고 어쩔땐 cache를 타고 정확한 포인트를 잡기 힘들다.
+    //render를 탄다고 해도 /livewire/update를 request로 가져가기 때문에 변경된 현재 파라미터를 서버측에서 알기 힘들다.
+    //그러면 snapshot으로 가져오면 되지 않겠냐? snapshot은 이전 데이터를 가지고 있다.
+    window.addEventListener("popstate", function () {
+        if (window.location.pathname === '/exchange') {
+            window.location.reload();
+        }
+    });
+</script>
+
 @script
 <script>
-    init();
+    console.log($wire.coinInfo);
 
-    function init(){
-        // filter를 통해서 최초 한번만 이벤트를 등록할수 있도록 처리
-        if (typeof livewireNavigatedFilter =='undefined' || !livewireNavigatedFilter) {
-            setEvent();
-            livewireNavigatedFilter = true;
-        }
-    }
+    document.addEventListener('livewire:navigated', () => {
+        let queryString = window.location.search;
+        let searchParams = new URLSearchParams(queryString);
+        let symbol = searchParams.get('code').split('-');
 
-    function setEvent(){
-        // 첫페이지 로드, navigate클릭, "다른페이지"에서 뒤로가기, 앞으로가기시 동작하는데 컴포넌트가 다 그려진상태
-        document.addEventListener('livewire:navigated', () => {
-            let pathName = window.location.pathname;
+        setTradingViewChart(symbol[0], symbol[1]);
 
-            if (pathName === '/exchange') {
-                let queryString = window.location.search;
-                let searchParams = new URLSearchParams(queryString);
-                let symbol = searchParams.get('code').split('-');
-
-                setTradingViewChart(symbol[0], symbol[1]);
-            }
+        Livewire.on('initializeLeft', (symbol) => {
+            setTradingViewChart(symbol[0]['market'], symbol[0]['coin']);
         });
 
-        document.addEventListener('livewire:navigated', () => {
-            let pathName = window.location.pathname;
-
-            if (pathName === '/exchange') {
-                window.addEventListener("popstate", function (event) {
-                    let pathName = window.location.pathname;
-                    if (pathName === '/exchange') {
-                        let queryString = window.location.search;
-                        let searchParams = new URLSearchParams(queryString);
-                        let symbol = searchParams.get('code').split('-');
-
-                        Livewire.dispatch('emitCoinInfo', {
-                            market: symbol[0].toUpperCase(),
-                            coin: symbol[1].toUpperCase()
-                        });
-                    }
-                });
-            }
-            // right에서 심볼을 클릭할때 발생하는 이벤트
-            Livewire.on('initializeLeft', (symbol) => {
-                setTradingViewChart(symbol[0]['market'], symbol[0]['coin']);
-            });
-        }, {once: true}); //이벤트 리스너가 실행된 후 제거하는 방법
-    }
+    }, {once: true}); //이벤트 리스너가 실행된 후 제거하는 방법
 
     function setTradingViewChart(market, coin) {
-        console.log('test3');
         let checkChart = $('#chartContainer iframe').length;
 
         if (checkChart && widget !== null) {
@@ -795,7 +760,6 @@
     }
 
     function initializeChart(market, coin) {
-        console.log('test4');
         let initialState = {
             width: '100%',
             height: '445',
@@ -891,7 +855,7 @@
 
                 // 버튼에 클릭 이벤트를 추가
                 button.addEventListener('click', function () {
-                    initializeChart(market, coin)
+                    initializeChart($wire.market, $wire.coin)
                 });
             });
         });

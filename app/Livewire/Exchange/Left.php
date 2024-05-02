@@ -10,18 +10,14 @@ use Livewire\Component;
 
 class Left extends Component
 {
-    #[Url]
+    #[Url(history: false, keep: true)]
     public $code = 'KRW-EGX';
-    public $coin = 'EGX';
-    public $market = 'KRW';
-    public $settings;
+    public $coin = '';
+    public $market = '';
+    public $coinInfo;
     public $exchangeAddress;
     public $datafeedAddress;
     public $hogaAddress;
-
-    protected $queryString = [
-        'code' => ['keep' => true]
-    ];
 
     public function mount()
     {
@@ -31,17 +27,17 @@ class Left extends Component
 
         [$this->market, $this->coin] = explode('-', $this->code);
 
-        $this->settingCoin();
+        $this->settingCoinInfo();
     }
 
-    public function settingCoin()
+    public function settingCoinInfo()
     {
         // ccs_market_name2가 'example_market'이고 ccs_coin_name2가 'example_coin'인 레코드 찾기
-        $settings = CryptocurrencySetting::where('ccs_market_name2', $this->market)
+        $this->coinInfo = CryptocurrencySetting::with('detail')
+            ->where('ccs_market_name2', $this->market)
             ->where('ccs_coin_name2', $this->coin)
-            ->first();
-
-//        $this->settings = $settings->toArray();
+            ->first()
+            ->toArray();
     }
 
     #[On('emitCoinInfo')]
@@ -52,7 +48,7 @@ class Left extends Component
         $this->coin = $coin;
         $this->market = $market;
 
-        $this->settingCoin();
+        $this->settingCoinInfo();
 
         $this->dispatch('initializeLeft', ['market' => $market, 'coin' => $coin]);
     }
