@@ -5,7 +5,6 @@ namespace App\Livewire\Exchange;
 use App\Models\MemberCoinFavor;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 
 class Right extends Component
@@ -19,97 +18,17 @@ class Right extends Component
     public $sortField;
     public $sortDirection = 'asc';
     public $exchangeAddress;
-    public $testAddress;
 
-    public function mount()
+    public function mount($originalCoins, $exchangeAddress)
     {
-        $this->exchangeAddress = env('NODEJS_EXCHANGE_ADDRESS');
-        $this->testAddress = env('NODEJS_TEST_ADDRESS');
-
-        $this->getCoinList();
-        $this->addCoinProperty();
+        $this->exchangeAddress = $exchangeAddress;
+        $this->originalCoins = $originalCoins;
 
         if (Auth::check()) {
             $this->loadUserPreferences();
         }
 
         $this->copiedCoins = $this->originalCoins;
-    }
-
-    /**
-     * api를 통해 redis 코인정보를 가져옴
-     */
-    public function getCoinList()
-    {
-        //redis 코인정보 가져오기
-        $response = Http::get($this->exchangeAddress . '/coinList');
-        $this->originalCoins = collect($response->json());
-
-        $filteredCoins = [];
-
-        //메인 화면에 보여질 코인만 다룬다.
-        foreach ($this->originalCoins as $coin) {
-            if ($coin['ccs_view_main'] == 1) {
-                $filteredCoins[] = $coin;
-            }
-        }
-
-        $this->originalCoins = $filteredCoins;
-    }
-
-    /**
-     * 각 코인에 대한 추가 속성을 설정
-     * - 어제 가격을 기준으로 변동가 백분율을 계산 및 색상 코드 지정
-     * - 거래대금 추가
-     */
-    public function addCoinProperty()
-    {
-        $temp_coin = [];
-
-        foreach ($this->originalCoins as $coin) {
-            // 어제 가격을 기준으로 변동가 백분율을 계산 및 색상 코드 지정
-            $percent_price = $coin['last_price'] - $coin['yesterday_price'];
-
-            if ($coin['yesterday_price'] != 0) {
-                $percent = (($percent_price) / $coin['yesterday_price']) * 100;
-                $percent_color_code = $percent_price < 0 ? 'blue' : 'red';
-                $percent_string = $percent_price < 0 ? '-' : '+';
-            } else {
-                $percent = 0;
-                $percent_color_code = 'black';
-                $percent_string = '';
-            }
-
-            //거래대금 추가
-            $transactionAmount = $coin['value'];
-
-            if ($transactionAmount) {
-                if ($transactionAmount > 1000000) {
-                    $transactionAmount = intval($transactionAmount / 1000000) . '백만';
-                } else {
-                    $transactionAmount = intval($transactionAmount);
-                }
-            } else {
-                $transactionAmount = '-';
-            }
-
-            $lastPrice = 0;
-
-            if ($coin['last_price']) {
-                $lastPrice = number_format($coin['last_price'], 4);
-            }
-
-            // 필요한 정보를 배열에 추가
-            $coin['percent'] = number_format($percent, 2);
-            $coin['percent_string'] = $percent_string;
-            $coin['percent_color_code'] = $percent_color_code;
-            $coin['transaction_amount'] = $transactionAmount;
-            $coin['last_price_formatted'] = $lastPrice;
-
-            $temp_coin[strtoupper($coin['type2'] . '_' . $coin['type'])] = $coin; // 처리된 코인을 임시 배열에 추가
-        }
-
-        $this->originalCoins = $temp_coin;
     }
 
     /**

@@ -111,7 +111,10 @@
                 @else
                     <div>데이터가 존재하지 않습니다.</div>
                 @endif
-            </div>
+
+                <div x-data="test">
+                    <span x-text="nowPrice"></span>
+                </div>
 {{--            <button type="button" id="test">aaaa</button>--}}
         </div>
     </div>
@@ -137,5 +140,35 @@
 
     {{--    console.log($wire.copiedCoins['KRW_EGX'].ccs_coin_name);--}}
     {{--});--}}
+
+    let initialData = []; // 초기 데이터 설정
+    let max = 100; // 최대 값 설정
+    let nowPrice = true; // 현재 가격 설정
+    let yesterdayPrice = 40; // 어제 가격 설정
+
+    const app = sellOrderBookUpdate(initialData, max, nowPrice, yesterdayPrice);
+
+    // 데이터 및 관련 함수 정의
+    function sellOrderBookUpdate(initialData, max, nowPrice, yesterdayPrice) {
+        return Alpine.reactive({
+            data: initialData,
+            max: max,
+            nowPrice: nowPrice,
+            yesterdayPrice: yesterdayPrice,
+        });
+    }
+
+    Alpine.data('test', () => (
+        app
+    ));
+
+    // 1초마다 값을 변경
+    setInterval(() => {
+        nowPrice = Math.random() * 100; // 임의의 값으로 현재 가격 변경
+        yesterdayPrice = Math.random() * 100; // 임의의 값으로 어제 가격 변경
+        app.nowPrice = nowPrice; // 알파인 데이터에 현재 가격 반영
+        app.yesterdayPrice = yesterdayPrice; // 알파인 데이터에 어제 가격 반영
+    }, 1000);
+
 </script>
 @endscript

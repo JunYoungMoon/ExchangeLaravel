@@ -1,8 +1,8 @@
 <div class="boxcontainer">
     <div id="container" class="container exchange">
         <div class="area">
-            <livewire:exchange.left wire:key="left"/>
-            <livewire:exchange.right wire:key="right"/>
+            <livewire:exchange.left wire:key="left" :$originalCoins :$exchangeAddress :$datafeedAddress :$hogaAddress/>
+            <livewire:exchange.right wire:key="right" :$originalCoins :$exchangeAddress/>
         </div>
 
         <!-- 트레이딩뷰 요청 문구 추가 -->

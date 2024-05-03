@@ -208,7 +208,26 @@
                                         <col style="width:23%;">
                                         <col style="width:10%;">
                                     </colgroup>
-                                    <tbody class="sell_hoga">
+                                    <tbody class="sell_hoga" x-data="sellHoga">
+                                    <template x-for="_data in data" :key="_data.quantity">
+                                        <tr class="down" style="cursor: pointer">
+                                            <td></td>
+                                            <td>
+                                                <div class="sell_gr" x-bind:style="'width:' + (_data.quantity / max * 100) + '%'"></div>
+                                                <p x-text="_data.quantity.toFixed(4)"></p>
+                                            </td>
+                                            <td :class="{'hoga_black': parseFloat(_data.hoga_price) === parseFloat(last_price)}">
+                                                <div class="hoga_div">
+                                                    <ul x-bind:class="'c-' + _data.percent_color_code">
+                                                    <li class="ftbd" x-text="Number(_data.hoga_price)"></li>
+                                                    <li class="hoga_div_sma" x-text="_data.percent + '%'"></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </template>
                                     </tbody>
                                 </table>
                             </div>
@@ -732,15 +751,21 @@
 <script>
     console.log($wire.coinInfo);
 
+    let exchangeConnect = io.connect('{{$exchangeAddress}}');
+    let datafeedConnect = io.connect('{{$datafeedAddress}}');
+    let hogaConnect = io.connect('{{$hogaAddress}}');
+
     document.addEventListener('livewire:navigated', () => {
         let queryString = window.location.search;
         let searchParams = new URLSearchParams(queryString);
         let symbol = searchParams.get('code').split('-');
 
         setTradingViewChart(symbol[0], symbol[1]);
+        socketJoinRoom(symbol[0], symbol[1]);
 
         Livewire.on('initializeLeft', (symbol) => {
             setTradingViewChart(symbol[0]['market'], symbol[0]['coin']);
+            socketJoinRoom(symbol[0]['market'], symbol[0]['coin']);
         });
 
     }, {once: true}); //이벤트 리스너가 실행된 후 제거하는 방법
@@ -861,21 +886,117 @@
         });
     }
 
-    {{--let exchangeConnect = io.connect('{{$exchangeAddress}}');--}}
-    {{--let datafeedConnect = io.connect('{{$datafeedAddress}}');--}}
-    {{--let hogaConnect = io.connect('{{$hogaAddress}}');--}}
+    // 룸 접속
+    function socketJoinRoom(market, coin) {
+        hogaConnect.emit('joinRoom', coin, market);
+    }
 
-    {{--/*룸 접속*/--}}
-    {{--hogaConnect.emit('joinRoom', '{{$coin}}', '{{$market}}');--}}
+    // 호가창
+    hogaConnect.on('hoga', function (data) {
+        if (data != null) {
+            try {
+                data.sell.reverse();
+            } catch (err) {
+                console.log(err);
+            }
 
-    {{--/*호가창*/--}}
-    {{--hogaConnect.on('hoga', function (data) {--}}
+            let maxQuantity = 0;
 
-    {{--});--}}
+            data.buy.forEach(function (_data) {
+                if (_data.quantity > maxQuantity) {
+                    maxQuantity = _data.quantity;
+                }
+            });
 
-    {{--/*호가창 안에 작은 체결창*/--}}
-    {{--hogaConnect.on('his', function (data) {--}}
+            data.sell.forEach(function (_data) {
+                if (_data.quantity > maxQuantity) {
+                    maxQuantity = _data.quantity;
+                }
+            });
 
-    {{--});--}}
+            try {
+                sell_oder_book_updata(data.sell, maxQuantity);
+                buy_oder_book_updata(data.buy, maxQuantity);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+    });
+
+    let max = 0;
+    let last_price = $wire.coinInfo.price.lastPrice;
+    let yesterday_price = $wire.coinInfo.price.yesterdayPrice;
+
+    function sellHogaUpdate(data, max, last_price) {
+        return Alpine.reactive({
+            data: data,
+            max: max,
+            last_price: last_price
+        });
+    }
+
+    let once_arr = [{
+        quantity: 0,
+        percent_color_code: '',
+        hoga_price: 0,
+        percent: 0,
+        last_price: 0,
+    }];
+
+    const app = sellHogaUpdate(once_arr, max, last_price);
+
+    Alpine.data('sellHoga', () => (
+        app
+    ));
+
+    function sell_oder_book_updata(data, max) {
+        app.max = max;
+        app.data = data.map(_data => {
+            let percent_price;
+            let percent;
+
+            if (yesterday_price === null || yesterday_price === undefined || Number(yesterday_price) === 0) {
+                percent_price = _data.hoga_price - last_price;
+
+                if (last_price === 0) {
+                    percent = (_data.hoga_price - last_price);
+                } else {
+                    percent = ((_data.hoga_price - last_price) / last_price) * 100;
+                }
+            } else {
+                percent_price = _data.hoga_price - yesterday_price;
+                percent = ((_data.hoga_price - yesterday_price) / yesterday_price) * 100;
+            }
+
+            percent = percent.toFixed(2);
+
+            let percent_color_code = '';
+
+            if (percent_price < 0) {
+                percent_color_code = 'blue';
+            } else {
+                percent_color_code = 'red';
+            }
+
+            if (percent == 'NaN' || percent_price == '0') {
+                percent_color_code = 'red';
+                percent = "0.00";
+            }
+
+            if (percent == 0.00) {
+                percent_color_code = 'black';
+            }
+
+            _data.percent = percent;
+            _data.percent_color_code = percent_color_code;
+
+            return _data;
+        });
+    }
+
+    // 호가창 안에 작은 체결창
+    hogaConnect.on('his', function (data) {
+        console.log(data);
+    });
 </script>
 @endscript

@@ -15,19 +15,24 @@ class Left extends Component
     public $coin = '';
     public $market = '';
     public $coinInfo;
+    public $originalCoins;
     public $exchangeAddress;
     public $datafeedAddress;
     public $hogaAddress;
+    public $yesterdayPrice;
+    public $lastPrice;
 
-    public function mount()
+    public function mount($originalCoins, $exchangeAddress, $datafeedAddress, $hogaAddress)
     {
-        $this->exchangeAddress = env('NODEJS_EXCHANGE_ADDRESS');
-        $this->datafeedAddress = env('NODEJS_DATAFEED_ADDRESS');
-        $this->hogaAddress = env('NODEJS_HOGA_ADDRESS');
+        $this->originalCoins = $originalCoins;
+        $this->exchangeAddress = $exchangeAddress;
+        $this->datafeedAddress = $datafeedAddress;
+        $this->hogaAddress = $hogaAddress;
 
         [$this->market, $this->coin] = explode('-', $this->code);
 
         $this->settingCoinInfo();
+        $this->getYesterdayAndLastPrice();
     }
 
     public function settingCoinInfo()
@@ -38,6 +43,18 @@ class Left extends Component
             ->where('ccs_coin_name2', $this->coin)
             ->first()
             ->toArray();
+    }
+
+    public function getYesterdayAndLastPrice()
+    {
+        foreach ($this->originalCoins as $coin) {
+            if(strtolower($this->coin) === $coin['coin_name'] && strtolower($this->market) === $coin['type_string']){
+                $this->coinInfo['price']['yesterdayPrice'] = $coin['yesterday_price'];
+                $this->coinInfo['price']['lastPrice'] = $coin['last_price'];
+
+                break;
+            }
+        }
     }
 
     #[On('emitCoinInfo')]
