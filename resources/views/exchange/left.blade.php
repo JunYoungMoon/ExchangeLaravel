@@ -915,8 +915,8 @@
             });
 
             try {
-                sell_oder_book_updata(data.sell, maxQuantity);
-                buy_oder_book_updata(data.buy, maxQuantity);
+                updateOrderBook(data.sell, maxQuantity, sellApp);
+                updateOrderBook(data.buy, maxQuantity, buyApp);
             } catch (err) {
                 console.log(err);
             }
@@ -927,7 +927,7 @@
     let last_price = $wire.coinInfo.price.lastPrice;
     let yesterday_price = $wire.coinInfo.price.yesterdayPrice;
 
-    function sellHogaUpdate(data, max, last_price) {
+    function hogaUpdate(data, max, last_price) {
         return Alpine.reactive({
             data: data,
             max: max,
@@ -935,7 +935,7 @@
         });
     }
 
-    let once_arr = [{
+    let initial_data = [{
         quantity: 0,
         percent_color_code: '',
         hoga_price: 0,
@@ -943,13 +943,18 @@
         last_price: 0,
     }];
 
-    const app = sellHogaUpdate(once_arr, max, last_price);
+    const sellApp = hogaUpdate(initial_data , max, last_price);
+    const buyApp = hogaUpdate(initial_data , max, last_price);
 
     Alpine.data('sellHoga', () => (
-        app
+        sellApp
     ));
 
-    function sell_oder_book_updata(data, max) {
+    Alpine.data('buyHoga', () => (
+        buyApp
+    ));
+
+    function updateOrderBook(data, max, app) {
         app.max = max;
         app.data = data.map(_data => {
             let percent_price;
