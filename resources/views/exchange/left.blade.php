@@ -256,7 +256,26 @@
                                         <col style="width:23%;">
                                         <col style="width:10%;">
                                     </colgroup>
-                                    <tbody class="buy_hoga">
+                                    <tbody class="buy_hoga" x-data="buyHoga">
+                                    <template x-for="_data in data" :key="_data.quantity">
+                                        <tr class="up" style="cursor: pointer">
+                                            <td></td>
+                                            <td></td>
+                                            <td :class="{'hoga_black': parseFloat(_data.hoga_price) === parseFloat(last_price)}">
+                                                <div class="hoga_div">
+                                                    <ul x-bind:class="'c-' + _data.percent_color_code">
+                                                        <li class="ftbd" x-text="Number(_data.hoga_price)"></li>
+                                                        <li class="hoga_div_sma" x-text="_data.percent + '%'"></li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                            <td class="txal_left">
+                                                <div class="buy_gr" x-bind:style="'width:' + (_data.quantity / max * 100) + '%'"></div>
+                                                <p x-text="_data.quantity.toFixed(4)"></p>
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </template>
                                     </tbody>
                                 </table>
                             </div>
