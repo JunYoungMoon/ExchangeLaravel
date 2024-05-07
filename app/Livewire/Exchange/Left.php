@@ -66,6 +66,7 @@ class Left extends Component
         $this->market = $market;
 
         $this->settingCoinInfo();
+        $this->getYesterdayAndLastPrice();
 
         $this->dispatch('initializeLeft', ['market' => $market, 'coin' => $coin]);
     }

@@ -912,6 +912,8 @@
 
     // 호가창
     hogaConnect.on('hoga', function (data) {
+        debugger;
+
         if (data != null) {
             try {
                 data.sell.reverse();
@@ -939,6 +941,9 @@
             } catch (err) {
                 console.log(err);
             }
+        }else{
+            updateOrderBook([], 0, sellApp);
+            updateOrderBook([], 0, buyApp);
         }
     });
 
