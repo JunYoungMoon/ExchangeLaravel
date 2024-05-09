@@ -2,6 +2,9 @@
 
 namespace App\Livewire\Exchange;
 
+use App\Actions\Test;
+use App\Actions\TransactionActions;
+use App\Http\Requests\Exchange\TransactionRequest;
 use App\Models\CryptocurrencySetting;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Renderless;
@@ -69,6 +72,22 @@ class Left extends Component
         $this->getYesterdayAndLastPrice();
 
         $this->dispatch('initializeLeft', ['market' => $market, 'coin' => $coin]);
+    }
+
+    public function transaction($price, $quantity, $type){
+        try {
+            $params['price'] = $price;
+            $params['quantity'] = $quantity;
+            $params['type'] = $type;
+
+            $test = TransactionActions::run($params);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // 다른 종류의 예외 처리
+            $errorMessage = $e->getMessage();
+            // 에러 메시지를 뷰로 보내기
+            $this->dispatch('errorOccurred', $errorMessage);
+        }
     }
 
     public function render()

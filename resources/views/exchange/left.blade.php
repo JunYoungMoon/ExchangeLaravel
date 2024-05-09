@@ -1,5 +1,6 @@
 <div class="lghWarp">
-    <div class="lft" x-data="{ coin : $wire.entangle('coin'), market : $wire.entangle('market'), coinInfo : $wire.entangle('coinInfo')}">
+    <div class="lft"
+         x-data="{ coin : $wire.entangle('coin'), market : $wire.entangle('market'), coinInfo : $wire.entangle('coinInfo')}">
         {{--고가/저가--}}
         <div class="box_dashboard ty1 market_header" x-data="{ tab1 : 'price' }">
             <div id="tit_tab11">
@@ -10,13 +11,16 @@
                                 <em>
                                     <img :alt="coinInfo.ccs_coin_name" :src="'/uploads/' + coinInfo.code + '.png'">
                                 </em>
+                                <span x-text="coinInfo.ccs_coin_name"></span>
                                 <span x-text="coin + ' / ' + market"></span>
                             </div>
                         </div>
                         <div class="tab_top_ar">
                             <ul>
-                                <li :class="(tab1 === 'price') ? 'on' : ''"><a x-on:click="tab1 = 'price'" class="nav-link active">시세</a></li>
-                                <li :class="(tab1 === 'info') ? 'on' : ''"><a x-on:click="tab1 = 'info'" class="nav-link active">정보</a></li>
+                                <li :class="(tab1 === 'price') ? 'on' : ''"><a x-on:click="tab1 = 'price'"
+                                                                               class="nav-link active">시세</a></li>
+                                <li :class="(tab1 === 'info') ? 'on' : ''"><a x-on:click="tab1 = 'info'"
+                                                                              class="nav-link active">정보</a></li>
                             </ul>
                         </div>
                     </div>
@@ -31,13 +35,14 @@
                                 </p>
                                 <p class="t2">
                                     {{--<span class="c-black">전일대비</span>--}}
-                                    <strong class="percent"></strong>&percnt; <span>&sol;</span><strong class="cpd updown"></strong>
+                                    <strong class="percent"></strong>&percnt; <span>&sol;</span><strong
+                                        class="cpd updown"></strong>
                                 </p>
                             </div>
                             <div class="nex_price_more">
                                 <p>고가<span class="max t3"></span></p>
                                 <p>저가<span class="min t4"></span></p>
-                                <p>거래량(24h) <span class="fz1"></span>  <span x-text="coin"></span> </p>
+                                <p>거래량(24h) <span class="fz1"></span> <span x-text="coin"></span></p>
                                 <p>거래대금(24h) <span class="value"></span> {{$market}} </p>
                             </div>
                         </div>
@@ -56,7 +61,9 @@
                         <div class="tokeninfo_tit" x-text="coinInfo.ccs_coin_name"></div>
                         <div class="tokeninfo_top ">
                             <p>
-                                <img :src="'/uploads/' + ((coinInfo.detail?.ccsd_image) ? coinInfo.detail?.ccsd_image : '/img/token_no_image.svg')" x-on:click="window.open(this.src)">
+                                <img
+                                    :src="'/uploads/' + ((coinInfo.detail?.ccsd_image) ? coinInfo.detail?.ccsd_image : '/img/token_no_image.svg')"
+                                    x-on:click="window.open(this.src)">
                             </p>
                             <div class="tokeninfo_cont_ar">
                                 <h4 class="tokeninfo_h4">상세설명</h4>
@@ -112,7 +119,8 @@
                                     </colgroup>
                                     <tr>
                                         <th>가격({{$coin}}</th>
-                                        <td colspan="3" x-html="coinInfo.detail?.ccsd_token_price + '(<span class=\'t1 cpd\'>▼ 178,000</span>)'"></td>
+                                        <td colspan="3"
+                                            x-html="coinInfo.detail?.ccsd_token_price + '(<span class=\'t1 cpd\'>▼ 178,000</span>)'"></td>
                                     </tr>
                                     <tr>
                                         <th>토큰 발행처</th>
@@ -162,8 +170,8 @@
                                             <dt>
                                                 <em>
                                                     <a href="#" onclick="openLayerPopup('popInfo01');">
-{{--                                                        <img alt="<?= $coinInfo->ccs_coin_name ?>"--}}
-{{--                                                             src="<?= $protocol ?><?= $_SERVER['HTTP_HOST'] ?>/uploads/<?= strtoupper($code); ?>.png">--}}
+                                                        {{--                                                        <img alt="<?= $coinInfo->ccs_coin_name ?>"--}}
+                                                        {{--                                                             src="<?= $protocol ?><?= $_SERVER['HTTP_HOST'] ?>/uploads/<?= strtoupper($code); ?>.png">--}}
                                                     </a>
                                                 </em>코인명
                                                 <span x-text="coin + ' / ' + market"></span>
@@ -210,17 +218,19 @@
                                     </colgroup>
                                     <tbody class="sell_hoga" x-data="sellHoga">
                                     <template x-for="_data in data" :key="_data.quantity">
-                                        <tr class="down" style="cursor: pointer">
+                                        <tr class="down" style="cursor: pointer" x-on:click="setPriceValue">
                                             <td></td>
                                             <td>
-                                                <div class="sell_gr" x-bind:style="'width:' + (_data.quantity / max * 100) + '%'"></div>
+                                                <div class="sell_gr"
+                                                     x-bind:style="'width:' + (_data.quantity / max * 100) + '%'"></div>
                                                 <p x-text="_data.quantity.toFixed(4)"></p>
                                             </td>
-                                            <td :class="{'hoga_black': parseFloat(_data.hoga_price) === parseFloat(last_price)}">
+                                            <td :class="parseFloat(_data.hoga_price) === parseFloat(last_price) ? 'hoga_black' : '' ">
                                                 <div class="hoga_div">
                                                     <ul x-bind:class="'c-' + _data.percent_color_code">
-                                                    <li class="ftbd" x-text="Number(_data.hoga_price)"></li>
-                                                    <li class="hoga_div_sma" x-text="_data.percent + '%'"></li>
+                                                        <li class="ftbd"
+                                                            x-text="Number(_data.hoga_price).toLocaleString()"></li>
+                                                        <li class="hoga_div_sma" x-text="_data.percent + '%'"></li>
                                                     </ul>
                                                 </div>
                                             </td>
@@ -242,8 +252,17 @@
                                             <th>체결량</th>
                                         </tr>
                                         </thead>
-                                        <tbody class="hoga_buy_box_list">
-
+                                        <tbody class="hoga_buy_box_list" x-data="buyHogaDetail">
+                                        <template x-for="_data in data">
+                                            <tr>
+                                                <td :class="'c-' + _data.updown"
+                                                    x-text="Number(_data.price).toLocaleString()"></td>
+                                                <td>
+                                                    <span :class="'c-' + _data.updown"
+                                                          x-text="Number(_data.amount).toLocaleString()"></span>
+                                                </td>
+                                            </tr>
+                                        </template>
                                         </tbody>
                                     </table>
                                 </div>
@@ -258,19 +277,21 @@
                                     </colgroup>
                                     <tbody class="buy_hoga" x-data="buyHoga">
                                     <template x-for="_data in data" :key="_data.quantity">
-                                        <tr class="up" style="cursor: pointer">
+                                        <tr class="up" style="cursor: pointer" x-on:click="setPriceValue">
                                             <td></td>
                                             <td></td>
-                                            <td :class="{'hoga_black': parseFloat(_data.hoga_price) === parseFloat(last_price)}">
+                                            <td :class="parseFloat(_data.hoga_price) === parseFloat(last_price) ? 'hoga_black' : ''">
                                                 <div class="hoga_div">
                                                     <ul x-bind:class="'c-' + _data.percent_color_code">
-                                                        <li class="ftbd" x-text="Number(_data.hoga_price)"></li>
+                                                        <li class="ftbd"
+                                                            x-text="Number(_data.hoga_price).toLocaleString()"></li>
                                                         <li class="hoga_div_sma" x-text="_data.percent + '%'"></li>
                                                     </ul>
                                                 </div>
                                             </td>
                                             <td class="txal_left">
-                                                <div class="buy_gr" x-bind:style="'width:' + (_data.quantity / max * 100) + '%'"></div>
+                                                <div class="buy_gr"
+                                                     x-bind:style="'width:' + (_data.quantity / max * 100) + '%'"></div>
                                                 <p x-text="_data.quantity.toFixed(4)"></p>
                                             </td>
                                             <td></td>
@@ -291,8 +312,10 @@
             <div class="box_dashboard ty4">
                 <div id="tit_tab2" class="extab_tit">
                     <ul>
-                        <li :class="(tab2 === 'buy') ? 'on' : ''"><a class="nav-link" x-on:click="tab2 = 'buy'"><span>{{$coin}} 매수</span></a></li>
-                        <li :class="(tab2 === 'sell') ? 'on' : ''"><a class="nav-link" x-on:click="tab2 = 'sell'"><span>{{$coin}} 매도</span></a></li>
+                        <li :class="(tab2 === 'buy') ? 'on' : ''"><a class="nav-link" x-on:click="tab2 = 'buy'"><span>{{$coin}} 매수</span></a>
+                        </li>
+                        <li :class="(tab2 === 'sell') ? 'on' : ''"><a class="nav-link" x-on:click="tab2 = 'sell'"><span>{{$coin}} 매도</span></a>
+                        </li>
                     </ul>
                 </div>
                 <div id="ttab2_1" class="extab_cont" x-show="tab2 === 'buy'">
@@ -348,7 +371,7 @@
                                         <div class="b">
                                             <input type="text" class="inp_txt buy_qtt"
                                                    placeholder="최소 = 0.0001{{$coin}}(500{{$market}}이상) "
-                                                   onchange="set_fee();"  x-ref="buy_qtt" id="buy_qtt">
+                                                   onchange="setTotalPriceAndFee()" x-ref="buy_qtt" id="buy_qtt">
                                             <span>{{$coin}}</span>
                                         </div>
                                     </div>
@@ -382,15 +405,20 @@
                     </div>
                     <div class="botm">
                         @auth
-                        <ul>
-                            <li><a href="#" class="btn-pk b w100p red"
-                                   wire:click="buy($refs.buy_price.value, $refs.buy_qtt.value)"><span>{{$coin}} 매수</span></a>
-                            </li>
-                            <li><a href="" class="btn-pk b2 gray3"><img src="/img/comm/icon_f5.svg"></a>
-                            </li>
-                        </ul>
+                            <ul>
+                                <li>
+                                    <a class="btn-pk b w100p red" wire:click="transaction($refs.buy_price.value, $refs.buy_qtt.value, 'buy')">
+                                        <span>{{$coin}} 매수</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="btn-pk b2 gray3">
+                                        <img src="/img/comm/icon_f5.svg">
+                                    </a>
+                                </li>
+                            </ul>
                         @else
-                        <a href="/login" class="btn-pk b w100p dkblue2">로그인</a>
+                            <a href="/login" class="btn-pk b w100p dkblue2">로그인</a>
                         @endauth
                     </div>
                 </div>
@@ -482,15 +510,20 @@
                     </div>
                     <div class="botm">
                         @auth
-                        <ul>
-                            <li><a href="#" class="btn-pk b blue w100p"
-                                   onclick="submit_check('sell'); return false;"><span>{{$coin}} 매도</span></a>
-                            </li>
-                            <li><a href="" class="btn-pk b2 gray3"><img src="/img/comm/icon_f5.svg"></a>
-                            </li>
-                        </ul>
+                            <ul>
+                                <li>
+                                    <a class="btn-pk b w100p blue" wire:click="transaction($refs.sell_price.value, $refs.sell_qtt.value, 'sell')">
+                                        <span>{{$coin}} 매수</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="btn-pk b2 gray3">
+                                        <img src="/img/comm/icon_f5.svg">
+                                    </a>
+                                </li>
+                            </ul>
                         @else
-                        <a href="/login" class="btn-pk b w100p dkblue2">로그인</a>
+                            <a href="/login" class="btn-pk b w100p dkblue2">로그인</a>
                         @endauth
                     </div>
                 </div>
@@ -715,27 +748,27 @@
                                 </colgroup>
                                 <tbody>
                                 <?php
-/*                                /*$tmpprice = 0;
-                                foreach ($dayorderlist as $row) {
-                                    $updown = "c-up";
-                                    if ($tmpprice > $row['price']) {
-                                        $updown = "c-down";
-                                    } */?>
+                                /*                                /*$tmpprice = 0;
+                                                                foreach ($dayorderlist as $row) {
+                                                                    $updown = "c-up";
+                                                                    if ($tmpprice > $row['price']) {
+                                                                        $updown = "c-down";
+                                                                    } */ ?>
                                 <tr>
                                     <td><?php /*$row['order_date']*/ ?></td>
                                     <td><strong class="<?php /*$updown */?>"><?php /*$row['price']*/ ?></strong></td>
                                     <td><span class="<?php /*$updown*/ ?>"><?php /*$row['avg']*/ ?>%</span></td>
                                     <td class="ta-r"><?php /*$row['amount']*/ ?></td>
                                 </tr>
-                                    <?php
-                                  /*  $tmpprice = $row['price'];
-                                } */?>
-                                    {{--<tr>
-                                <td>05.08</td>
-                                <td><strong class="c-down">25,322,000</strong></td>
-                                <td><span class="c-down">-5.5%</span></td>
-                                <td class="ta-r">1,376,546</td>
-                            </tr>--}}
+                                <?php
+                                /*  $tmpprice = $row['price'];
+                              } */ ?>
+                                {{--<tr>
+                            <td>05.08</td>
+                            <td><strong class="c-down">25,322,000</strong></td>
+                            <td><span class="c-down">-5.5%</span></td>
+                            <td class="ta-r">1,376,546</td>
+                        </tr>--}}
                                 </tbody>
                             </table>
                         </div>
@@ -746,9 +779,8 @@
     </div>
 </div>
 
-{{--<script src="https://code.highcharts.com/highcharts.js"></script>--}}
-
 @assets
+<script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 <script src="{{ asset('/vendor/trading-view/charting_library/charting_library.standalone.js') }}"></script>
 <script src="{{ asset('/vendor/trading-view/datafeeds/udf/dist/bundle.js') }}"></script>
@@ -766,30 +798,385 @@
     });
 </script>
 
+<script>
+    let resultArray;
+    let chart;
+
+    function startInterval() {
+        // 현재 시간을 가져와서 다음 15분 간격의 정각을 계산
+        let now = new Date();
+        let utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+        let nextFifteenMinutes = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+
+        // 다음 15분 단위의 시간을 계산
+        let minutes = utc.getMinutes();
+        let next15Minutes = Math.ceil(minutes / 15) * 15; // 다음 15분 단위로 올림
+
+        //0, 15, 30, 45일때는 다음수로 올림
+        if ((minutes % 15) === 0) {
+            minutes++;
+        }
+
+        if (minutes < 45) {
+            // 현재 분이 45분보다 작으면 다음 15분 단위로 올림
+            next15Minutes = Math.ceil(minutes / 15) * 15;
+        } else {
+            // 현재 분이 45분 이상이면 다음 시간대로 넘어감
+            next15Minutes = 0;
+            nextFifteenMinutes.setHours(nextFifteenMinutes.getHours() + 1);
+
+            // 다음 날로 넘어갈 때 처리
+            if (nextFifteenMinutes.getDate() !== now.getDate()) {
+                if (chart) {
+                    // 기존 차트가 있으면 삭제
+                    chart.destroy();
+                }
+                // 미니 차트 설정
+                setHighChart();
+            }
+        }
+
+        // 다음 시간을 설정
+        nextFifteenMinutes.setMinutes(next15Minutes);
+        nextFifteenMinutes.setSeconds(0);
+        nextFifteenMinutes.setMilliseconds(0);
+
+        // 다음 15분 간격의 정각까지의 시간 차이를 계산합니다.
+        const timeUntilNextFifteenMinutes = nextFifteenMinutes - utc;
+
+        // 매 15분 간격으로 작업을 수행하는 함수를 정의합니다.
+        function performTask() {
+            console.log('작업을 수행합니다.' + new Date(now.getTime() + now.getTimezoneOffset() * 60000));
+
+            // 초기 페이지 세팅에서 저장된 가장 마지막 값중 x값인 YYYY-MM-DD hh:mm:ss를 가져온다.
+            // GMT+0 기준으로 날짜를 파싱하여 timestamp로 가져오기
+            const timestampStartOfDay = Date.parse(resultArray.slice(-1)[0][0]);
+            const timestampEndOfDay = new Date().getTime();
+
+            let arg = {
+                resolution: 15,
+                symbol: coin + "_" + market,
+                from: timestampStartOfDay,
+                to: timestampEndOfDay
+            };
+
+            $.get('{{$datafeedAddress}}' + '/history', arg, function (r) {
+                let x, y;
+
+                // UTC 기준으로 날짜를 파싱
+                let currentDate = new Date(timestampStartOfDay);
+
+                // 15분을 더함
+                currentDate.setUTCMinutes(currentDate.getUTCMinutes() + 15);
+
+                // 결과를 출력
+                console.log(formatDate(currentDate)); // UTC 기준으로 출력
+
+                x = formatDate(currentDate);
+
+                if (r.c) {
+                    y = (yesterday_price - r.c) * -1;
+                } else {
+                    y = resultArray.slice(-1)[0][1];
+                }
+
+                chart.series[0].addPoint([x, y], true, true);
+            });
+
+            // 다음 15분 간격으로 다시 setTimeout을 호출합니다.
+            startInterval();
+        }
+
+        console.log('다음 동작 시간 ' + timeUntilNextFifteenMinutes)
+
+        // 다음 15분 간격으로 setTimeout을 설정합니다.
+        setTimeout(performTask, timeUntilNextFifteenMinutes);
+    }
+
+    function getNext15MinutesFormatted() {
+        // 현재 시간을 가져오기
+        let now = new Date();
+
+        // 협정 세계시로 변경
+        let utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+
+        // 다음 15분 단위의 시간을 계산
+        let minutes = utc.getMinutes();
+        let next15Minutes = Math.ceil(minutes / 15) * 15; // 다음 15분 단위로 올림
+
+        //0,15,30,45일때는 다음수로 넘김
+        if ((minutes % 15) === 0) {
+            minutes++;
+        }
+
+        if (minutes < 45) {
+            // 현재 분이 45분보다 작으면 다음 15분 단위로 올림
+            next15Minutes = Math.ceil(minutes / 15) * 15;
+        } else {
+            // 현재 분이 45분 이상이면 다음 시간대로 넘어감
+            next15Minutes = 0;
+            utc.setHours(utc.getHours() + 1);
+        }
+
+        // 다음 시간을 설정
+        utc.setMinutes(next15Minutes);
+        utc.setSeconds(0);
+        utc.setMilliseconds(0);
+
+        return formatDate(utc);
+    }
+
+    function generateTimeArray() {
+        // 현재 시간을 가져오기
+        let now = new Date();
+
+        // 협정 세계시로 변경
+        let utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+
+        // 현재 날짜의 00:00:00을 설정
+        let startOfDay = new Date(utc.getFullYear(), utc.getMonth(), utc.getDate(), 0, 0, 0, 0);
+
+        // 15분 간격으로 시간을 저장할 배열
+        let time = [];
+
+        // 현재 시간 전까지의 15분 간격으로 배열에 저장
+        for (let timePointer = new Date(startOfDay); timePointer <= utc; timePointer.setMinutes(timePointer.getMinutes() + 15)) {
+            let year = timePointer.getFullYear().toString().padStart(4, '0');
+            let month = (timePointer.getMonth() + 1).toString().padStart(2, '0');
+            let day = timePointer.getDate().toString().padStart(2, '0');
+            let hours = timePointer.getHours().toString().padStart(2, '0');
+            let minutes = timePointer.getMinutes().toString().padStart(2, '0');
+            let seconds = timePointer.getSeconds().toString().padStart(2, '0');
+
+            // 시간을 배열에 추가
+            time.push(year + '-' + month + '-' + day + ' ' + hours + ':' + minutes + ':' + seconds);
+        }
+
+        return time;
+    }
+
+    function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+
+    function setHighChart() {
+        // 현재 시간 가져오기
+        let currentDate = new Date();
+
+        // 현재 시간을 GMT 0 (UTC)로 변환
+        let utcYear = currentDate.getUTCFullYear();
+        let utcMonth = currentDate.getUTCMonth();
+        let utcDay = currentDate.getUTCDate();
+
+        // GMT 0의 00:00:00
+        let utcMidnight = new Date(utcYear, utcMonth, utcDay, 0, 0, 0, 0);
+
+        // GMT 0의 23:59:59
+        let utcEndOfDay = new Date(utcYear, utcMonth, utcDay, 23, 59, 59, 999);
+
+        // 타임스탬프 얻기 (마지막 3자리 제외)
+        let timestampStartOfDay = Math.floor(utcMidnight.getTime() / 1000);
+        let timestampEndOfDay = Math.floor(utcEndOfDay.getTime() / 1000);
+
+        let arg = {
+            resolution: 15,
+            symbol: coin + "_" + market,
+            from: timestampStartOfDay,
+            to: timestampEndOfDay
+        };
+
+        // GMT0 기준 그날의 00:00:00 ~ 23:59:59까지 마지막 데이터 가져오기
+        $.get('{{$datafeedAddress}}' + '/history', arg, function (r) {
+            let closingPricesWithTime;
+
+            // [1704087233, '700.00000000'] 종가와 시간을 배열로 가져옴
+            if (r) {
+                closingPricesWithTime = r.t.map((time, index) => [time, r.c[index]]);
+            }
+
+            // GMT0 기준으로 00:00:00 부터 15분간격으로 현재 시간까지 배열로 가져오기
+            let timeArray = generateTimeArray();
+
+            resultArray = [];
+
+            // 새로운 배열 초기화
+            timeArray.map((time, index) => {
+                const nextTime = timeArray[index + 1]; // 다음 시간 값 가져오기
+
+                // 해당 시간과 다음 시간 사이에 대응하는 타임스탬프 찾기
+                const timestampMatch = closingPricesWithTime.find(entry => {
+                    const timestamp = Date.UTC(
+                        parseInt(time.substring(0, 4), 10),  // Year
+                        parseInt(time.substring(5, 7), 10) - 1,  // Month (months are zero-based)
+                        parseInt(time.substring(8, 10), 10),  // Day
+                        parseInt(time.substring(11, 13), 10),  // Hours
+                        parseInt(time.substring(14, 16), 10),  // Minutes
+                        parseInt(time.substring(17, 19), 10)  // Seconds
+                    ) / 1000;
+
+                    const nextTimestamp = nextTime ? Date.UTC(
+                        parseInt(nextTime.substring(0, 4), 10),  // Year
+                        parseInt(nextTime.substring(5, 7), 10) - 1,  // Month (months are zero-based)
+                        parseInt(nextTime.substring(8, 10), 10),  // Day
+                        parseInt(nextTime.substring(11, 13), 10),  // Hours
+                        parseInt(nextTime.substring(14, 16), 10),  // Minutes
+                        parseInt(nextTime.substring(17, 19), 10)  // Seconds
+                    ) / 1000 : Infinity;
+
+                    return entry[0] >= timestamp && entry[0] < nextTimestamp;
+                });
+
+                // 타임스탬프가 존재하는 경우 계산 수행
+                if (timestampMatch) {
+                    const priceDiff = (yesterday_price - timestampMatch[1]) * -1;
+                    resultArray.push([time, priceDiff]);
+                } else {
+                    // 타임스탬프가 존재하지 않는 경우
+                    if (index === 0) {
+                        resultArray.push([time, 0]); // index가 0이면 0으로 채우기
+                    } else {
+                        // 이전 가격 정보 사용
+                        const prevTimestampMatch = resultArray[index - 1];
+                        resultArray.push([time, prevTimestampMatch[1]]);
+                    }
+                }
+            });
+
+            console.log(resultArray);
+
+            initializeHighChart(resultArray);
+
+            startInterval();
+        }, "json");
+    }
+
+    function initializeHighChart(data) {
+        // Highcharts 차트 옵션 설정
+        let options = {
+            chart: {
+                animation: false,
+                backgroundColor: "transparent",
+                type: 'area', // 선 그래프 사용
+                width: 140,    // 차트 너비
+                height: 56,    // 차트 높이
+                margin: [0, 0, 0, 0],
+                reflow: false
+            },
+            navigator: {
+                enabled: false
+            },
+            title: {
+                style: {
+                    display: false,
+                },
+                text: null    // 제목 없음
+            },
+            credits: {
+                enabled: false // 로고 비활성화
+            },
+            xAxis: {
+                labels: {
+                    enabled: false // x 축 레이블 비활성화
+                },
+                max: 96 // 24시간/15분 = 96회
+            },
+            tooltip: {
+                enabled: false
+            },
+            yAxis: {
+                labels: {
+                    enabled: false // y 축 레이블 비활성화
+                },
+                title: {
+                    text: null // y 축 제목 비활성화
+                }
+            },
+            legend: {
+                enabled: false, // 범례 비활성화
+            },
+            plotOptions: {
+                area: {
+                    marker: {
+                        states: {
+                            hover: {
+                                enabled: false,
+                            }
+                        },
+                        enabled: false // 데이터 지점의 동그란 모양 비활성화
+                    }
+                },
+                series: {},
+            },
+            rangeSelector: {
+                enabled: false,
+            },
+            scrollbar: {
+                enabled: false,
+            },
+            series:
+                [
+                    {
+                        "name": "샌드박스",
+                        "data": data,
+                        "lineWidth": 1,
+                        "lineCap": "square",
+                        "fillColor": "rgba( 200, 74, 49, 0.1)",
+                        "color": "#C84A31",
+                        "negativeFillColor": "rgba( 0, 98, 223, 0.1)",
+                        "negativeColor": "#0062DF"
+                    }
+                ]
+        };
+
+        // 미니 차트를 miniChartContainer에 그리기
+        chart = Highcharts.chart('minichart', options);
+    }
+</script>
+
+<script>
+    let last_price;
+    let comm_rate;
+    let yesterday_price;
+    let coin;
+    let market;
+</script>
+
 @script
 <script>
-    console.log($wire.coinInfo);
-
     let exchangeConnect = io.connect('{{$exchangeAddress}}');
     let datafeedConnect = io.connect('{{$datafeedAddress}}');
     let hogaConnect = io.connect('{{$hogaAddress}}');
 
     document.addEventListener('livewire:navigated', () => {
-        let queryString = window.location.search;
-        let searchParams = new URLSearchParams(queryString);
-        let symbol = searchParams.get('code').split('-');
+        initalizeCoinInfo();
+        setTradingViewChart();
+        socketJoinRoom();
+        setHighChart();
 
-        setTradingViewChart(symbol[0], symbol[1]);
-        socketJoinRoom(symbol[0], symbol[1]);
-
-        Livewire.on('initializeLeft', (symbol) => {
-            setTradingViewChart(symbol[0]['market'], symbol[0]['coin']);
-            socketJoinRoom(symbol[0]['market'], symbol[0]['coin']);
+        Livewire.on('initializeLeft', () => {
+            initalizeCoinInfo();
+            setTradingViewChart();
+            socketJoinRoom();
+            setHighChart();
         });
-
     }, {once: true}); //이벤트 리스너가 실행된 후 제거하는 방법
 
-    function setTradingViewChart(market, coin) {
+    function initalizeCoinInfo(){
+        last_price = $wire.coinInfo.price.lastPrice;
+        comm_rate = $wire.coinInfo.ccs_commission_rate;
+        yesterday_price = $wire.coinInfo.price.yesterdayPrice;
+        coin = $wire.coinInfo.ccs_coin_name2;
+        market = $wire.coinInfo.ccs_market_name2;
+    }
+
+    function setTradingViewChart() {
         let checkChart = $('#chartContainer iframe').length;
 
         if (checkChart && widget !== null) {
@@ -799,11 +1186,34 @@
             });
         } else {
             // 차트가 없으면 차트를 새로 생성
-            initializeChart(market, coin);
+            initializeTradingViewChart(market, coin);
         }
     }
 
-    function initializeChart(market, coin) {
+    let chart_realtime_callback = null;
+    let global_resolution;
+
+    //실시간 차트 데이터를 받는다.
+    hogaConnect.on('get_chart_data_signal', function () {
+        let param = {
+            market: market,
+            coin: coin,
+            resolution: global_resolution,
+        }
+
+        //사용자의 coin, market, resolution을 가지고 다시 이벤트를 올린다.
+        hogaConnect.emit('get_real_time_chart_data', param, function (data) {
+            chart_realtime_callback({
+                time: data.t[0] * 1000,
+                close: parseFloat(data.c),
+                open: parseFloat(data.o),
+                low: parseFloat(data.l),
+                high: parseFloat(data.h),
+            });
+        });
+    });
+
+    function initializeTradingViewChart(market, coin) {
         let initialState = {
             width: '100%',
             height: '445',
@@ -899,21 +1309,19 @@
 
                 // 버튼에 클릭 이벤트를 추가
                 button.addEventListener('click', function () {
-                    initializeChart($wire.market, $wire.coin)
+                    initializeTradingViewChart(market, coin)
                 });
             });
         });
     }
 
     // 룸 접속
-    function socketJoinRoom(market, coin) {
+    function socketJoinRoom() {
         hogaConnect.emit('joinRoom', coin, market);
     }
 
     // 호가창
     hogaConnect.on('hoga', function (data) {
-        debugger;
-
         if (data != null) {
             try {
                 data.sell.reverse();
@@ -936,22 +1344,18 @@
             });
 
             try {
-                updateOrderBook(data.sell, maxQuantity, sellApp);
-                updateOrderBook(data.buy, maxQuantity, buyApp);
+                updateHogaBook(data.sell, maxQuantity, sellApp);
+                updateHogaBook(data.buy, maxQuantity, buyApp);
             } catch (err) {
                 console.log(err);
             }
-        }else{
-            updateOrderBook([], 0, sellApp);
-            updateOrderBook([], 0, buyApp);
+        } else {
+            updateHogaBook([], 0, sellApp);
+            updateHogaBook([], 0, buyApp);
         }
     });
 
-    let max = 0;
-    let last_price = $wire.coinInfo.price.lastPrice;
-    let yesterday_price = $wire.coinInfo.price.yesterdayPrice;
-
-    function hogaUpdate(data, max, last_price) {
+    function initializeReactiveHogaData(data, max, last_price) {
         return Alpine.reactive({
             data: data,
             max: max,
@@ -959,7 +1363,7 @@
         });
     }
 
-    let initial_data = [{
+    let initialHogadata = [{
         quantity: 0,
         percent_color_code: '',
         hoga_price: 0,
@@ -967,8 +1371,8 @@
         last_price: 0,
     }];
 
-    const sellApp = hogaUpdate(initial_data , max, last_price);
-    const buyApp = hogaUpdate(initial_data , max, last_price);
+    const sellApp = initializeReactiveHogaData(initialHogadata, 0, last_price);
+    const buyApp = initializeReactiveHogaData(initialHogadata, 0, last_price);
 
     Alpine.data('sellHoga', () => (
         sellApp
@@ -978,7 +1382,7 @@
         buyApp
     ));
 
-    function updateOrderBook(data, max, app) {
+    function updateHogaBook(data, max, app) {
         app.max = max;
         app.data = data.map(_data => {
             let percent_price;
@@ -1023,9 +1427,86 @@
         });
     }
 
-    // 호가창 안에 작은 체결창
     hogaConnect.on('his', function (data) {
-        console.log(data);
+        // 호가창 안에 작은 체결창
+        updateHogaDetailBook(data == null ? [] : data, buyHogaDetailApp)
+    });
+
+    function initializeReactiveHogaDetailData(data) {
+        return Alpine.reactive({
+            data: data,
+        });
+    }
+
+    let initialHogaDetaildata = [{
+        price: 0,
+        amount: 0,
+        updown: '',
+    }];
+
+    const buyHogaDetailApp = initializeReactiveHogaDetailData(initialHogaDetaildata);
+
+    Alpine.data('buyHogaDetail', () => (
+        buyHogaDetailApp
+    ));
+
+    function updateHogaDetailBook(data, app) {
+        app.data = data.map(_data => {
+            _data.updown = (_data.order_type == 1) ? 'down' : 'up';
+
+            return _data;
+        });
+    }
+
+    exchangeConnect.on('get_balance', function (data) {
+        document.querySelector('.available_buy_price').textContent = Number(data.mark_available);
+        document.querySelector('.available_sell_price').textContent = Number(data.coin_available);
     });
 </script>
 @endscript
+
+<script>
+    function setPriceValue(event) {
+        const clickedElement = event.currentTarget;
+        const ftbdElement = clickedElement.querySelector('.ftbd');
+
+        if (ftbdElement) {
+            const ftbdValue = ftbdElement.innerText.replace(/,/g, "");
+
+            document.getElementById('sell_price').value = ftbdValue;
+            document.getElementById('buy_price').value = ftbdValue;
+        }
+    }
+
+    function setTotalPriceAndFee(isNowprice) {
+        if (submitmode === 2) {
+            isNowprice = true;
+        }
+
+        let bq = $('.buy_qtt').val();
+        let bp = $('.buy_price').val();
+        let sq = $('.sell_qtt').val();
+        let sp = $('.sell_price').val();
+
+        bq = bq.replace(/[^-\.0-9]/g, '');
+        bp = bp.replace(/[^-\.0-9]/g, '');
+        sq = sq.replace(/[^-\.0-9]/g, '');
+        sp = sp.replace(/[^-\.0-9]/g, '');
+
+        $('.buy_qtt').val(bq.replace(/[^-\.0-9]/g, ''));
+        $('.buy_price').val(bp.replace(/[^-\.0-9]/g, ''));
+        $('.sell_qtt').val(sq.replace(/[^-\.0-9]/g, ''));
+        $('.sell_price').val(sp.replace(/[^-\.0-9]/g, ''));
+
+        if (isNowprice) {
+            bp = last_price;
+            sp = last_price;
+        }
+
+        $('.buy_total_sum').html((bq * bp));
+        $('.sell_total_sum').html((sq * sp));
+
+        $('.sell_fee').html((sq * sp * comm_rate * 0.01));
+        $('.buy_fee').html((bq * bp * comm_rate * 0.01));
+    }
+</script>
