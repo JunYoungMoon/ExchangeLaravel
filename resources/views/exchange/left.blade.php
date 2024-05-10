@@ -326,14 +326,12 @@
                                 <div id="tit_tab2_1" class="tab">
                                     <ul>
                                         <li onclick="submitmode=1;set_fee();maxvalue();$('.buy_price').val(0);">
-                                            <a href="#"
-                                               onclick="submitmode=1;set_fee();maxvalue();$('.buy_price').val(0);">
+                                            <a onclick="submitmode=1;set_fee();maxvalue();$('.buy_price').val(0);">
                                                 <span>지정가</span>
                                             </a>
                                         </li>
                                         <li onclick="submitmode=2;set_fee();maxvalue();$('.buy_price').val(now_price);">
-                                            <a href="#"
-                                               onclick="submitmode=2;set_fee();maxvalue();$('.buy_price').val(now_price);">
+                                            <a onclick="submitmode=2;set_fee();maxvalue();$('.buy_price').val(now_price);">
                                                 <span>시장가</span>
                                             </a>
                                         </li>
@@ -1146,6 +1144,9 @@
     let yesterday_price;
     let coin;
     let market;
+    let order_form_type;
+    let available_buy_price;
+    let available_sell_price;
 </script>
 
 @script
@@ -1174,6 +1175,8 @@
         yesterday_price = $wire.coinInfo.price.yesterdayPrice;
         coin = $wire.coinInfo.ccs_coin_name2;
         market = $wire.coinInfo.ccs_market_name2;
+
+        debugger;
     }
 
     function setTradingViewChart() {
@@ -1213,6 +1216,7 @@
         });
     });
 
+    //트레이딩뷰 차트 그리기
     function initializeTradingViewChart(market, coin) {
         let initialState = {
             width: '100%',
@@ -1458,15 +1462,17 @@
         });
     }
 
+    // 잔액 가져오기
     exchangeConnect.on('get_balance', function (data) {
-        document.querySelector('.available_buy_price').textContent = Number(data.mark_available);
-        document.querySelector('.available_sell_price').textContent = Number(data.coin_available);
+        available_buy_price = Number(data.mark_available);
+        available_sell_price = Number(data.coin_available);
     });
 </script>
 @endscript
 
 <script>
-    function setPriceValue(event) {
+    //호가창을 누르면 가격에 세팅
+    function HogaClickSetPriceValue(event) {
         const clickedElement = event.currentTarget;
         const ftbdElement = clickedElement.querySelector('.ftbd');
 
@@ -1478,6 +1484,7 @@
         }
     }
 
+    //주문금액 수수료 넣기
     function setTotalPriceAndFee(isNowprice) {
         if (submitmode === 2) {
             isNowprice = true;
@@ -1509,4 +1516,34 @@
         $('.sell_fee').html((sq * sp * comm_rate * 0.01));
         $('.buy_fee').html((bq * bp * comm_rate * 0.01));
     }
+
+    //최대 주문 가능 수량 넣기
+    function setMaximumOrderableQuantity() {
+        let isNowprice = false;
+
+        if (order_form_type == 2) {
+            isNowprice = true;
+        }
+
+        let percent = 1;
+        let avail = available_buy_price;
+        let price;
+
+        if (isNowprice) {
+            price = last_price;
+        } else {
+            price = Number($(".buy_price").val());
+        }
+        if (percent == 1) {
+            avail = avail / (1 + comm_rate * 0.01);
+        }
+        if (price == 0) {
+            $("#max_v").html(0);
+            return false;
+        }
+        let result = avail * percent / price;
+
+        $("#max_v").html(Number(result));
+    }
+
 </script>

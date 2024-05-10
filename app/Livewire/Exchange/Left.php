@@ -54,6 +54,8 @@ class Left extends Component
             if(strtolower($this->coin) === $coin['coin_name'] && strtolower($this->market) === $coin['type_string']){
                 $this->coinInfo['price']['yesterdayPrice'] = $coin['yesterday_price'];
                 $this->coinInfo['price']['lastPrice'] = $coin['last_price'];
+                $this->coinInfo['price']['percent_string'] = $coin['percent_string'];
+                $this->coinInfo['price']['percent_color_code'] = $coin['percent_color_code'];
 
                 break;
             }

@@ -16,7 +16,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/exchange',\App\Livewire\exchange\Index::class);
+Route::get('/exchange',\App\Livewire\exchange\Index::class)->name('exchange.index');
 Route::get('/articles', \App\Livewire\articles\Index::class);
 
 Route::get('/articles/detail/{article}' /*{article}은 Article 모델 바인딩*/, function (Article $article) {
@@ -53,9 +53,9 @@ Route::controller(ArticlesController::class)->group(function (){
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/api/register', [RegisterController::class, 'register'])->name('api.register');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+//Route::get('/dashboard', function () {
+//    return view('dashboard');
+//})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
