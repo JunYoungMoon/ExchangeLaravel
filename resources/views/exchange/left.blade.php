@@ -1147,6 +1147,12 @@
     let order_form_type;
     let available_buy_price;
     let available_sell_price;
+    let percent;
+    let percent_string;
+    let percent_color_code;
+    let max_price;
+    let min_price;
+    let transaction_value;
 </script>
 
 @script
@@ -1175,8 +1181,73 @@
         yesterday_price = $wire.coinInfo.price.yesterdayPrice;
         coin = $wire.coinInfo.ccs_coin_name2;
         market = $wire.coinInfo.ccs_market_name2;
+        percent = $wire.coinInfo.percent;
+        percent_string = $wire.coinInfo.percent_string;
+        percent_color_code = $wire.coinInfo.percent_color_code;
+        max_price = $wire.coinInfo.max_price;
+        min_price = $wire.coinInfo.min_price;
+        transaction_value = $wire.coinInfo.transaction_value;
 
         debugger;
+
+        $('#token_price').find('.c-up').removeClass('c-up');
+        $('#token_price').find('.c-down').removeClass('c-down');
+        $('#token_price').find('.c-black').removeClass('c-black');
+        $('#token_info').find('.c-up').removeClass('c-up');
+        $('#token_info').find('.c-down').removeClass('c-down');
+        $('#token_info').find('.c-black').removeClass('c-black');
+        $('.hoga_sell_box').find('.c-up').removeClass('c-up');
+        $('.hoga_sell_box').find('.c-down').removeClass('c-down');
+        $('.hoga_sell_box').find('.c-black').removeClass('c-black');
+
+        if (percent_color_code == "red") {
+            $('#token_price .t1').addClass("c-up");
+            $('#token_price .t2').addClass("c-up");
+            $('#token_price .t3').addClass("c-up");
+            $('#token_price .t4').addClass("c-up");
+            $('#token_info .t1').addClass("c-up");
+            $('.hoga_sell_box .t1').addClass("c-up");
+            $('.hoga_sell_box .t2').addClass("c-up");
+        } else if (percent_color_code == "blue") {
+            $('#token_price .t1').addClass("c-down");
+            $('#token_price .t2').addClass("c-down");
+            $('#token_price .t3').addClass("c-down");
+            $('#token_price .t4').addClass("c-down");
+            $('#token_info .t1').addClass("c-up");
+            $('.hoga_sell_box .t1').addClass("c-down");
+            $('.hoga_sell_box .t2').addClass("c-down");
+        } else {
+            $('#token_price .t1').addClass("c-black");
+            $('#token_price .t2').addClass("c-black");
+            $('#token_price .t3').addClass("c-black");
+            $('#token_price .t4').addClass("c-black");
+            $('#token_info .t1').addClass("c-up");
+            $('.hoga_sell_box .t1').addClass("c-black");
+            $('.hoga_sell_box .t2').addClass("c-black");
+        }
+        let compared_previous_day = last_price - yesterday_price;
+        if (compared_previous_day > 0) {
+            $('#token_price .cpd').text('▲ ' + Number(compared_previous_day));
+            $('#token_info .cpd').text('▲ ' + Number(compared_previous_day));
+        } else if (compared_previous_day < 0) {
+            $('#token_price .cpd').text('▼ ' + Number(compared_previous_day * -1));
+            $('#token_info .cpd').text('▼ ' + Number(compared_previous_day * -1));
+        } else {
+            $('#token_price .cpd').text(Number(compared_previous_day));
+            $('#token_info .cpd').text(Number(compared_previous_day));
+        }
+        $(".market_header").find(".price").html(Number(last_price));
+        $(".market_header").find(".percent").html(percent_string + `` + percent);
+        $(".market_header, .hoga_sell_box").find(".max").html(Number(max_price));
+        $(".market_header, .hoga_sell_box").find(".min").html(Number(min_price));
+        $(".market_header, .hoga_sell_box").find(".value").html(Number(transaction_value));
+        $(".market_header, .hoga_sell_box").find(".fz1").html(Number(transaction_value / last_price));
+        $('.hoga_sell_box').find('.max').html(Number(max_price));
+        $('.hoga_sell_box').find('.min').html(Number(min_price));
+        $('.hoga_sell_box').find('.fz1').html(Number(transaction_value / last_price));
+        $(".hoga_sell_box").find(".value").html(Number(transaction_value));
+        $(".hoga_sell_box").find(".price").html(Number(last_price));
+        $(".hoga_sell_box").find(".percent").html(percent_string + `` + percent + '%');
     }
 
     function setTradingViewChart() {
