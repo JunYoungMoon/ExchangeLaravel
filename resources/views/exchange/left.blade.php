@@ -1181,14 +1181,12 @@
         yesterday_price = $wire.coinInfo.price.yesterdayPrice;
         coin = $wire.coinInfo.ccs_coin_name2;
         market = $wire.coinInfo.ccs_market_name2;
-        percent = $wire.coinInfo.percent;
-        percent_string = $wire.coinInfo.percent_string;
-        percent_color_code = $wire.coinInfo.percent_color_code;
-        max_price = $wire.coinInfo.max_price;
-        min_price = $wire.coinInfo.min_price;
-        transaction_value = $wire.coinInfo.transaction_value;
-
-        debugger;
+        percent = $wire.coinInfo.price.percent;
+        percent_string = $wire.coinInfo.price.percent_string;
+        percent_color_code = $wire.coinInfo.price.percent_color_code;
+        max_price = $wire.coinInfo.price.max_price;
+        min_price = $wire.coinInfo.price.min_price;
+        transaction_value = $wire.coinInfo.price.transaction_value;
 
         $('#token_price').find('.c-up').removeClass('c-up');
         $('#token_price').find('.c-down').removeClass('c-down');
@@ -1236,6 +1234,8 @@
             $('#token_price .cpd').text(Number(compared_previous_day));
             $('#token_info .cpd').text(Number(compared_previous_day));
         }
+
+        debugger;
         $(".market_header").find(".price").html(Number(last_price));
         $(".market_header").find(".percent").html(percent_string + `` + percent);
         $(".market_header, .hoga_sell_box").find(".max").html(Number(max_price));
