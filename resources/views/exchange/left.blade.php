@@ -325,13 +325,13 @@
                                 <p class="h">주문형태</p>
                                 <div id="tit_tab2_1" class="tab">
                                     <ul>
-                                        <li onclick="submitmode=1;set_fee();maxvalue();$('.buy_price').val(0);">
-                                            <a onclick="submitmode=1;set_fee();maxvalue();$('.buy_price').val(0);">
+                                        <li x-on:click="submitmode=1;setTotalPriceAndFee();setMaximumOrderableQuantity();$('.buy_price').val(0);">
+                                            <a onclick="submitmode=1;setTotalPriceAndFee();setMaximumOrderableQuantity();$('.buy_price').val(0);">
                                                 <span>지정가</span>
                                             </a>
                                         </li>
-                                        <li onclick="submitmode=2;set_fee();maxvalue();$('.buy_price').val(now_price);">
-                                            <a onclick="submitmode=2;set_fee();maxvalue();$('.buy_price').val(now_price);">
+                                        <li onclick="submitmode=2;setTotalPriceAndFee();setMaximumOrderableQuantity();$('.buy_price').val(last_price);">
+                                            <a onclick="submitmode=2;setTotalPriceAndFee();setMaximumOrderableQuantity();$('.buy_price').val(last_price);">
                                                 <span>시장가</span>
                                             </a>
                                         </li>
@@ -350,7 +350,7 @@
                                 <div class="">
                                     <div class="inp_num">
                                         <input type="number" class="inp_txt w100p buy_price"
-                                               onchange="set_fee();maxvalue();" x-ref="buy_price" id="buy_price">
+                                               x-on:change="setTotalPriceAndFee();setMaximumOrderableQuantity();" x-ref="buy_price" id="buy_price">
                                         <button type="button" class="btn_top"
                                                 onclick="priceupdown('buy','down');"><span
                                                 class="ico">수량 더하기</span></button>
@@ -427,15 +427,15 @@
                                 <p class="h">주문형태</p>
                                 <div id="tit_tab2_2" class="tab">
                                     <ul>
-                                        <li onclick="submitmode=1;set_fee();$('.sell_price').val(0);">
+                                        <li onclick="submitmode=1;setTotalPriceAndFee();$('.sell_price').val(0);">
                                             <a href="#"
-                                               onclick="submitmode=1;set_fee();$('.sell_price').val(0);">
+                                               onclick="submitmode=1;setTotalPriceAndFee();$('.sell_price').val(0);">
                                                 <span>지정가</span>
                                             </a>
                                         </li>
-                                        <li onclick="submitmode=2;set_fee();$('.sell_price').val(now_price);">
+                                        <li onclick="submitmode=2;setTotalPriceAndFee();$('.sell_price').val(last_price);">
                                             <a href="#"
-                                               onclick="submitmode=2;set_fee();$('.sell_price').val(now_price);">
+                                               onclick="submitmode=2;setTotalPriceAndFee();$('.sell_price').val(last_price);">
                                                 <span>시장가</span>
                                             </a>
                                         </li>
@@ -455,7 +455,7 @@
                                 <div class="">
                                     <div class="inp_num">
                                         <input type="number" class="inp_txt w100p sell_price"
-                                               onchange="set_fee();" id="sell_price">
+                                               onchange="setTotalPriceAndFee();" id="sell_price">
                                         <button type="button" class="btn_top"
                                                 onclick="priceupdown('sell','down');"><span
                                                 class="ico">수량 더하기</span></button>
@@ -472,7 +472,7 @@
                                     <div class="box-f" style="display: block">
                                         <div class="b">
                                             <input type="text" class="inp_txt sell_qtt w100p"
-                                                   placeholder="최소 = 0.0001" onchange="set_fee();"
+                                                   placeholder="최소 = 0.0001" onchange="setTotalPriceAndFee();"
                                                    id="sell_qtt">
                                             <span>{{$coin}}</span>
                                         </div>
@@ -1153,6 +1153,7 @@
     let max_price;
     let min_price;
     let transaction_value;
+    let submitmode;
 </script>
 
 @script
@@ -1235,7 +1236,6 @@
             $('#token_info .cpd').text(Number(compared_previous_day));
         }
 
-        debugger;
         $(".market_header").find(".price").html(Number(last_price));
         $(".market_header").find(".percent").html(percent_string + `` + percent);
         $(".market_header, .hoga_sell_box").find(".max").html(Number(max_price));
