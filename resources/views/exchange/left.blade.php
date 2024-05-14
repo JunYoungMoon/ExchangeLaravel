@@ -169,7 +169,7 @@
                                         <dl class="hoga_dl_tit">
                                             <dt>
                                                 <em>
-                                                    <a href="#" onclick="openLayerPopup('popInfo01');">
+                                                    <a onclick="openLayerPopup('popInfo01');">
                                                         {{--                                                        <img alt="<?= $coinInfo->ccs_coin_name ?>"--}}
                                                         {{--                                                             src="<?= $protocol ?><?= $_SERVER['HTTP_HOST'] ?>/uploads/<?= strtoupper($code); ?>.png">--}}
                                                     </a>
@@ -323,15 +323,15 @@
                         <ul>
                             <li>
                                 <p class="h">주문형태</p>
-                                <div id="tit_tab2_1" class="tab">
+                                <div class="tab" x-data="{ selectedMode: 1 }">
                                     <ul>
-                                        <li x-on:click="submitmode=1;setTotalPriceAndFee();setMaximumOrderableQuantity();$('.buy_price').val(0);">
-                                            <a onclick="submitmode=1;setTotalPriceAndFee();setMaximumOrderableQuantity();$('.buy_price').val(0);">
+                                        <li :class="{ 'on': selectedMode === 1 }" x-on:click="selectedMode=1;setTotalPriceAndFee();setMaximumOrderableQuantity();$('.buy_price').val(0);">
+                                            <a>
                                                 <span>지정가</span>
                                             </a>
                                         </li>
-                                        <li onclick="submitmode=2;setTotalPriceAndFee();setMaximumOrderableQuantity();$('.buy_price').val(last_price);">
-                                            <a onclick="submitmode=2;setTotalPriceAndFee();setMaximumOrderableQuantity();$('.buy_price').val(last_price);">
+                                        <li :class="{ 'on': selectedMode === 2 }" x-on:click="selectedMode=2;setTotalPriceAndFee();setMaximumOrderableQuantity();$('.buy_price').val(last_price);">
+                                            <a>
                                                 <span>시장가</span>
                                             </a>
                                         </li>
@@ -347,19 +347,20 @@
                             </li>
                             <li>
                                 <p class="h">주문가격</p>
-                                <div class="">
+                                <div>
                                     <div class="inp_num">
                                         <input type="number" class="inp_txt w100p buy_price"
-                                               x-on:change="setTotalPriceAndFee();setMaximumOrderableQuantity();" x-ref="buy_price" id="buy_price">
-                                        <button type="button" class="btn_top"
-                                                onclick="priceupdown('buy','down');"><span
-                                                class="ico">수량 더하기</span></button>
-                                        <button type="button" class="btn_down"
-                                                onclick="priceupdown('buy','up');"><span
-                                                class="ico">수량 빼기</span></button>
+                                               @keyup="setTotalPriceAndFee();setMaximumOrderableQuantity();" x-ref="buy_price" id="buy_price">
+                                        <button type="button" class="btn_top" @click="priceUpDown('buy','down');">
+                                            <span class="ico">수량 더하기</span>
+                                        </button>
+                                        <button type="button" class="btn_down" @click="priceUpDown('buy','up');">
+                                            <span class="ico">수량 빼기</span>
+                                        </button>
                                     </div>
-                                    <p class="fz1 ta-r">최대 주문 가능 수량 <span class="c-black"
-                                                                          id="max_v">0.0000</span></p>
+                                    <p class="fz1 ta-r">최대 주문 가능 수량
+                                        <span class="c-black" id="max_v">0.0000</span>
+                                    </p>
                                 </div>
                             </li>
                             <li>
@@ -373,13 +374,12 @@
                                             <span>{{$coin}}</span>
                                         </div>
                                     </div>
-                                    <div class="box-t">
+                                    <div class="box-t" x-data="{isActive : 1}">
                                         <ul>
-                                            <li class="on"><a href="#"
-                                                              onclick="percent_func('buy', this);">10%</a></li>
-                                            <li><a href="#" onclick="percent_func('buy', this);">25%</a></li>
-                                            <li><a href="#" onclick="percent_func('buy', this);">50%</a></li>
-                                            <li><a href="#" onclick="percent_func('buy', this);">100%</a></li>
+                                            <li :class="isActive === 1 ? 'on': ''"><a @click="isActive = 1;setPercentPrice('buy', this);">10%</a></li>
+                                            <li :class="isActive === 2 ? 'on': ''"><a @click="isActive = 2;setPercentPrice('buy', this);">25%</a></li>
+                                            <li :class="isActive === 3 ? 'on': ''"><a @click="isActive = 3;setPercentPrice('buy', this);">50%</a></li>
+                                            <li :class="isActive === 4 ? 'on': ''"><a @click="isActive = 4;setPercentPrice('buy', this);">100%</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -425,21 +425,19 @@
                         <ul>
                             <li>
                                 <p class="h">주문형태</p>
-                                <div id="tit_tab2_2" class="tab">
+                                <div class="tab" x-data="{ selectedMode: 1 }">
                                     <ul>
-                                        <li onclick="submitmode=1;setTotalPriceAndFee();$('.sell_price').val(0);">
-                                            <a href="#"
-                                               onclick="submitmode=1;setTotalPriceAndFee();$('.sell_price').val(0);">
+                                        <li :class="{ 'on': selectedMode === 1 }" x-on:click="selectedMode=1;submitmode=1;setTotalPriceAndFee();$('.sell_price').val(0);">
+                                            <a>
                                                 <span>지정가</span>
                                             </a>
                                         </li>
-                                        <li onclick="submitmode=2;setTotalPriceAndFee();$('.sell_price').val(last_price);">
-                                            <a href="#"
-                                               onclick="submitmode=2;setTotalPriceAndFee();$('.sell_price').val(last_price);">
+                                        <li :class="{ 'on': selectedMode === 2 }" x-on:click="selectedMode=2;submitmode=2;setTotalPriceAndFee();$('.sell_price').val(last_price);">
+                                            <a>
                                                 <span>시장가</span>
                                             </a>
                                         </li>
-                                        {{--<li onclick="submitmode=3;"><a href="#" onclick="submitmode=3;"><span>자동</span></a> <button type="button"><span class="ico_q">도움말</span></button></li> --}}
+                                        {{--<li onclick="submitmode=3;"><a onclick="submitmode=3;"><span>자동</span></a> <button type="button"><span class="ico_q">도움말</span></button></li> --}}
                                     </ul>
                                 </div>
                             </li>
@@ -457,10 +455,10 @@
                                         <input type="number" class="inp_txt w100p sell_price"
                                                onchange="setTotalPriceAndFee();" id="sell_price">
                                         <button type="button" class="btn_top"
-                                                onclick="priceupdown('sell','down');"><span
+                                                onclick="priceUpDown('sell','down');"><span
                                                 class="ico">수량 더하기</span></button>
                                         <button type="button" class="btn_down"
-                                                onclick="priceupdown('sell','up');"><span
+                                                onclick="priceUpDown('sell','up');"><span
                                                 class="ico">수량 빼기</span></button>
                                     </div>
                                     <p class="fz1 ta-r"><span class="c-black"></span></p>
@@ -477,13 +475,12 @@
                                             <span>{{$coin}}</span>
                                         </div>
                                     </div>
-                                    <div class="box-t">
+                                    <div class="box-t" x-data="{isActive : 1}">
                                         <ul>
-                                            <li class="on"><a href="#"
-                                                              onclick="percent_func('sell', this);">10%</a></li>
-                                            <li><a href="#" onclick="percent_func('sell', this);">25%</a></li>
-                                            <li><a href="#" onclick="percent_func('sell', this);">50%</a></li>
-                                            <li><a href="#" onclick="percent_func('sell', this);">100%</a></li>
+                                            <li :class="isActive === 1 ? 'on': ''"><a @click="isActive = 1;setPercentPrice('sell', this);">10%</a></li>
+                                            <li :class="isActive === 2 ? 'on': ''"><a @click="isActive = 2;setPercentPrice('sell', this);">25%</a></li>
+                                            <li :class="isActive === 3 ? 'on': ''"><a @click="isActive = 3;setPercentPrice('sell', this);">50%</a></li>
+                                            <li :class="isActive === 4 ? 'on': ''"><a @click="isActive = 4;setPercentPrice('sell', this);">100%</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -544,11 +541,9 @@
                                     <ul>
                                         <li class="on"
                                             onclick="select_order_date = 1; order_out_updata2(order_list);"><a
-                                                href="#"
                                                 onclick="select_order_date = 1; order_out_updata2(order_list);">당일</a>
                                         </li>
                                         <li onclick="select_order_date = 2; order_out_updata2(order_list);"><a
-                                                href="#"
                                                 onclick="select_order_date = 2; order_out_updata2(order_list);">7일</a>
                                         </li>
                                     </ul>
@@ -556,7 +551,7 @@
                             </div>
                             <div class="rgh">
                                 <button onclick="getSelectedCancel()">선택 취소</button>
-                                {{--<a href="#" class="a_link c-black">전체보기</a>--}}
+                                {{--<a class="a_link c-black">전체보기</a>--}}
                                 <select class="select1"
                                         onchange="select_order_type = this.value; order_out_updata2(order_list);">
                                     <option value="전체">전체</option>
@@ -616,18 +611,16 @@
                                     <ul>
                                         <li class="on"
                                             onclick="select_order_date2 = 1; order_updata2(order_list2);"><a
-                                                href="#"
                                                 onclick="select_order_date2 = 1; order_updata2(order_list2);">당일</a>
                                         </li>
                                         <li onclick="select_order_date2 = 2; order_updata2(order_list2);"><a
-                                                href="#"
                                                 onclick="select_order_date2 = 2; order_updata2(order_list2);">7일</a>
                                         </li>
                                     </ul>
                                 </div>
                             </div>
                             <div class="rgh">
-                                {{--<a href="#" class="a_link c-black">전체보기</a>--}}
+                                {{--<a class="a_link c-black">전체보기</a>--}}
                                 <select class="select1"
                                         onchange="select_order_type2 = this.value; order_updata2(order_list2);">
                                     <option value="전체">전체</option>
@@ -1535,6 +1528,7 @@
 
     // 잔액 가져오기
     exchangeConnect.on('get_balance', function (data) {
+        console.log(data);
         available_buy_price = Number(data.mark_available);
         available_sell_price = Number(data.coin_available);
     });
@@ -1615,6 +1609,58 @@
         let result = avail * percent / price;
 
         $("#max_v").html(Number(result));
+    }
+
+    //가격 올리고 내리기 버튼
+    function priceUpDown(type, mod) {
+        let price = type == 'buy' ? Number($(".buy_price").val()) : Number($(".sell_price").val());
+        if (mod == "up") {
+            price += 100;
+        } else {
+            price -= 100;
+            if (price < 0) {
+                price = 0;
+            }
+        }
+        type == 'buy' ? $(".buy_price").val(price) : $(".sell_price").val(price);
+
+        setMaximumOrderableQuantity();
+    }
+
+    //10%, 25%, 50%, 100% 가격설정
+    function setPercentPrice(type, obj, isNowprice) {
+        if (submitmode == 2) {
+            isNowprice = true;
+        }
+
+        let percent = Number($(obj).text().split("%")[0]) * 0.01;
+        let avail = type == 'buy' ? available_buy_price : available_sell_price;
+        let price;
+
+        if (isNowprice) {
+            price = last_price;
+        } else {
+            price = type == 'buy' ? Number($(".buy_price").val()) : Number($(".sell_price").val());
+        }
+
+        let target = type == 'buy' ? $(".buy_qtt") : $(".sell_qtt");
+
+        let result;
+        if (type == 'buy') {
+            if (percent == 1) {
+                avail = avail / (1 + comm_rate * 0.01);
+            }
+            result = avail * percent / price;
+        } else {
+            result = avail * percent;
+        }
+
+        if (result == 'Infinity') {
+            target.val('가격을 설정해주세요');
+        } else {
+            target.val(result);
+            setTotalPriceAndFee(isNowprice);
+        }
     }
 
 </script>
