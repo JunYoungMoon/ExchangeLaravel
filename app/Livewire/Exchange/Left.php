@@ -88,6 +88,12 @@ class Left extends Component
 
             $test = TransactionActions::run($params);
 
+            // 지갑 보유 체크
+
+            // 지갑이 없으면 에러
+
+            // 판매시, 구매시 구분해서 코인 보유량 체크
+
         } catch (\Illuminate\Validation\ValidationException $e) {
             // 다른 종류의 예외 처리
             $errorMessage = $e->getMessage();
