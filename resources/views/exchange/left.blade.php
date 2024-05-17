@@ -218,7 +218,7 @@
                                     </colgroup>
                                     <tbody class="sell_hoga" x-data="sellHoga">
                                     <template x-for="_data in data" :key="_data.quantity">
-                                        <tr class="down" style="cursor: pointer" x-on:click="setPriceValue">
+                                        <tr class="down" style="cursor: pointer" x-on:click="hogaClickSetPriceValue">
                                             <td></td>
                                             <td>
                                                 <div class="sell_gr"
@@ -277,7 +277,7 @@
                                     </colgroup>
                                     <tbody class="buy_hoga" x-data="buyHoga">
                                     <template x-for="_data in data" :key="_data.quantity">
-                                        <tr class="up" style="cursor: pointer" x-on:click="setPriceValue">
+                                        <tr class="up" style="cursor: pointer" x-on:click="hogaClickSetPriceValue">
                                             <td></td>
                                             <td></td>
                                             <td :class="parseFloat(_data.hoga_price) === parseFloat(last_price) ? 'hoga_black' : ''">
@@ -340,8 +340,8 @@
                             </li>
                             <li>
                                 <p class="h">주문가능</p>
-                                <div class="">
-                                    <p><span class="available_buy_price spstst">0</span> {{$market}}</p>
+                                <div>
+                                    <p><span class="available_buy_price spstst" id="markAvailable">0</span> {{$market}}</p>
                                     {{--<button type="button" class="btn-pk red2 s bdrs fl-r"><span class="ico_i">상승장 렌딩</span></button>--}}
                                 </div>
                             </li>
@@ -443,8 +443,8 @@
                             </li>
                             <li>
                                 <p class="h">주문가능</p>
-                                <div class="">
-                                    <p><span class="available_sell_price spstst">0</span>{{$coin}}</p>
+                                <div>
+                                    <p><span class="available_sell_price spstst" id="coinAvailable">0</span>{{$coin}}</p>
                                     {{--<button type="button" class="btn-pk red2 s bdrs fl-r"><span class="ico_i">상승장 렌딩</span></button>--}}
                                 </div>
                             </li>
@@ -1386,6 +1386,7 @@
     // 룸 접속
     function socketJoinRoom() {
         hogaConnect.emit('joinRoom', coin, market);
+        exchangeConnect.emit('user_login', '<?php echo $_COOKIE["laravel_session"] ?? '' ?>', coin.toLowerCase(), market.toLowerCase());
     }
 
     // 호가창
@@ -1528,16 +1529,18 @@
 
     // 잔액 가져오기
     exchangeConnect.on('get_balance', function (data) {
-        console.log(data);
         available_buy_price = Number(data.mark_available);
         available_sell_price = Number(data.coin_available);
+
+        document.getElementById("coinAvailable").innerText = data.coin_available;
+        document.getElementById("markAvailable").innerText = data.mark_available;
     });
 </script>
 @endscript
 
 <script>
     //호가창을 누르면 가격에 세팅
-    function HogaClickSetPriceValue(event) {
+    function hogaClickSetPriceValue(event) {
         const clickedElement = event.currentTarget;
         const ftbdElement = clickedElement.querySelector('.ftbd');
 

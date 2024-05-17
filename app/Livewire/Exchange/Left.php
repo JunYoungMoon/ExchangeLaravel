@@ -80,21 +80,17 @@ class Left extends Component
         $this->dispatch('initializeLeft', ['market' => $market, 'coin' => $coin]);
     }
 
-    public function transaction($price, $quantity, $type){
+    public function transaction($price, $quantity, $type)
+    {
         try {
             $params['price'] = $price;
             $params['quantity'] = $quantity;
             $params['type'] = $type;
+            $params['coin'] = $this->coin;
+            $params['market'] = $this->market;
 
             $test = TransactionActions::run($params);
-
-            // 지갑 보유 체크
-
-            // 지갑이 없으면 에러
-
-            // 판매시, 구매시 구분해서 코인 보유량 체크
-
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (\Illuminate\Validation\ValidationException|\Exception $e) {
             // 다른 종류의 예외 처리
             $errorMessage = $e->getMessage();
             // 에러 메시지를 뷰로 보내기
