@@ -80,6 +80,7 @@ class Left extends Component
         $this->dispatch('initializeLeft', ['market' => $market, 'coin' => $coin]);
     }
 
+    #[Renderless]
     public function transaction($price, $quantity, $type)
     {
         try {

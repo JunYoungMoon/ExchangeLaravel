@@ -453,7 +453,7 @@
                                 <div class="">
                                     <div class="inp_num">
                                         <input type="number" class="inp_txt w100p sell_price"
-                                               onchange="setTotalPriceAndFee();" id="sell_price">
+                                               onchange="setTotalPriceAndFee();" x-ref="sell_price" id="sell_price">
                                         <button type="button" class="btn_top"
                                                 onclick="priceUpDown('sell','down');"><span
                                                 class="ico">수량 더하기</span></button>
@@ -471,7 +471,7 @@
                                         <div class="b">
                                             <input type="text" class="inp_txt sell_qtt w100p"
                                                    placeholder="최소 = 0.0001" onchange="setTotalPriceAndFee();"
-                                                   id="sell_qtt">
+                                                   x-ref="sell_qtt" id="sell_qtt">
                                             <span>{{$coin}}</span>
                                         </div>
                                     </div>
@@ -508,7 +508,7 @@
                             <ul>
                                 <li>
                                     <a class="btn-pk b w100p blue" wire:click="transaction($refs.sell_price.value, $refs.sell_qtt.value, 'sell')">
-                                        <span>{{$coin}} 매수</span>
+                                        <span>{{$coin}} 매도</span>
                                     </a>
                                 </li>
                                 <li>
