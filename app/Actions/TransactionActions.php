@@ -52,6 +52,9 @@ class TransactionActions
                                                         ])->first();
 
         $coinWalletAttribute = strtolower($params['coin']) . '_wallet';
+        $marketWalletAttribute = strtolower($params['market']) . '_wallet';
+        $coinUsingAttribute = strtolower($params['coin']) . '_using';
+        $marketUsingAttribute = strtolower($params['market']) . '_using';
         $coinAvailableAttribute = strtolower($params['coin']) . '_available';
         $marketAvailableAttribute = strtolower($params['market']) . '_available';
 
@@ -99,13 +102,10 @@ class TransactionActions
         $coinOrder = new DynamicCoinOrder();
         $coinOrder->setTableName(strtolower($params['market']), strtolower($params['coin']));
 
-        $odType = ($params['type'] == 'buy' ? '매수' : '매도');
-        $odType2 = ($params['type'] == 'buy' ? 'buy' : 'sell');
-
         $data = [
             'user_idx' => Auth::id(),
-            'od_type' => $odType,
-            'od_type2' => $odType2,
+            'od_type' => $params['type'] === 'buy' ? '매수' : '매도',
+            'od_type2' => $params['type'],
             'quantity' => $params['quantity'],
             'price' => $params['price'],
             'state' => '미체결',
@@ -117,7 +117,18 @@ class TransactionActions
 
         $createdOrder = $coinOrder->create($data);
 
-        $test = $createdOrder->od_idx;
+//        $test = $createdOrder->od_idx;
 
+        $data = [];
+
+        if ($params['type'] === 'buy') {
+            $symbolUsing = $user->$marketUsingAttribute;
+            $symbolAvailable = $user->$marketAvailableAttribute;
+        } else {
+            $symbolUsing = $user->$coinUsingAttribute;
+            $symbolAvailable = $user->$coinAvailableAttribute;
+        }
+
+        User::where('id', Auth::id())->update();
     }
 }
