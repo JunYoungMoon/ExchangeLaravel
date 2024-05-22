@@ -119,16 +119,24 @@ class TransactionActions
 
 //        $test = $createdOrder->od_idx;
 
-        $data = [];
-
         if ($params['type'] === 'buy') {
+            $symbolKey = $params['market'];
             $symbolUsing = $user->$marketUsingAttribute;
             $symbolAvailable = $user->$marketAvailableAttribute;
+            $commission = sprintf('%.8f', $params['quantity'] * $params['price'] * $cryptocurrencySetting->ccs_commission_rate * 0.01);
+            $amount = sprintf('%.8f', $params['quantity'] * $params['price'] + $commission);
         } else {
+            $symbolKey = $params['coin'];
             $symbolUsing = $user->$coinUsingAttribute;
             $symbolAvailable = $user->$coinAvailableAttribute;
+            $amount = $params['quantity'];
         }
 
-        User::where('id', Auth::id())->update();
+        $data = [
+            $symbolKey.'_using' => sprintf('%.8f', $symbolUsing + $amount),
+            $symbolKey.'_available' => sprintf('%.8f', $symbolAvailable - $amount),
+        ];
+
+        User::where('id', Auth::id())->update($data);
     }
 }
