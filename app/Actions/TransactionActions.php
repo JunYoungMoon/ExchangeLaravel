@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
+use ElephantIO\Client;
+use ElephantIO\Engine\SocketIO\Version2X;
 
 class TransactionActions
 {
@@ -138,5 +140,10 @@ class TransactionActions
         ];
 
         User::where('id', Auth::id())->update($data);
+
+        //elephantio로 소켓연결 추가중
+        $client = new Client(new Version2X());
+
+
     }
 }
