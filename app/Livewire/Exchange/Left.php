@@ -90,7 +90,9 @@ class Left extends Component
             $params['coin'] = $this->coin;
             $params['market'] = $this->market;
 
-            $test = TransactionActions::run($params);
+            if (TransactionActions::run($params) === 'success') {
+                $this->dispatch('success', '체결 완료');
+            }
         } catch (\Illuminate\Validation\ValidationException|\Exception $e) {
             // 다른 종류의 예외 처리
             $errorMessage = $e->getMessage();

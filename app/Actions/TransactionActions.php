@@ -119,16 +119,14 @@ class TransactionActions
 
         $createdOrder = $coinOrder->create($data);
 
-//        $test = $createdOrder->od_idx;
-
         if ($params['type'] === 'buy') {
-            $symbolKey = $params['market'];
+            $symbolKey = strtolower($params['market']);
             $symbolUsing = $user->$marketUsingAttribute;
             $symbolAvailable = $user->$marketAvailableAttribute;
             $commission = sprintf('%.8f', $params['quantity'] * $params['price'] * $cryptocurrencySetting->ccs_commission_rate * 0.01);
             $amount = sprintf('%.8f', $params['quantity'] * $params['price'] + $commission);
         } else {
-            $symbolKey = $params['coin'];
+            $symbolKey = strtolower($params['coin']);
             $symbolUsing = $user->$coinUsingAttribute;
             $symbolAvailable = $user->$coinAvailableAttribute;
             $amount = $params['quantity'];
@@ -141,9 +139,20 @@ class TransactionActions
 
         User::where('id', Auth::id())->update($data);
 
-        //elephantio로 소켓연결 추가중
-        $client = new Client(new Version2X());
+        $client = new Client(new Version2X(env('NODEJS_EXCHANGE_ADDRESS')));
 
+        $client->connect();
 
+        $data = [
+            'coin' => $params['coin'],
+            'market' => $params['market'],
+            'od_idx' => $createdOrder->od_idx
+        ];
+
+        $client->emit('order_updata', $data);
+
+        $client->disconnect();
+
+        return 'success';
     }
 }
