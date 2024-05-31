@@ -6,10 +6,12 @@ use App\Actions\Test;
 use App\Actions\TransactionActions;
 use App\Http\Requests\Exchange\TransactionRequest;
 use App\Models\CryptocurrencySetting;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Renderless;
 use Livewire\Attributes\Url;
 use Livewire\Component;
+use Illuminate\Support\Facades\RateLimiter;
 
 class Left extends Component
 {
@@ -84,6 +86,16 @@ class Left extends Component
     public function transaction($price, $quantity, $type)
     {
         try {
+            if (!Auth::check()) {
+                throw new \Exception('로그인이 필요합니다.');
+            }
+
+            if (RateLimiter::tooManyAttempts('send-message:'.Auth::id(), $perMinute = 2)) {
+                throw new \Exception('너무 많은 요청을 했습니다.');
+            }
+
+            RateLimiter::increment('send-message:'.Auth::id());
+
             $params['price'] = $price;
             $params['quantity'] = $quantity;
             $params['type'] = $type;

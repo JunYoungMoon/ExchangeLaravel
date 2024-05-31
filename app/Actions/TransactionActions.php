@@ -6,6 +6,7 @@ use App\Models\CryptocurrencySetting;
 use App\Models\DynamicCoinOrder;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
 use Lorisleiva\Actions\Concerns\AsAction;
 use ElephantIO\Client;
