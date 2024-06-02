@@ -307,9 +307,9 @@
             </div>
         </div>
 
-        <div class="exCenter" x-data="{ tab2 : 'buy' }">
+        <div class="exCenter">
             {{--4.매수/매도--}}
-            <div class="box_dashboard ty4">
+            <div class="box_dashboard ty4" x-data="{ tab2 : 'buy' }">
                 <div id="tit_tab2" class="extab_tit">
                     <ul>
                         <li :class="(tab2 === 'buy') ? 'on' : ''"><a class="nav-link" x-on:click="tab2 = 'buy'"><span>{{$coin}} 매수</span></a>
@@ -525,16 +525,15 @@
             </div>
 
             <!-- 6.체결 리스트 -->
-            <div class="box_dashboard ty6">
+            <div class="box_dashboard ty6" x-data="{ tab3 : 'executed' }">
                 <div id="tit_tab4" class="extab_tit01">
                     <ul>
-                        <li class="on"><a class="nav-link active" href="#order_list1"><span>미체결 주문</span></a>
-                        </li>
-                        <li><a class="nav-link" href="#order_list2"><span>체결 주문</span></a></li>
+                        <li :class="(tab3 === 'executed') ? 'on' : ''"><a class="nav-link" x-on:click="tab3 = 'executed'"><span>미체결 주문</span></a></li>
+                        <li :class="(tab3 === 'pending') ? 'on' : ''"><a class="nav-link" x-on:click="tab3 = 'pending'"><span>체결 주문</span></a></li>
                     </ul>
                 </div>
                 <div class="tab-content">
-                    <div class="cont" id="order_list1">
+                    <div class="cont" id="order_list1" x-show="tab3 === 'executed'">
                         <div class="tbl_top">
                             <div class="lft">
                                 <div class="tab-link">
@@ -604,7 +603,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="cont" id="order_list2">
+                    <div class="cont" id="order_list2" x-show="tab3 === 'pending'">
                         <div class="tbl_top">
                             <div class="lft">
                                 <div class="tab-link">
