@@ -2,11 +2,15 @@
 
 namespace App\Livewire\Exchange;
 
+use App\Actions\CheckBalance;
 use App\Actions\Test;
-use App\Actions\TransactionActions;
+use App\Actions\TradeExecution;
+use App\DTO\TradeContext;
 use App\Http\Requests\Exchange\TransactionRequest;
 use App\Models\CryptocurrencySetting;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Renderless;
 use Livewire\Attributes\Url;
@@ -90,19 +94,63 @@ class Left extends Component
                 throw new \Exception('로그인이 필요합니다.');
             }
 
-            if (RateLimiter::tooManyAttempts('send-message:'.Auth::id(), $perMinute = 2)) {
+            if (RateLimiter::tooManyAttempts('send-message:'.Auth::id(), 2)) {
                 throw new \Exception('너무 많은 요청을 했습니다.');
             }
 
             RateLimiter::increment('send-message:'.Auth::id());
 
-            $params['price'] = $price;
-            $params['quantity'] = $quantity;
-            $params['type'] = $type;
-            $params['coin'] = $this->coin;
-            $params['market'] = $this->market;
+            $request['price'] = $price;
+            $request['quantity'] = $quantity;
+            $request['type'] = $type;
+            $request['coin'] = $this->coin;
+            $request['market'] = $this->market;
 
-            if (TransactionActions::run($params) === 'success') {
+            Validator::make(
+                $request,
+                [
+                    'price' => 'required|numeric|min:0.00000001|max:100000000',
+                    'quantity' => 'required|numeric|min:0.00000001|max:100000000',
+                    'type' => 'required|in:sell,buy',
+                    'coin' => 'required',
+                    'market' => 'required',
+                ],
+                [
+                    'price.required' => '가격을 입력해주세요.',
+                    'price.numeric' => '가격은 숫자여야 합니다.',
+                    'price.min' => '가격은 0보다 커야 합니다.',
+                    'price.max' => '가격은 :max 이하여야 합니다.',
+                    'quantity.required' => '수량을 입력해주세요.',
+                    'quantity.numeric' => '수량은 숫자여야 합니다.',
+                    'quantity.min' => '수량은 0보다 커야 합니다.',
+                    'quantity.max' => '수량은 :max 이하여야 합니다.',
+                    'type.required' => '유형을 선택해주세요.',
+                    'type.in' => '유효하지 않은 유형입니다.',
+                    'coin' => '코인 정보가 없습니다.',
+                    'market' => '마켓 정보가 없습니다.',
+                ]
+            )->validate();
+
+            // 지갑 보유 체크
+            $user = User::where('id',Auth::id())->first();
+
+            $cryptocurrencySetting = CryptocurrencySetting::where([
+                ['ccs_market_name2', $request['market']],
+                ['ccs_coin_name2', $request['coin']]
+            ])->first();
+
+            $tradeContext = new TradeContext($request, $user, $cryptocurrencySetting);
+
+            // 지갑이 없으면 에러
+            if (!$tradeContext->user->{$tradeContext->coinWalletAttribute}) {
+                throw new \Exception('지갑이 존재하지 않습니다.');
+            }
+
+            //잔액 체크
+            CheckBalance::run($tradeContext);
+
+            //체결
+            if (TradeExecution::run($tradeContext) === 'success') {
                 $this->dispatch('success', '체결 완료');
             }
         } catch (\Illuminate\Validation\ValidationException|\Exception $e) {

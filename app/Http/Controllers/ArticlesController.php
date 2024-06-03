@@ -41,7 +41,6 @@ class ArticlesController extends Controller
 //            ->take($perPage)
 //            ->get();
 
-
         $articles = $this->articlesService->getArticles($page, $perPage);
         $totalCount = $this->articlesService->getArticlesTotalCount();
 
