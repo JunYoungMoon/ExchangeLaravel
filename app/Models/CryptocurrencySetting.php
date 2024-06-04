@@ -13,6 +13,9 @@ class CryptocurrencySetting extends Model
 
     protected $primaryKey = 'ccs_id';
 
+    const UPDATED_AT = null; // updated_at 비활성화
+    const CREATED_AT = null; // create_at 비활성화
+
     protected $fillable = [
         'ccs_market_name',
         'ccs_market_name2',

@@ -6,6 +6,7 @@ use App\DTO\TradeContext;
 use App\Models\DynamicCoinOrder;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 use ElephantIO\Client;
 use ElephantIO\Engine\SocketIO\Version2X;
@@ -56,22 +57,40 @@ class TradeExecution
             $symbolKey.'_available' => sprintf('%.8f', $symbolAvailable - $amount),
         ];
 
-        User::where('id', Auth::id())->update($data);
+        DB::beginTransaction();
 
-        $client = new Client(new Version2X(env('NODEJS_EXCHANGE_ADDRESS')));
+        try {
+            User::where('id', Auth::id())->update($data);
 
-        $client->connect();
+            $client = new Client(new Version2X(env('NODEJS_EXCHANGE_ADDRESS')));
 
-        $data = [
-            'coin' => $tradeContext->request['coin'],
-            'market' => $tradeContext->request['market'],
-            'od_idx' => $createdOrder->od_idx
-        ];
+            $client->connect();
 
-        $client->emit('order_updata', $data);
+            $data = [
+                'coin' => $tradeContext->request['coin'],
+                'market' => $tradeContext->request['market'],
+                'od_idx' => $createdOrder->od_idx
+            ];
 
-        $client->disconnect();
+            $client->of("exchange");
 
-        return 'success';
+            $response = $client->emit('order_updata', $data, true);
+
+            if ($response['data']) {
+                $client->disconnect();
+
+                DB::commit();
+
+                return 'success';
+            } else {
+                throw new \Exception();
+            }
+            // 트랜잭션 커밋
+        } catch (\Exception $e) {
+            // 예외 발생 시 롤백
+            DB::rollback();
+
+            return 'false';
+        }
     }
 }
