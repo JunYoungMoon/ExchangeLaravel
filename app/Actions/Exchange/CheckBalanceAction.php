@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Exchange;
 
 use App\DTO\TradeContext;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class CheckBalance
+class CheckBalanceAction
 {
     use AsAction;
 

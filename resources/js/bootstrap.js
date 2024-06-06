@@ -1,5 +1,5 @@
 import axios from 'axios';
-import $ from "jquery";
+import $ from 'jquery';
 
 window.axios = axios;
 
@@ -7,14 +7,20 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 window.axios.interceptors.request.use(
     config => {
-        showLoading();
+        // showLoading();
+        const token = sessionStorage.getItem('token');
+
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+
         return config;
     }
 );
 
 window.axios.interceptors.response.use(
     response => {
-        hideLoading();
+        // hideLoading();
         return response;
     },
     error => {

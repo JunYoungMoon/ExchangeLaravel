@@ -2,20 +2,20 @@
 
 namespace App\Livewire\Exchange;
 
-use App\Actions\CheckBalance;
+use App\Actions\Exchange\CheckBalanceAction;
+use App\Actions\Exchange\TradeExecutionAction;
 use App\Actions\Test;
-use App\Actions\TradeExecution;
 use App\DTO\TradeContext;
 use App\Http\Requests\Exchange\TransactionRequest;
 use App\Models\CryptocurrencySetting;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Renderless;
 use Livewire\Attributes\Url;
 use Livewire\Component;
-use Illuminate\Support\Facades\RateLimiter;
 
 class Left extends Component
 {
@@ -147,10 +147,10 @@ class Left extends Component
             }
 
             //잔액 체크
-            CheckBalance::run($tradeContext);
+            CheckBalanceAction::run($tradeContext);
 
             //체결
-            if (TradeExecution::run($tradeContext) === 'success') {
+            if (TradeExecutionAction::run($tradeContext) === 'success') {
                 $this->dispatch('success', '체결 완료');
             }
         } catch (\Illuminate\Validation\ValidationException|\Exception $e) {

@@ -1,7 +1,7 @@
 <?php
 
 
-use App\Actions\CheckBalance;
+use App\Actions\Exchange\CheckBalanceAction;
 use App\DTO\TradeContext;
 use App\Models\CryptocurrencySetting;
 use App\Models\User;
@@ -37,7 +37,7 @@ class ExchangeTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('최소 거래량 보다 적은 수를 입력하셨습니다.');
 
-        (new CheckBalance())->handle($this->tradeContext);
+        (new CheckBalanceAction())->handle($this->tradeContext);
     }
 
     public function test_handle_with_invalid_bid_price()
@@ -47,7 +47,7 @@ class ExchangeTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('호가 단위로 입력 해주세요.');
 
-        (new CheckBalance())->handle($this->tradeContext);
+        (new CheckBalanceAction())->handle($this->tradeContext);
     }
 
     public function test_handle_with_exchange_buy_disabled()
@@ -57,7 +57,7 @@ class ExchangeTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('현재 접속량이 많아 서버가 원활하지 않습니다. 잠시만 기다려주세요');
 
-        (new CheckBalance())->handle($this->tradeContext);
+        (new CheckBalanceAction())->handle($this->tradeContext);
     }
 
     public function test_handle_with_insufficient_balance_for_buy()
@@ -68,7 +68,7 @@ class ExchangeTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('보유 잔액이 부족합니다.');
 
-        (new CheckBalance())->handle($this->tradeContext);
+        (new CheckBalanceAction())->handle($this->tradeContext);
     }
 
     public function test_handle_with_insufficient_balance_for_sell()
@@ -80,7 +80,7 @@ class ExchangeTest extends TestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('보유량보다 큰 숫자를 입력하셨습니다.');
 
-        (new CheckBalance())->handle($this->tradeContext);
+        (new CheckBalanceAction())->handle($this->tradeContext);
     }
 
     public function test_handle_with_sufficient_balance()
@@ -89,7 +89,7 @@ class ExchangeTest extends TestCase
         $this->user->egx_available = 1000; // 사용자의 코인 잔액 설정
         $this->user->save();
 
-        (new CheckBalance())->handle($this->tradeContext);
+        (new CheckBalanceAction())->handle($this->tradeContext);
 
         $this->assertTrue(true); // 예외가 발생하지 않음을 확인
     }

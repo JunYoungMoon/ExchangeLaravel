@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Actions;
+namespace App\Actions\Exchange;
 
 use App\DTO\TradeContext;
 use App\Models\DynamicCoinOrder;
 use App\Models\User;
+use ElephantIO\Client;
+use ElephantIO\Engine\SocketIO\Version2X;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
-use ElephantIO\Client;
-use ElephantIO\Engine\SocketIO\Version2X;
 
-class TradeExecution
+class TradeExecutionAction
 {
     use AsAction;
 

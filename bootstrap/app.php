@@ -1,9 +1,12 @@
 <?php
 
+use App\Actions\Common\ApiResponseAction;
+use App\Http\Middleware\ApiResponse;
 use App\Http\Middleware\CheckLoginExpiry;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -24,13 +27,14 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->group('api', [
-            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             // 'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
 
         $middleware->alias([
-            'loginExpiry' => CheckLoginExpiry::class,
+            'login.expiry' => CheckLoginExpiry::class,
+            'api.response' => ApiResponse::class,
             'auth' => Illuminate\Auth\Middleware\Authenticate::class,
             'auth.basic' => Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
             'auth.session'	=> Illuminate\Session\Middleware\AuthenticateSession::class,
@@ -45,5 +49,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (Exception $exception, Request $request) {
+            if ($request->is('api/*')) {
+                return ApiResponseAction::run('error',  $exception->getMessage(), []);
+            }
+        });
     })->create();

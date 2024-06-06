@@ -405,7 +405,7 @@
                         @auth
                             <ul>
                                 <li>
-                                    <a class="btn-pk b w100p red" wire:click="transaction($refs.buy_price.value, $refs.buy_qtt.value, 'buy')">
+                                    <a class="btn-pk b w100p red" x-on:click="trade($refs.buy_price.value, $refs.buy_qtt.value, 'buy')">
                                         <span>{{$coin}} 매수</span>
                                     </a>
                                 </li>
@@ -507,7 +507,7 @@
                         @auth
                             <ul>
                                 <li>
-                                    <a class="btn-pk b w100p blue" wire:click="transaction($refs.sell_price.value, $refs.sell_qtt.value, 'sell')">
+                                    <a class="btn-pk b w100p blue" x-on:click="trade($refs.sell_price.value, $refs.sell_qtt.value, 'sell')">
                                         <span>{{$coin}} 매도</span>
                                     </a>
                                 </li>
@@ -1665,4 +1665,16 @@
         }
     }
 
+    async function trade(price, quantity, type) {
+        let data = {
+            price: price,
+            quantity: quantity,
+            type: type,
+            coin: coin,
+            market: market,
+        }
+
+        const response = await axios.post("/api/exchange/trade", data);
+
+    };
 </script>

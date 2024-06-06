@@ -8,6 +8,7 @@
         "php": "^8.2",
         "elephantio/elephant.io": "^4.7",
         "laravel/framework": "^11.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^v3.4.10",
         "lorisleiva/laravel-actions": "^2.8",
