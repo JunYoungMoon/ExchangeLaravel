@@ -76,7 +76,7 @@ class TradeExecutionAction
 
             $response = $client->emit('order_updata', $data, true);
 
-            if ($response['data']) {
+            if ($response->data) {
                 $client->disconnect();
 
                 DB::commit();
