@@ -406,7 +406,7 @@
                             <ul>
                                 <li>
 {{--                                    <a class="btn-pk b w100p red" x-on:click="trade($refs.buy_price.value, $refs.buy_qtt.value, 'buy')">--}}
-                                    <a class="btn-pk b w100p red" wire:click="transaction($refs.sell_price.value, $refs.sell_qtt.value, 'buy')">
+                                    <a class="btn-pk b w100p red" wire:click="transaction($refs.buy_price.value, $refs.buy_qtt.value, 'buy')">
                                     <span>{{$coin}} 매수</span>
                                     </a>
                                 </li>
