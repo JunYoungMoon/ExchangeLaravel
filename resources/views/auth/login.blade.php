@@ -3,8 +3,8 @@
 @section('content')
     <div>
         <h1>로그인</h1>
-        <form id="loginForm" method="POST">
-            @csrf
+        <form {{--id="loginForm"--}} method="POST" action="{{ route('login') }}">
+        @csrf
             <div>
                 <label for="email">이메일</label>
                 <input id="email" type="text" name="email" value="{{ old('email') }}" required autofocus>
@@ -37,28 +37,28 @@
 
 @push('scripts')
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-
-            try {
-                const formData = new FormData(this);
-                const response = await axios.post('/api/auth/login', formData);
-
-                console.log(response);
-
-                const token = response.data.token; // 토큰 추출
-                // saveTokenToCookie(token); // 토큰을 쿠키에 저장하는 함수 호출
-                saveTokenToSession(token); // 토큰을 쿠키에 저장하는 함수 호출
-                // 로그인 성공 후 리다이렉트 또는 다른 작업 수행
-            } catch (error) {
-                // 오류 처리
-                console.error('로그인 오류:', error);
-            }
-        });
-
-        function saveTokenToSession(token) {
-            sessionStorage.setItem('token', token);
-        }
+        // document.getElementById('loginForm').addEventListener('submit', async function(event) {
+        //     event.preventDefault();
+        //
+        //     try {
+        //         const formData = new FormData(this);
+        //         const response = await axios.post('/api/auth/login', formData);
+        //
+        //         console.log(response);
+        //
+        //         const token = response.data.token; // 토큰 추출
+        //         // saveTokenToCookie(token); // 토큰을 쿠키에 저장하는 함수 호출
+        //         saveTokenToSession(token); // 토큰을 쿠키에 저장하는 함수 호출
+        //         // 로그인 성공 후 리다이렉트 또는 다른 작업 수행
+        //     } catch (error) {
+        //         // 오류 처리
+        //         console.error('로그인 오류:', error);
+        //     }
+        // });
+        //
+        // function saveTokenToSession(token) {
+        //     sessionStorage.setItem('token', token);
+        // }
 
         {{--function saveTokenToCookie(token) {--}}
         {{--    // 쿠키에 토큰 저장--}}
