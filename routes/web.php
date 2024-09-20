@@ -16,8 +16,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/exchange',\App\Livewire\exchange\Index::class)->name('exchange.index');
-Route::get('/articles', \App\Livewire\articles\Index::class);
+Route::get('/exchange',\App\Livewire\Exchange\Index::class)->name('exchange.index');
+Route::get('/articles', \App\Livewire\Articles\Index::class);
 
 Route::get('/articles/detail/{article}' /*{article}은 Article 모델 바인딩*/, function (Article $article) {
     return view('articles.detail', ['article' => $article]);
